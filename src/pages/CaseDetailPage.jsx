@@ -4,15 +4,17 @@ import { useTranslation } from 'react-i18next'
 import {
   ArrowLeft, FolderOpen, FileText, Clock, RefreshCw,
   Briefcase, Car, Users, Home, Scale, HelpCircle,
-  Calendar, Hash, AlertCircle, Brain
+  Calendar, Hash, AlertCircle, Brain, Sparkles, ChevronDown
 } from 'lucide-react'
 import { clsx } from 'clsx'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/context/AuthContext'
 import { useAI } from '@/hooks/useAI'
 import { useDocuments } from '@/hooks/useDocuments'
+import { useDocumentAnalysis } from '@/hooks/useDocumentAnalysis'
 import { StatusBadge } from '@/components/ui/Badge'
 import { AICaseReport, RiskBadge } from '@/components/AICaseReport'
+import { DocumentIntelligencePanel } from '@/components/DocumentIntelligencePanel'
 import Button from '@/components/ui/Button'
 
 // ─── Type config ──────────────────────────────────────────────────
@@ -100,11 +102,14 @@ export function CaseDetailPage() {
   const { user }      = useAuth()
   const { fetchAIReport, fetchSteps } = useAI()
   const { fetchDocuments, getSignedUrl } = useDocuments()
+  const { fetchCaseAnalyses } = useDocumentAnalysis()
 
   const [caseData,  setCaseData]  = useState(null)
   const [aiReport,  setAiReport]  = useState(null)
   const [steps,     setSteps]     = useState([])
   const [documents, setDocuments] = useState([])
+  const [docAnalyses, setDocAnalyses] = useState([])
+  const [selectedDocId, setSelectedDocId] = useState(null)
   const [loading,   setLoading]   = useState(true)
   const [error,     setError]     = useState(null)
   const [dlId,      setDlId]      = useState(null)
@@ -140,6 +145,16 @@ export function CaseDetailPage() {
       // Documents
       const docsData = await fetchDocuments(caseId)
       setDocuments(docsData)
+
+      // Document analyses
+      const analyses = await fetchCaseAnalyses(caseId)
+      setDocAnalyses(analyses)
+      // Auto-select first document that has analysis
+      if (analyses.length > 0) {
+        setSelectedDocId(analyses[0].document_id)
+      } else if (docsData.length > 0) {
+        setSelectedDocId(docsData[0].id)
+      }
 
     } catch (err) {
       setError(err.message)
@@ -262,7 +277,7 @@ export function CaseDetailPage() {
       {/* ── Main grid ──────────────────────────────────────────── */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-slide-up-delay-2">
 
-        {/* Left: description + AI report */}
+        {/* Left: description + AI report + Document Intelligence */}
         <div className="lg:col-span-2 space-y-5">
 
           {/* Description */}
@@ -282,7 +297,7 @@ export function CaseDetailPage() {
             <div className="flex items-center gap-2 mb-3">
               <Brain size={14} className="text-gold-400" />
               <p className="text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-widest">
-                AI Analysis
+                AI Case Analysis
               </p>
             </div>
             <AICaseReport
@@ -291,6 +306,63 @@ export function CaseDetailPage() {
               onUnlockRequest={() => {}}
             />
           </div>
+
+          {/* Document Intelligence */}
+          {documents.length > 0 && (
+            <div>
+              <div className="flex items-center gap-2 mb-3">
+                <Sparkles size={14} className="text-gold-400" />
+                <p className="text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-widest">
+                  Document Intelligence
+                </p>
+              </div>
+
+              {/* Document selector tabs */}
+              {documents.length > 1 && (
+                <div className="flex gap-2 mb-4 flex-wrap">
+                  {documents.map(doc => {
+                    const hasAnalysis = docAnalyses.some(a => a.document_id === doc.id)
+                    return (
+                      <button
+                        key={doc.id}
+                        onClick={() => setSelectedDocId(doc.id)}
+                        className={clsx(
+                          'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all border',
+                          selectedDocId === doc.id
+                            ? 'bg-gold-500/15 text-gold-400 border-gold-500/30'
+                            : 'bg-[var(--bg-elevated)] text-[var(--text-secondary)] border-[var(--border)] hover:border-white/15',
+                        )}
+                      >
+                        <FileText size={11} />
+                        <span className="max-w-[120px] truncate">{doc.file_name}</span>
+                        {hasAnalysis && <span className="w-1.5 h-1.5 rounded-full bg-green-400 shrink-0" />}
+                      </button>
+                    )
+                  })}
+                </div>
+              )}
+
+              {/* Panel for selected document */}
+              {selectedDocId && (() => {
+                const selectedDoc = documents.find(d => d.id === selectedDocId)
+                const existingAnalysis = docAnalyses.find(a => a.document_id === selectedDocId) || null
+                if (!selectedDoc) return null
+                return (
+                  <DocumentIntelligencePanel
+                    key={selectedDocId}
+                    document={{
+                      id:           selectedDoc.id,
+                      file_name:    selectedDoc.file_name,
+                      storage_path: selectedDoc.storage_path,
+                      mime_type:    selectedDoc.mime_type,
+                      case_id:      caseId,
+                    }}
+                    initialAnalysis={existingAnalysis}
+                  />
+                )
+              })()}
+            </div>
+          )}
         </div>
 
         {/* Right: meta + documents */}

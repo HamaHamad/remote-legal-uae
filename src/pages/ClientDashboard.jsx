@@ -12,6 +12,7 @@ import { StatCard } from '@/components/ui/Card'
 import { StatusBadge } from '@/components/ui/Badge'
 import Button from '@/components/ui/Button'
 import { CreateCaseModal } from '@/components/CreateCaseModal'
+import { AutoCaseBuilder } from '@/components/AutoCaseBuilder'
 import { clsx } from 'clsx'
 
 const TYPE_META = {
@@ -131,7 +132,8 @@ export function ClientDashboard() {
   const { t } = useTranslation()
   const { profile } = useAuth()
   const { cases, stats, loading, refetch } = useCases()
-  const [showModal, setShowModal] = useState(false)
+  const [showModal, setShowModal]         = useState(false)
+  const [showAutoBuilder, setShowAutoBuilder] = useState(false)
 
   const firstName = profile?.email?.split('@')[0] || ''
   const openModal  = () => setShowModal(true)
@@ -211,16 +213,41 @@ export function ClientDashboard() {
             {t('dashboard.quickActions')}
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <QuickAction icon={Plus}       label={t('dashboard.createCase')} desc="Open a new legal matter"  gold onClick={openModal} />
+            <QuickAction icon={Plus}       label={t('dashboard.createCase')} desc="Open a new legal matter"      gold onClick={openModal} />
+            <QuickAction icon={Sparkles}   label="Auto Case Builder"          desc="Upload doc → AI builds case"  gold onClick={() => setShowAutoBuilder(true)} />
             <Link to="/dashboard/cases" className="block">
               <QuickAction icon={FolderOpen} label={t('nav.cases')}           desc="View all your cases" />
             </Link>
-            <QuickAction icon={Sparkles}   label="AI Assistant"               desc="Coming in Phase 3"       disabled />
           </div>
         </div>
       </div>
 
       {showModal && <CreateCaseModal onClose={closeModal} onCreated={onCreated} />}
+
+      {/* Auto Case Builder modal */}
+      {showAutoBuilder && (
+        <div
+          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4"
+          onClick={e => { if (e.target === e.currentTarget) setShowAutoBuilder(false) }}
+        >
+          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm animate-fade-in" />
+          <div className="relative z-10 w-full sm:max-w-lg bg-[var(--bg-secondary)] border border-[var(--border)] rounded-t-2xl sm:rounded-2xl shadow-panel max-h-[90vh] overflow-y-auto animate-slide-up">
+            <div className="flex items-center justify-between px-5 pt-5 pb-4 border-b border-[var(--border)]">
+              <p className="text-sm font-semibold text-[var(--text-primary)]">Auto Case Builder</p>
+              <button
+                onClick={() => setShowAutoBuilder(false)}
+                className="w-7 h-7 rounded-lg flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-white/8 transition-all text-sm"
+              >✕</button>
+            </div>
+            <div className="p-5">
+              <AutoCaseBuilder
+                onClose={() => setShowAutoBuilder(false)}
+                onCaseCreated={() => { refetch(); setShowAutoBuilder(false) }}
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </>
   )
 }

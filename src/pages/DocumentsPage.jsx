@@ -2,14 +2,17 @@ import { useState, useEffect, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   FileText, Download, Trash2, Search, FolderOpen,
-  Image, File, X, Eye, AlertCircle, RefreshCw,
-  Briefcase, Car, Users, Home, Scale, HelpCircle
+  Image, File, X, AlertCircle, RefreshCw,
+  Briefcase, Car, Users, Home, Scale, HelpCircle,
+  Brain, ChevronDown
 } from 'lucide-react'
 import { clsx } from 'clsx'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/context/AuthContext'
 import { useDocuments } from '@/hooks/useDocuments'
+import { useDocumentAnalysis } from '@/hooks/useDocumentAnalysis'
 import { StatusBadge } from '@/components/ui/Badge'
+import { DocumentIntelligencePanel } from '@/components/DocumentIntelligencePanel'
 import Button from '@/components/ui/Button'
 
 // ─── Helpers ─────────────────────────────────────────────────────
@@ -131,23 +134,26 @@ export function DocumentsPage() {
   const { t } = useTranslation()
   const { user } = useAuth()
   const { getSignedUrl, deleteDocument } = useDocuments()
+  const { fetchAnalysis, analyzeDocument, pollUntilDone } = useDocumentAnalysis()
 
-  const [documents, setDocuments] = useState([])
-  const [cases, setCases]         = useState({})          // caseId → case obj
-  const [loading, setLoading]     = useState(true)
-  const [error, setError]         = useState(null)
-  const [search, setSearch]       = useState('')
-  const [deleteTarget, setDeleteTarget] = useState(null)  // doc to delete
-  const [deleting, setDeleting]   = useState(false)
+  const [documents,     setDocuments]     = useState([])
+  const [cases,         setCases]         = useState({})
+  const [loading,       setLoading]       = useState(true)
+  const [error,         setError]         = useState(null)
+  const [search,        setSearch]        = useState('')
+  const [deleteTarget,  setDeleteTarget]  = useState(null)
+  const [deleting,      setDeleting]      = useState(false)
   const [downloadingId, setDownloadingId] = useState(null)
+  const [expandedDocId, setExpandedDocId] = useState(null)
+  const [docAnalyses,   setDocAnalyses]   = useState({})  // docId → analysis object
+  const [analysing,     setAnalysing]     = useState({})  // docId → bool
 
-  // ─── Fetch documents + parent cases ───────────────────────────
+  // ─── Fetch documents + parent cases + analyses ────────────────
   const fetchAll = useCallback(async () => {
     if (!user) return
     setLoading(true)
     setError(null)
     try {
-      // Fetch all documents for this user's cases
       const { data: docs, error: docsErr } = await supabase
         .from('documents')
         .select('*')
@@ -155,20 +161,30 @@ export function DocumentsPage() {
         .order('created_at', { ascending: false })
 
       if (docsErr) throw docsErr
-
       setDocuments(docs || [])
 
-      // Fetch case info for all unique case IDs
       const caseIds = [...new Set((docs || []).map(d => d.case_id))]
       if (caseIds.length > 0) {
         const { data: caseData } = await supabase
           .from('cases')
           .select('id, type, status')
           .in('id', caseIds)
-
         const caseMap = {}
         ;(caseData || []).forEach(c => { caseMap[c.id] = c })
         setCases(caseMap)
+      }
+
+      // Fetch existing analyses for all documents
+      if ((docs || []).length > 0) {
+        const docIds = (docs || []).map(d => d.id)
+        const { data: analyses } = await supabase
+          .from('document_analysis')
+          .select('*')
+          .in('document_id', docIds)
+
+        const analysisMap = {}
+        ;(analyses || []).forEach(a => { analysisMap[a.document_id] = a })
+        setDocAnalyses(analysisMap)
       }
     } catch (err) {
       setError(err.message)
@@ -178,6 +194,27 @@ export function DocumentsPage() {
   }, [user])
 
   useEffect(() => { fetchAll() }, [fetchAll])
+
+  // ─── Trigger document analysis ────────────────────────────────
+  const handleAnalyse = async (doc) => {
+    setAnalysing(prev => ({ ...prev, [doc.id]: true }))
+    setExpandedDocId(doc.id)
+
+    const { error: err } = await analyzeDocument({
+      documentId:  doc.id,
+      caseId:      doc.case_id || null,
+      storagePath: doc.storage_path,
+      mimeType:    doc.mime_type,
+    })
+
+    if (!err) {
+      const { data: result } = await pollUntilDone(doc.id)
+      if (result) {
+        setDocAnalyses(prev => ({ ...prev, [doc.id]: result }))
+      }
+    }
+    setAnalysing(prev => ({ ...prev, [doc.id]: false }))
+  }
 
   // ─── Download via signed URL ───────────────────────────────────
   const handleDownload = async (doc) => {
@@ -289,18 +326,46 @@ export function DocumentsPage() {
             <EmptyState hasSearch={!!search} />
           </div>
         ) : (
-          <div className="space-y-2 animate-fade-in">
-            {filtered.map(doc => (
-              <DocumentRow
-                key={doc.id}
-                doc={doc}
-                parentCase={cases[doc.case_id]}
-                t={t}
-                onDownload={() => handleDownload(doc)}
-                onDelete={() => setDeleteTarget(doc)}
-                isDownloading={downloadingId === doc.id}
-              />
-            ))}
+          <div className="space-y-3 animate-fade-in">
+            {filtered.map(doc => {
+              const analysis    = docAnalyses[doc.id] || null
+              const isAnalysing = !!analysing[doc.id]
+              const isExpanded  = expandedDocId === doc.id
+              const hasAnalysis = analysis?.status === 'done'
+
+              return (
+                <div key={doc.id} className="space-y-0">
+                  <DocumentRow
+                    doc={doc}
+                    parentCase={cases[doc.case_id]}
+                    t={t}
+                    onDownload={() => handleDownload(doc)}
+                    onDelete={() => setDeleteTarget(doc)}
+                    isDownloading={downloadingId === doc.id}
+                    hasAnalysis={hasAnalysis}
+                    isAnalysing={isAnalysing}
+                    isExpanded={isExpanded}
+                    onAnalyse={() => handleAnalyse(doc)}
+                    onToggle={() => setExpandedDocId(isExpanded ? null : doc.id)}
+                  />
+                  {/* Inline intelligence panel */}
+                  {isExpanded && (
+                    <div className="ps-4 pe-0 pb-2 animate-fade-in">
+                      <DocumentIntelligencePanel
+                        document={{
+                          id:           doc.id,
+                          file_name:    doc.file_name,
+                          storage_path: doc.storage_path,
+                          mime_type:    doc.mime_type,
+                          case_id:      doc.case_id,
+                        }}
+                        initialAnalysis={analysis}
+                      />
+                    </div>
+                  )}
+                </div>
+              )
+            })}
           </div>
         )}
 
@@ -326,14 +391,17 @@ export function DocumentsPage() {
 }
 
 // ─── Document Row ─────────────────────────────────────────────────
-function DocumentRow({ doc, parentCase, t, onDownload, onDelete, isDownloading }) {
+function DocumentRow({ doc, parentCase, t, onDownload, onDelete, isDownloading, hasAnalysis, isAnalysing, isExpanded, onAnalyse, onToggle }) {
   const caseType = parentCase?.type || 'other'
   const caseMeta = TYPE_META[caseType] || TYPE_META.other
   const CaseIcon = caseMeta.icon
-  const shortCaseId = doc.case_id.slice(0, 8).toUpperCase()
+  const shortCaseId = doc.case_id?.slice(0, 8).toUpperCase() || '—'
 
   return (
-    <div className="group grid grid-cols-[2.5rem_1fr_auto_auto] sm:grid-cols-[2.5rem_1fr_6rem_8rem_7rem_5.5rem] items-center gap-4 px-4 py-3.5 rounded-xl bg-[var(--bg-card)] border border-[var(--border)] hover:border-white/10 hover:bg-[var(--bg-elevated)] transition-all duration-200">
+    <div className={clsx(
+      'group grid grid-cols-[2.5rem_1fr_auto_auto] sm:grid-cols-[2.5rem_1fr_6rem_8rem_7rem_auto] items-center gap-4 px-4 py-3.5 bg-[var(--bg-card)] border border-[var(--border)] hover:border-white/10 hover:bg-[var(--bg-elevated)] transition-all duration-200',
+      isExpanded ? 'rounded-t-xl' : 'rounded-xl',
+    )}>
 
       {/* Icon */}
       <div className="w-10 h-10 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border)] flex items-center justify-center shrink-0">
@@ -380,6 +448,32 @@ function DocumentRow({ doc, parentCase, t, onDownload, onDelete, isDownloading }
 
       {/* Actions */}
       <div className="flex items-center gap-1.5 shrink-0">
+        {/* AI Analyse button */}
+        <button
+          type="button"
+          onClick={hasAnalysis ? onToggle : onAnalyse}
+          disabled={isAnalysing}
+          title={hasAnalysis ? 'View AI Analysis' : 'Analyse with AI'}
+          className={clsx(
+            'flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-medium transition-all',
+            hasAnalysis
+              ? isExpanded
+                ? 'bg-gold-500/20 text-gold-400 border border-gold-500/40'
+                : 'bg-gold-500/10 text-gold-400 border border-gold-500/20 hover:bg-gold-500/20'
+              : 'bg-white/5 text-[var(--text-muted)] border border-[var(--border)] hover:bg-white/10 hover:text-[var(--text-primary)]',
+            'opacity-0 group-hover:opacity-100',
+            (hasAnalysis || isAnalysing) && 'opacity-100',
+          )}
+        >
+          {isAnalysing
+            ? <span className="w-3 h-3 border border-gold-400/30 border-t-gold-400 rounded-full animate-spin" />
+            : <Brain size={11} />
+          }
+          <span className="hidden sm:inline">
+            {isAnalysing ? 'Analysing…' : hasAnalysis ? (isExpanded ? 'Hide' : 'AI') : 'Analyse'}
+          </span>
+        </button>
+
         <button
           type="button"
           onClick={onDownload}
