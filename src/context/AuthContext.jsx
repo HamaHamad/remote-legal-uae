@@ -42,72 +42,72 @@ export function AuthProvider({ children }) {
 
   // ─── Init auth ────────────────────────────────────────────────
   useEffect(() => {
-    // If env vars are missing, unblock immediately — show config error UI
     if (isMisconfigured) {
       setLoading(false)
       return
     }
 
-    let isMounted = true
+    let isMounted  = true
+    let didResolve = false
 
-    // Safety timeout — if nothing resolves in 8s, unblock the UI
-    // so users don't see an infinite spinner
-    const safetyTimer = setTimeout(() => {
-      if (isMounted) {
-        console.warn('[AuthContext] Auth init timed out — unblocking UI')
+    // Helper — called once when we know the auth state
+    const resolve = (authUser) => {
+      if (!isMounted || didResolve) return
+      didResolve = true
+      if (authUser) {
+        setUser(authUser)
+        fetchProfile(authUser.id).finally(() => {
+          if (isMounted) setLoading(false)
+        })
+      } else {
         setLoading(false)
-      }
-    }, 12000)
-
-    const initAuth = async () => {
-      try {
-        const { data: { session }, error: sessionErr } = await supabase.auth.getSession()
-
-        if (sessionErr) {
-          console.error('[AuthContext] getSession error:', sessionErr.message)
-        }
-
-        if (!isMounted) return
-
-        if (session?.user) {
-          setUser(session.user)
-          await fetchProfile(session.user.id)
-        }
-      } catch (err) {
-        // Network error, CORS, bad URL, etc.
-        console.error('[AuthContext] initAuth error:', err.message)
-      } finally {
-        if (isMounted) {
-          clearTimeout(safetyTimer)
-          setLoading(false)
-        }
       }
     }
 
-    // Listen to auth state changes BEFORE calling initAuth
-    // so we don't miss events that fire during init
+    // PRIMARY: onAuthStateChange fires almost immediately on page load
+    // with INITIAL_SESSION event — use this as the main source of truth
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         if (!isMounted) return
 
-        if (event === 'SIGNED_IN' && session?.user) {
+        if (event === 'INITIAL_SESSION') {
+          // This fires within ~100ms — resolves the loading state
+          resolve(session?.user || null)
+        } else if (event === 'SIGNED_IN' && session?.user) {
           setUser(session.user)
-          await fetchProfile(session.user.id)
+          fetchProfile(session.user.id)
         } else if (event === 'SIGNED_OUT') {
           setUser(null)
           setProfile(null)
         } else if (event === 'TOKEN_REFRESHED' && session?.user) {
           setUser(session.user)
         }
-        // NOTE: we intentionally do NOT call setLoading(false) here
-        // because initAuth's finally block handles that authoritatively
       }
     )
 
-    initAuth()
+    // FALLBACK: if INITIAL_SESSION never fires (rare edge case),
+    // try getSession() after 2s — then force-unblock after 6s
+    const fallbackTimer = setTimeout(async () => {
+      if (didResolve || !isMounted) return
+      try {
+        const { data: { session } } = await supabase.auth.getSession()
+        resolve(session?.user || null)
+      } catch {
+        resolve(null)
+      }
+    }, 2000)
+
+    const safetyTimer = setTimeout(() => {
+      if (!didResolve && isMounted) {
+        console.warn('[AuthContext] Safety timeout — unblocking UI')
+        didResolve = true
+        setLoading(false)
+      }
+    }, 6000)
 
     return () => {
       isMounted = false
+      clearTimeout(fallbackTimer)
       clearTimeout(safetyTimer)
       subscription.unsubscribe()
     }

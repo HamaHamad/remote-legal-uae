@@ -83,10 +83,10 @@ export function SignupPage() {
             Account Created!
           </h2>
           <p className="text-sm text-[var(--text-secondary)] mb-2">
-            Please check your email to confirm your address. Redirecting to login…
+            Your account is ready. Redirecting to login…
           </p>
           <div className="mt-5 h-1 rounded-full bg-white/5 overflow-hidden">
-            <div className="h-full bg-gold-500 animate-[width_3s_linear_forwards] rounded-full" style={{ animation: 'countdown 3s linear forwards' }} />
+            <div className="h-full bg-gold-500 rounded-full" style={{ animation: 'countdown 3s linear forwards', width: '100%' }} />
           </div>
         </div>
         <style>{`@keyframes countdown { from { width: 100%; } to { width: 0%; } }`}</style>
