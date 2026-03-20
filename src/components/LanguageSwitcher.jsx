@@ -11,10 +11,11 @@ export function LanguageSwitcher({ compact = false }) {
   const [open, setOpen] = useState(false)
   const ref = useRef(null)
 
-  const currentLang = SUPPORTED_LANGUAGES.find(l => l.code === i18n.language)
+  // Normalize: 'en-GB' → 'en', 'ar-AE' → 'ar', etc.
+  const normalizedLang = i18n.language?.split('-')[0] || 'en'
+  const currentLang = SUPPORTED_LANGUAGES.find(l => l.code === normalizedLang)
     || SUPPORTED_LANGUAGES[0]
 
-  // Close on outside click
   useEffect(() => {
     const handler = (e) => {
       if (ref.current && !ref.current.contains(e.target)) setOpen(false)
@@ -63,15 +64,13 @@ export function LanguageSwitcher({ compact = false }) {
             'absolute z-50 mt-2 w-52 rounded-xl overflow-hidden',
             'bg-[var(--bg-elevated)] border border-[var(--border)]',
             'shadow-panel animate-fade-in',
-            // Position based on dir
-            '[dir=rtl] &:left-0 [dir=ltr] &:right-0',
             'end-0',
           )}
           role="listbox"
         >
           <div className="p-1">
             {SUPPORTED_LANGUAGES.map((lang) => {
-              const isActive = i18n.language === lang.code
+              const isActive = normalizedLang === lang.code
               return (
                 <button
                   key={lang.code}
@@ -98,7 +97,7 @@ export function LanguageSwitcher({ compact = false }) {
                     <span className="ms-auto text-xs text-[var(--text-muted)]">RTL</span>
                   )}
                   {isActive && (
-                    <Check size={14} className={clsx('ms-auto text-gold-400', lang.dir === 'rtl' && 'me-auto ms-0')} />
+                    <Check size={14} className="ms-auto text-gold-400" />
                   )}
                 </button>
               )

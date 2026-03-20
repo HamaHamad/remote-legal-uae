@@ -4,7 +4,7 @@ import { clsx } from 'clsx'
 import {
   LayoutDashboard, FolderOpen, FileText, User,
   Settings, LogOut, Users, BarChart2, Briefcase,
-  ClipboardList, Shield, ChevronRight
+  ClipboardList, Shield, ChevronRight, CheckCircle
 } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
 import { useRole } from '@/hooks/useRole'
@@ -28,6 +28,7 @@ const adminNav = (t) => [
 const partnerNav = (t) => [
   { label: t('nav.partner'),        icon: Briefcase,     to: '/partner' },
   { label: t('nav.assignedCases'),  icon: ClipboardList, to: '/partner/cases' },
+  { label: 'My Tasks',              icon: CheckCircle,   to: '/partner/tasks' },
   { label: t('nav.documents'),      icon: FileText,       to: '/partner/documents' },
   { label: t('nav.reports'),        icon: BarChart2,      to: '/partner/reports' },
 ]

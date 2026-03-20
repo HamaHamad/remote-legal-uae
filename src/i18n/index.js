@@ -35,10 +35,13 @@ i18n
     },
     fallbackLng: 'en',
     supportedLngs: ['en', 'ar', 'hi', 'ur', 'tl'],
+    // Normalize detected language: 'en-GB' → 'en', 'ar-AE' → 'ar'
+    load: 'languageOnly',
     detection: {
       order: ['localStorage', 'navigator', 'htmlTag'],
       caches: ['localStorage'],
       lookupLocalStorage: 'rlco-lang',
+      convertDetectedLanguage: (lng) => lng.split('-')[0],
     },
     interpolation: {
       escapeValue: false,

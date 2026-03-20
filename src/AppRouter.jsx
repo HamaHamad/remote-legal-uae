@@ -13,6 +13,9 @@ import DocumentsPage  from '@/pages/DocumentsPage'
 import CaseDetailPage from '@/pages/CaseDetailPage'
 import PaymentSuccessPage from '@/pages/PaymentSuccessPage'
 import PaymentCancelPage  from '@/pages/PaymentCancelPage'
+import AdminCasesPage from '@/pages/AdminCasesPage'
+import AdminUsersPage from '@/pages/AdminUsersPage'
+import PartnerTasksPage from '@/pages/PartnerTasksPage'
 
 export function AppRouter() {
   return (
@@ -63,9 +66,9 @@ export function AppRouter() {
         }
       >
         <Route index element={<AdminDashboard />} />
-        <Route path="cases"     element={<PlaceholderPage title="All Cases" />} />
-        <Route path="users"     element={<PlaceholderPage title="User Management" />} />
-        <Route path="analytics" element={<PlaceholderPage title="Analytics" />} />
+        <Route path="cases"     element={<AdminCasesPage />} />
+        <Route path="users"     element={<AdminUsersPage />} />
+        <Route path="analytics" element={<PlaceholderPage title="Analytics" phase="6" />} />
       </Route>
 
       {/* ─── Partner routes ───────────────────────────────── */}
@@ -78,9 +81,10 @@ export function AppRouter() {
         }
       >
         <Route index element={<PartnerDashboard />} />
-        <Route path="cases"     element={<PlaceholderPage title="Assigned Cases" />} />
-        <Route path="documents" element={<PlaceholderPage title="Documents" />} />
-        <Route path="reports"   element={<PlaceholderPage title="Reports" />} />
+        <Route path="cases"     element={<PlaceholderPage title="Assigned Cases" phase="6" />} />
+        <Route path="tasks"     element={<PartnerTasksPage />} />
+        <Route path="documents" element={<PlaceholderPage title="Documents" phase="6" />} />
+        <Route path="reports"   element={<PlaceholderPage title="Reports"   phase="6" />} />
       </Route>
 
       {/* ─── Shared protected routes ──────────────────────── */}
@@ -117,22 +121,20 @@ export function AppRouter() {
 }
 
 // ─── Generic placeholder for sub-routes not yet built ───────────
-function PlaceholderPage({ title }) {
+function PlaceholderPage({ title, phase = '6' }) {
   return (
     <div className="max-w-4xl mx-auto">
       <div className="glass-panel rounded-2xl p-12 flex flex-col items-center justify-center text-center">
         <div className="w-14 h-14 rounded-2xl bg-gold-500/8 border border-gold-500/15 flex items-center justify-center mb-5">
           <span className="text-2xl">🚧</span>
         </div>
-        <h2 className="font-display text-2xl font-semibold text-[var(--text-primary)] mb-2">
-          {title}
-        </h2>
+        <h2 className="font-display text-2xl font-semibold text-[var(--text-primary)] mb-2">{title}</h2>
         <p className="text-sm text-[var(--text-secondary)] max-w-xs">
-          This section is being built. It will be available in the next phase.
+          This section is being built and will be available soon.
         </p>
         <div className="mt-4">
           <span className="text-xs px-3 py-1 rounded-full bg-gold-500/10 text-gold-400 border border-gold-500/20">
-            Phase 2 — Coming Soon
+            Phase {phase} — Coming Soon
           </span>
         </div>
       </div>

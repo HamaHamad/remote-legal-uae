@@ -14,11 +14,16 @@ export function AuthProvider({ children }) {
   // ─── Apply language + RTL from user profile ───────────────────
   const applyLanguage = useCallback((lang) => {
     if (!lang) return
-    i18n.changeLanguage(lang)
-    const dir = isRTL(lang) ? 'rtl' : 'ltr'
+    // Normalize: 'en-GB' → 'en'
+    const normalized = lang.split('-')[0]
+    const supported = ['en', 'ar', 'hi', 'ur', 'tl']
+    const final = supported.includes(normalized) ? normalized : 'en'
+
+    i18n.changeLanguage(final)
+    const dir = isRTL(final) ? 'rtl' : 'ltr'
     document.documentElement.setAttribute('dir', dir)
-    document.documentElement.setAttribute('lang', lang)
-    localStorage.setItem('rlco-lang', lang)
+    document.documentElement.setAttribute('lang', final)
+    localStorage.setItem('rlco-lang', final)
   }, [])
 
   // ─── Load user profile from DB ────────────────────────────────
@@ -32,7 +37,26 @@ export function AuthProvider({ children }) {
 
       if (dbErr) throw dbErr
       setProfile(data)
-      if (data?.language) applyLanguage(data.language)
+
+      // Language priority:
+      // 1. localStorage (user's explicit choice in this browser)
+      // 2. DB value (synced across devices)
+      // 3. Fallback to 'en'
+      const storedLang  = localStorage.getItem('rlco-lang')
+      const supported   = ['en', 'ar', 'hi', 'ur', 'tl']
+      const langToUse   = (storedLang && supported.includes(storedLang))
+        ? storedLang
+        : (data?.language || 'en')
+
+      applyLanguage(langToUse)
+
+      // Sync DB if localStorage differs from what DB has stored
+      if (storedLang && supported.includes(storedLang) && storedLang !== data?.language) {
+        supabase.from('users').update({ language: storedLang }).eq('id', userId)
+          .then(() => {})
+          .catch(() => {})
+      }
+
       return data
     } catch (err) {
       console.error('[AuthContext] fetchProfile error:', err.message)
