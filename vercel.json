@@ -1,7 +1,7 @@
 {
   "rewrites": [
     { "source": "/", "destination": "/landing.html" },
-    { "source": "/((?!landing.html).*)", "destination": "/index.html" }
+    { "source": "/(.*)", "destination": "/index.html" }
   ],
   "headers": [
     {
@@ -25,29 +25,3 @@
   "installCommand": "npm install",
   "framework": "vite"
 }
-```
-
----
-
-### What changed and why
-
-| | Old | New |
-|---|---|---|
-| `/` | → React app | → `landing.html` ✅ |
-| `/signup`, `/login`, etc. | → React app | → React app ✅ (unchanged) |
-
-Only **one line added** at the top of rewrites. Everything else is identical to your current file.
-
----
-
-### Two things to do now
-
-**1. Add `LandingPage.html` to your `public/` folder and name it `landing.html`**
-
-Your Vite project's `public/` folder gets copied as-is into `dist/` on build — so Vercel will find it at `/landing.html` automatically.
-```
-your-project/
-├── public/
-│   └── landing.html    ← add this
-├── src/
-├── vercel.json         ← update this
