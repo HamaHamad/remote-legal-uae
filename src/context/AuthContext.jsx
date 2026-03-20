@@ -57,7 +57,7 @@ export function AuthProvider({ children }) {
         console.warn('[AuthContext] Auth init timed out — unblocking UI')
         setLoading(false)
       }
-    }, 8000)
+    }, 12000)
 
     const initAuth = async () => {
       try {
