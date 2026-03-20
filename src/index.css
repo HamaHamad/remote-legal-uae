@@ -1,0 +1,232 @@
+/* ─── Google Fonts — must be first ──────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── CSS Custom Properties ─────────────────────────────────── */
+:root {
+  --bg-primary:    #0a0c14;
+  --bg-secondary:  #0f1120;
+  --bg-card:       #131629;
+  --bg-elevated:   #181c30;
+  --border:        rgba(255, 255, 255, 0.07);
+  --border-gold:   rgba(217, 157, 24, 0.3);
+  --text-primary:  #f0eee8;
+  --text-secondary:#9a9db8;
+  --text-muted:    #5a5e78;
+  --gold-primary:  #d99d18;
+  --gold-light:    #f0ca5a;
+  --gold-dark:     #bc7a10;
+  --status-pending:  #f0ca5a;
+  --status-active:   #4ade80;
+  --status-resolved: #818cf8;
+  --status-error:    #f87171;
+}
+
+/* ─── Base Reset ─────────────────────────────────────────────── */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* ─── RTL Support ─────────────────────────────────────────────── */
+[dir="rtl"] {
+  font-family: 'Noto Naskh Arabic', 'DM Sans', sans-serif;
+}
+
+[dir="rtl"] .sidebar-nav {
+  border-right: none;
+  border-left: 1px solid var(--border);
+}
+
+[dir="rtl"] .slide-in {
+  animation: slideInLeft 0.4s ease-out;
+}
+
+/* ─── Typography ─────────────────────────────────────────────── */
+.font-display {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+}
+
+h1, h2, h3 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+/* ─── Scrollbar ──────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(217, 157, 24, 0.4);
+}
+
+/* ─── Glass / Panel Components ──────────────────────────────── */
+.glass-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+}
+
+.glass-panel-elevated {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(16px);
+}
+
+.gold-border {
+  border: 1px solid var(--border-gold);
+}
+
+/* ─── Gold Gradient Text ─────────────────────────────────────── */
+.text-gold-gradient {
+  background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold-primary) 50%, var(--gold-dark) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Decorative Lines ───────────────────────────────────────── */
+.ornament-line {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-muted);
+}
+.ornament-line::before,
+.ornament-line::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-gold), transparent);
+}
+
+/* ─── Status Badge ───────────────────────────────────────────── */
+.status-pending  { color: var(--status-pending);  background: rgba(240,202,90,0.1);  border-color: rgba(240,202,90,0.2); }
+.status-active   { color: var(--status-active);   background: rgba(74,222,128,0.1);  border-color: rgba(74,222,128,0.2); }
+.status-resolved { color: var(--status-resolved); background: rgba(129,140,248,0.1); border-color: rgba(129,140,248,0.2); }
+
+/* ─── Auth Page Background ───────────────────────────────────── */
+.auth-bg {
+  background-color: var(--bg-primary);
+  background-image:
+    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(217,157,24,0.08) 0%, transparent 60%),
+    linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+  background-size: auto, 48px 48px, 48px 48px;
+}
+
+/* ─── Dashboard Background ───────────────────────────────────── */
+.dashboard-bg {
+  background-color: var(--bg-primary);
+  background-image:
+    radial-gradient(ellipse 60% 40% at 20% 10%, rgba(61,85,251,0.04) 0%, transparent 50%),
+    radial-gradient(ellipse 40% 50% at 80% 80%, rgba(217,157,24,0.03) 0%, transparent 50%);
+}
+
+/* ─── Input Focus Ring ───────────────────────────────────────── */
+.input-ring:focus {
+  outline: none;
+  border-color: var(--gold-primary);
+  box-shadow: 0 0 0 3px rgba(217, 157, 24, 0.15);
+}
+
+/* ─── Sidebar ─────────────────────────────────────────────────── */
+.sidebar {
+  width: 260px;
+  background: var(--bg-secondary);
+  border-right: 1px solid var(--border);
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 40;
+  transition: transform 0.3s ease;
+}
+
+[dir="rtl"] .sidebar {
+  left: auto;
+  right: 0;
+  border-right: none;
+  border-left: 1px solid var(--border);
+}
+
+.sidebar-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.sidebar-nav-item:hover {
+  color: var(--text-primary);
+  background: rgba(255,255,255,0.05);
+}
+
+.sidebar-nav-item.active {
+  color: var(--gold-light);
+  background: rgba(217, 157, 24, 0.08);
+  border: 1px solid rgba(217, 157, 24, 0.15);
+}
+
+/* ─── Animate Utilities ──────────────────────────────────────── */
+.animate-fade-in { animation: fadeIn 0.5s ease-out both; }
+.animate-slide-up { animation: slideUp 0.5s ease-out both; }
+.animate-slide-up-delay-1 { animation: slideUp 0.5s ease-out 0.1s both; }
+.animate-slide-up-delay-2 { animation: slideUp 0.5s ease-out 0.2s both; }
+.animate-slide-up-delay-3 { animation: slideUp 0.5s ease-out 0.3s both; }
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
