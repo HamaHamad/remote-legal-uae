@@ -130,6 +130,48 @@
     "createSubtitle": "Sabihin sa amin ang iyong legal na bagay",
     "viewCase": "Tingnan ang Kaso"
   },
+  "notifications": {
+    "title": "Mga Abiso",
+    "markAllRead": "Markahan lahat bilang nabasa",
+    "noNotifications": "Wala pang mga abiso",
+    "justNow": "ngayon lang",
+    "caseCreated": "Naisumite na ang iyong kaso",
+    "caseAssigned": "Itinalaga na ang isang espesyalista",
+    "aiReady": "Handa na ang iyong AI ulat",
+    "paymentSuccess": "Matagumpay ang bayad — na-unlock ang ulat",
+    "taskCreated": "May bagong gawaing itinalaga sa iyo",
+    "taskDone": "Natapos na ang gawain"
+  },
+  "analytics": {
+    "title": "Analytics",
+    "subtitle": "Pangkalahatang performance ng platform",
+    "totalRevenue": "Kabuuang Kita",
+    "paidUnlocks": "Mga Bayad na Unlock",
+    "casesPerDay": "Mga Kaso — Nakaraang 30 Araw",
+    "byType": "Mga Kaso ayon sa Uri",
+    "riskDistribution": "Pamamahagi ng Panganib",
+    "completionRate": "Rate ng Pagkumpleto",
+    "noData": "Wala pang data"
+  },
+  "disclaimer": {
+    "short": "AI-assisted na organisasyon lamang. Hindi legal na payo.",
+    "full": "Nagbibigay ang platform na ito ng AI-assisted na organisasyon ng kaso lamang. Hindi ito nagbibigay ng legal na payo, representasyon, o garantisadong resulta. Palaging kumonsulta sa isang kwalipikadong abogado sa UAE."
+  },
+  "tasks": {
+    "title": "Aking mga Gawain",
+    "pending": "Nakabinbin",
+    "inProgress": "In Progress",
+    "done": "Tapos Na",
+    "rejected": "Tinanggihan",
+    "updateStatus": "I-update ang Status",
+    "uploadProof": "Mag-upload ng Patunay",
+    "adminNotes": "Mga Tala ng Admin",
+    "dueDate": "Petsa ng Deadline",
+    "noTasks": "Wala pang mga gawain",
+    "allCaughtUp": "Tapos na lahat!",
+    "proofUploaded": "Na-upload ang patunay",
+    "markAs": "Markahan bilang"
+  },
   "language": {
     "select": "Wika",
     "changed": "Na-update ang wika"

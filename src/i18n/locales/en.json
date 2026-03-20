@@ -130,6 +130,48 @@
       "other":      "Other"
     }
   },
+  "notifications": {
+    "title": "Notifications",
+    "markAllRead": "Mark all read",
+    "noNotifications": "No notifications yet",
+    "justNow": "just now",
+    "caseCreated": "Your case has been submitted",
+    "caseAssigned": "A specialist has been assigned",
+    "aiReady": "Your AI report is ready",
+    "paymentSuccess": "Payment successful — report unlocked",
+    "taskCreated": "New task assigned to you",
+    "taskDone": "Task completed"
+  },
+  "analytics": {
+    "title": "Analytics",
+    "subtitle": "Platform-wide performance overview",
+    "totalRevenue": "Total Revenue",
+    "paidUnlocks": "Paid Unlocks",
+    "casesPerDay": "Cases — Last 30 Days",
+    "byType": "Cases by Type",
+    "riskDistribution": "AI Risk Distribution",
+    "completionRate": "Completion Rate",
+    "noData": "No data yet"
+  },
+  "disclaimer": {
+    "short": "AI-assisted organisation only. Not legal advice.",
+    "full": "This platform provides AI-assisted case organisation and coordination. It does NOT provide legal advice, legal representation, or guaranteed outcomes. Always consult a qualified UAE legal professional."
+  },
+  "tasks": {
+    "title": "My Tasks",
+    "pending": "Pending",
+    "inProgress": "In Progress",
+    "done": "Done",
+    "rejected": "Rejected",
+    "updateStatus": "Update Status",
+    "uploadProof": "Upload Proof",
+    "adminNotes": "Admin Notes",
+    "dueDate": "Due Date",
+    "noTasks": "No tasks assigned yet",
+    "allCaughtUp": "All caught up!",
+    "proofUploaded": "Proof uploaded",
+    "markAs": "Mark as"
+  },
   "language": {
     "select": "Language",
     "changed": "Language updated"

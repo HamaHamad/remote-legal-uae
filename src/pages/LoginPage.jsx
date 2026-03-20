@@ -6,6 +6,7 @@ import { useAuth } from '@/context/AuthContext'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
+import { LegalDisclaimer } from '@/components/LegalDisclaimer'
 
 export function LoginPage() {
   const { t } = useTranslation()
@@ -155,6 +156,10 @@ export function LoginPage() {
           <p className="text-center text-xs text-[var(--text-muted)] mt-6">
             🔒 Secured by Supabase · End-to-end encrypted
           </p>
+
+          <div className="mt-4">
+            <LegalDisclaimer variant="inline" />
+          </div>
         </div>
       </div>
     </div>
