@@ -12,6 +12,8 @@ const ForgotPasswordPage  = lazy(() => import('@/pages/ForgotPasswordPage'))
 const ResetPasswordPage   = lazy(() => import('@/pages/ResetPasswordPage'))
 const LandingPage         = lazy(() => import('@/pages/LandingPage'))
 const ProfilePage         = lazy(() => import('@/pages/ProfilePage'))
+const SettingsPage        = lazy(() => import('@/pages/SettingsPage'))
+const PartnerCasesPage    = lazy(() => import('@/pages/PartnerCasesPage'))
 const ClientDashboard     = lazy(() => import('@/pages/ClientDashboard'))
 const AdminDashboard     = lazy(() => import('@/pages/AdminDashboard'))
 const AdminCasesPage     = lazy(() => import('@/pages/AdminCasesPage'))
@@ -83,7 +85,7 @@ export function AppRouter() {
           element={<ProtectedRoute roles={['partner']}><DashboardLayout /></ProtectedRoute>}
         >
           <Route index             element={<PartnerDashboard />} />
-          <Route path="cases"      element={<PlaceholderPage title="Assigned Cases" />} />
+          <Route path="cases"      element={<PartnerCasesPage />} />
           <Route path="tasks"      element={<PartnerTasksPage />} />
           <Route path="documents"  element={<PlaceholderPage title="Documents" />} />
           <Route path="reports"    element={<PlaceholderPage title="Reports" />} />
@@ -101,7 +103,7 @@ export function AppRouter() {
           path="/settings"
           element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}
         >
-          <Route index element={<PlaceholderPage title="Settings" />} />
+          <Route index element={<SettingsPage />} />
         </Route>
 
         {/* ─── Payment return routes ────────────────────── */}
