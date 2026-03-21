@@ -16,6 +16,23 @@ const CORS = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
+// ─── Rate limiter: 10 document analyses per user per 10 minutes ──
+const rateMap = new Map<string, { count: number; resetAt: number }>()
+const RATE_LIMIT  = 10
+const RATE_WINDOW = 10 * 60 * 1000
+
+function checkRateLimit(userId: string): boolean {
+  const now   = Date.now()
+  const entry = rateMap.get(userId)
+  if (!entry || now > entry.resetAt) {
+    rateMap.set(userId, { count: 1, resetAt: now + RATE_WINDOW })
+    return true
+  }
+  if (entry.count >= RATE_LIMIT) return false
+  entry.count++
+  return true
+}
+
 // ─── System prompt ────────────────────────────────────────────────
 const SYSTEM_PROMPT = `You are a document analysis engine for UAE-related legal and financial documents.
 Read the document carefully and extract structured information.
@@ -86,6 +103,14 @@ serve(async (req: Request) => {
       return new Response(
         JSON.stringify({ error: 'Invalid auth token' }),
         { status: 401, headers: { ...CORS, 'Content-Type': 'application/json' } }
+      )
+    }
+
+    // ── Rate limit check ──────────────────────────────────────────
+    if (!checkRateLimit(user.id)) {
+      return new Response(
+        JSON.stringify({ error: 'Rate limit exceeded. Max 10 document analyses per 10 minutes.' }),
+        { status: 429, headers: { ...CORS, 'Content-Type': 'application/json', 'Retry-After': '600' } }
       )
     }
 

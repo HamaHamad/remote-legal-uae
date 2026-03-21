@@ -6,11 +6,30 @@
 import { serve } from 'https://deno.land/std@0.177.0/http/server.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
-// ─── CORS headers (allow your Vercel domain + localhost) ─────────
+// ─── CORS headers ────────────────────────────────────────────────
 const CORS = {
   'Access-Control-Allow-Origin':  '*',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+}
+
+// ─── Simple in-memory rate limiter (per user, resets on cold start)
+// Limits: 5 analyses per user per 10 minutes
+const rateMap = new Map<string, { count: number; resetAt: number }>()
+const RATE_LIMIT   = 5
+const RATE_WINDOW  = 10 * 60 * 1000  // 10 minutes in ms
+
+function checkRateLimit(userId: string): boolean {
+  const now  = Date.now()
+  const entry = rateMap.get(userId)
+
+  if (!entry || now > entry.resetAt) {
+    rateMap.set(userId, { count: 1, resetAt: now + RATE_WINDOW })
+    return true
+  }
+  if (entry.count >= RATE_LIMIT) return false
+  entry.count++
+  return true
 }
 
 // ─── AI analysis response shape ──────────────────────────────────
@@ -55,7 +74,24 @@ serve(async (req: Request) => {
       )
     }
 
-    // ── 2. Create Supabase admin client ───────────────────────────
+    // ── 2. Verify auth + rate limit ───────────────────────────────
+    const authHeader = req.headers.get('Authorization')
+    if (authHeader) {
+      const supabaseUser = createClient(
+        Deno.env.get('SUPABASE_URL')!,
+        Deno.env.get('SUPABASE_ANON_KEY')!,
+        { global: { headers: { Authorization: authHeader } } }
+      )
+      const { data: { user } } = await supabaseUser.auth.getUser()
+      if (user && !checkRateLimit(user.id)) {
+        return new Response(
+          JSON.stringify({ error: 'Rate limit exceeded. Please wait 10 minutes before analyzing another case.' }),
+          { status: 429, headers: { ...CORS, 'Content-Type': 'application/json', 'Retry-After': '600' } }
+        )
+      }
+    }
+
+    // ── 3. Create Supabase admin client ───────────────────────────
     const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL')!,
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,

@@ -7,7 +7,6 @@ import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
 import { LegalDisclaimer } from '@/components/LegalDisclaimer'
-
 export function LoginPage() {
   const { t } = useTranslation()
   const { signIn } = useAuth()
@@ -119,12 +118,12 @@ export function LoginPage() {
               />
 
               <div className="flex justify-end">
-                <button
-                  type="button"
+                <Link
+                  to="/forgot-password"
                   className="text-xs text-[var(--text-muted)] hover:text-gold-400 transition-colors"
                 >
                   {t('auth.forgotPassword')}
-                </button>
+                </Link>
               </div>
 
               <Button

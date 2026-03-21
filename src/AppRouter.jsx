@@ -6,10 +6,13 @@ import { LoadingScreen } from '@/components/LoadingScreen'
 
 // ─── Lazy-loaded pages ─────────────────────────────────────────────
 // Split into separate chunks — only loaded when the user navigates to that route
-const LoginPage          = lazy(() => import('@/pages/LoginPage'))
-const SignupPage         = lazy(() => import('@/pages/SignupPage'))
-const LandingPage        = lazy(() => import('@/pages/LandingPage'))
-const ClientDashboard    = lazy(() => import('@/pages/ClientDashboard'))
+const LoginPage           = lazy(() => import('@/pages/LoginPage'))
+const SignupPage          = lazy(() => import('@/pages/SignupPage'))
+const ForgotPasswordPage  = lazy(() => import('@/pages/ForgotPasswordPage'))
+const ResetPasswordPage   = lazy(() => import('@/pages/ResetPasswordPage'))
+const LandingPage         = lazy(() => import('@/pages/LandingPage'))
+const ProfilePage         = lazy(() => import('@/pages/ProfilePage'))
+const ClientDashboard     = lazy(() => import('@/pages/ClientDashboard'))
 const AdminDashboard     = lazy(() => import('@/pages/AdminDashboard'))
 const AdminCasesPage     = lazy(() => import('@/pages/AdminCasesPage'))
 const AdminUsersPage     = lazy(() => import('@/pages/AdminUsersPage'))
@@ -47,8 +50,10 @@ export function AppRouter() {
         <Route path="/" element={<LandingPage />} />
 
         {/* ─── Auth routes ──────────────────────────────── */}
-        <Route path="/login"  element={<PublicRoute><LoginPage  /></PublicRoute>} />
-        <Route path="/signup" element={<PublicRoute><SignupPage /></PublicRoute>} />
+        <Route path="/login"           element={<PublicRoute><LoginPage          /></PublicRoute>} />
+        <Route path="/signup"          element={<PublicRoute><SignupPage         /></PublicRoute>} />
+        <Route path="/forgot-password" element={<PublicRoute><ForgotPasswordPage /></PublicRoute>} />
+        <Route path="/reset-password"  element={<ResetPasswordPage />} />
 
         {/* ─── Client routes ────────────────────────────── */}
         <Route
@@ -89,7 +94,7 @@ export function AppRouter() {
           path="/profile"
           element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}
         >
-          <Route index element={<PlaceholderPage title="Profile" />} />
+          <Route index element={<ProfilePage />} />
         </Route>
 
         <Route
