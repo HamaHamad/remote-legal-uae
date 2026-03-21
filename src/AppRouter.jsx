@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react'
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 import { ProtectedRoute, PublicRoute } from '@/components/ProtectedRoute'
 import DashboardLayout from '@/components/DashboardLayout'
 import { LoadingScreen } from '@/components/LoadingScreen'
@@ -8,6 +8,7 @@ import { LoadingScreen } from '@/components/LoadingScreen'
 // Split into separate chunks — only loaded when the user navigates to that route
 const LoginPage          = lazy(() => import('@/pages/LoginPage'))
 const SignupPage         = lazy(() => import('@/pages/SignupPage'))
+const LandingPage        = lazy(() => import('@/pages/LandingPage'))
 const ClientDashboard    = lazy(() => import('@/pages/ClientDashboard'))
 const AdminDashboard     = lazy(() => import('@/pages/AdminDashboard'))
 const AdminCasesPage     = lazy(() => import('@/pages/AdminCasesPage'))
@@ -42,8 +43,8 @@ export function AppRouter() {
   return (
     <Suspense fallback={<PageLoader />}>
       <Routes>
-        {/* ─── Root redirect ──────────────────────────────── */}
-        <Route path="/" element={<Navigate to="/login" replace />} />
+        {/* ─── Landing page (public marketing) ────────────── */}
+        <Route path="/" element={<LandingPage />} />
 
         {/* ─── Auth routes ──────────────────────────────── */}
         <Route path="/login"  element={<PublicRoute><LoginPage  /></PublicRoute>} />
