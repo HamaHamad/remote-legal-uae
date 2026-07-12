@@ -6,12 +6,6 @@ import { useAuth } from '@/context/AuthContext'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
-import { clsx } from 'clsx'
-
-const ROLES = [
-  { value: 'client',  labelKey: 'auth.roleClient',  icon: '👤', desc: 'Submit and track legal cases' },
-  { value: 'partner', labelKey: 'auth.rolePartner',  icon: '⚖️', desc: 'Manage and resolve assigned cases' },
-]
 
 export function SignupPage() {
   const { t } = useTranslation()
@@ -23,7 +17,6 @@ export function SignupPage() {
     email: '',
     password: '',
     confirmPassword: '',
-    role: 'client',
   })
   const [errors, setErrors]       = useState({})
   const [serverError, setServerError] = useState('')
@@ -59,7 +52,8 @@ export function SignupPage() {
       email:    form.email,
       password: form.password,
       fullName: form.fullName,
-      role:     form.role,
+      // NOTE: role is intentionally omitted — server hardcodes 'client'.
+      // Admins/partners are promoted post-signup via set_user_role() RPC.
     })
     setLoading(false)
 
@@ -180,31 +174,12 @@ export function SignupPage() {
                 autoComplete="new-password"
               />
 
-              {/* Role selection */}
-              <div>
-                <label className="text-sm font-medium text-[var(--text-secondary)] tracking-wide block mb-2">
-                  {t('auth.selectRole')} <span className="text-gold-400">*</span>
-                </label>
-                <div className="grid grid-cols-2 gap-2">
-                  {ROLES.map((r) => (
-                    <button
-                      key={r.value}
-                      type="button"
-                      onClick={() => setForm(f => ({ ...f, role: r.value }))}
-                      className={clsx(
-                        'flex flex-col items-center gap-1.5 p-3 rounded-xl border text-sm font-medium transition-all duration-200 text-center',
-                        form.role === r.value
-                          ? 'bg-gold-500/10 border-gold-500/40 text-gold-400'
-                          : 'bg-[var(--bg-elevated)] border-[var(--border)] text-[var(--text-secondary)] hover:border-white/15 hover:text-[var(--text-primary)]',
-                      )}
-                    >
-                      <span className="text-xl leading-none">{r.icon}</span>
-                      <span>{t(r.labelKey)}</span>
-                    </button>
-                  ))}
-                </div>
-                <p className="text-[11px] text-[var(--text-muted)] mt-1.5 px-1">
-                  {t('auth.roleDescription')}
+              {/* Role note — clients can sign up directly; partners/admins are invited */}
+              <div className="rounded-xl bg-[var(--bg-elevated)] border border-[var(--border)] p-3.5">
+                <p className="text-[12px] text-[var(--text-secondary)] leading-relaxed">
+                  <span className="text-[var(--text-primary)] font-medium">👤 {t('auth.roleClient')}</span>
+                  <br />
+                  {t('auth.roleDescription') || 'Submit and track legal cases. Specialist and admin accounts are created by invitation only.'}
                 </p>
               </div>
 

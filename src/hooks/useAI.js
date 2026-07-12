@@ -86,22 +86,23 @@ export function useAI() {
     return data || []
   }, [])
 
-  // ─── Unlock AI report (placeholder — will hook into payments) ─
-  const unlockReport = useCallback(async (caseId) => {
-    // TODO: validate payment before unlocking
-    const { error } = await supabase
-      .from('cases')
-      .update({ ai_unlocked: true })
-      .eq('id', caseId)
-
-    return { error: error?.message || null }
-  }, [])
+  // ─── Unlock AI report ──────────────────────────────────────────
+  // SECURITY: There is intentionally NO client-side unlockReport()
+  // function. The `cases.ai_unlocked` column is now protected by the
+  // cases_update_client_safe RLS policy (see migration_phase0_security.sql)
+  // — clients cannot UPDATE it directly.
+  //
+  // The ONLY way to unlock an AI report is:
+  //   1. Client calls create-checkout edge function → Stripe Checkout
+  //   2. Stripe sends checkout.session.completed → stripe-webhook edge fn
+  //   3. stripe-webhook (using service role) sets ai_unlocked = true
+  //
+  // To start a payment, use usePayments().startCheckout(caseId).
 
   return {
     analyzeCase,
     fetchAIReport,
     fetchSteps,
-    unlockReport,
     analyzing,
     aiError,
     aiProgress,

@@ -138,25 +138,31 @@ export function AuthProvider({ children }) {
   }, [fetchProfile])
 
   // ─── Sign Up ──────────────────────────────────────────────────
-  const signUp = useCallback(async ({ email, password, fullName, role = 'client' }) => {
+  // SECURITY: `role` is intentionally NOT accepted as a parameter.
+  // The handle_new_user() DB trigger hardcodes role='client' for every
+  // new signup. Admin/partner roles are granted ONLY by an existing
+  // admin via the set_user_role() RPC. This prevents self-service
+  // privilege escalation. See supabase/migration_phase0_security.sql.
+  const signUp = useCallback(async ({ email, password, fullName }) => {
     setError(null)
     try {
       const currentLang = i18n.language || 'en'
       const { data, error: authErr } = await supabase.auth.signUp({
         email,
         password,
-        options: { data: { full_name: fullName, role } },
+        options: {
+          data: {
+            full_name: fullName,
+            language: currentLang,   // ← read by trigger to set user.language
+            // NOTE: no `role` here — trigger ignores it anyway
+          },
+        },
       })
       if (authErr) throw authErr
-      if (data.user) {
-        const { error: profileErr } = await supabase.from('users').upsert({
-          id: data.user.id,
-          email,
-          role,
-          language: currentLang,
-        })
-        if (profileErr) console.warn('[signUp] Profile upsert warn:', profileErr.message)
-      }
+      // Profile row is created by the handle_new_user() trigger.
+      // No client-side upsert needed (and attempting one would fail
+      // because the row already exists with role='client' and the new
+      // users_update_own_safe policy forbids role changes).
       return { data, error: null }
     } catch (err) {
       setError(err.message)

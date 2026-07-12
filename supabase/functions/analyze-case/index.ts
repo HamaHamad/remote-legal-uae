@@ -1,28 +1,37 @@
 // supabase/functions/analyze-case/index.ts
 // Supabase Edge Function — Deno runtime
 // Deploy: supabase functions deploy analyze-case
-// Secrets: supabase secrets set OPENAI_API_KEY=sk-...
+// Secrets: OPENAI_API_KEY + standard SUPABASE_URL/ANON_KEY/SERVICE_ROLE_KEY/ALLOWED_ORIGINS
+//
+// Phase 0 security fixes applied:
+//   - CORS: origin allowlist (no more `*`)
+//   - Auth: requires valid user JWT (no anonymous calls)
+//   - Ownership: verifies caller owns the case (or is admin/assigned partner)
+//   - Error leakage: internal error details are logged server-side only;
+//     the client sees a generic message.
 
 import { serve } from 'https://deno.land/std@0.177.0/http/server.ts'
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import {
+  corsHeaders,
+  handlePreflight,
+  json,
+} from '../_shared/cors.ts'
+import {
+  AuthError,
+  createAdminClient,
+  getUserFromRequest,
+  verifyCaseAccess,
+} from '../_shared/auth.ts'
 
-// ─── CORS headers ────────────────────────────────────────────────
-const CORS = {
-  'Access-Control-Allow-Origin':  '*',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-}
-
-// ─── Simple in-memory rate limiter (per user, resets on cold start)
+// ─── In-memory rate limiter (per user, resets on cold start) ─────
 // Limits: 5 analyses per user per 10 minutes
 const rateMap = new Map<string, { count: number; resetAt: number }>()
-const RATE_LIMIT   = 5
-const RATE_WINDOW  = 10 * 60 * 1000  // 10 minutes in ms
+const RATE_LIMIT = 5
+const RATE_WINDOW = 10 * 60 * 1000 // 10 min in ms
 
 function checkRateLimit(userId: string): boolean {
-  const now  = Date.now()
+  const now = Date.now()
   const entry = rateMap.get(userId)
-
   if (!entry || now > entry.resetAt) {
     rateMap.set(userId, { count: 1, resetAt: now + RATE_WINDOW })
     return true
@@ -34,14 +43,13 @@ function checkRateLimit(userId: string): boolean {
 
 // ─── AI analysis response shape ──────────────────────────────────
 interface AIAnalysis {
-  summary:        string
-  risk_level:     'low' | 'medium' | 'high'
+  summary: string
+  risk_level: 'low' | 'medium' | 'high'
   estimated_cost: string
   estimated_time: string
-  steps:          string[]
+  steps: string[]
 }
 
-// ─── System prompt ────────────────────────────────────────────────
 const SYSTEM_PROMPT = `You are a legal case organizer for UAE-related issues.
 Analyze the user's situation and return structured JSON with exactly these fields:
 - summary: a clear 2-3 sentence overview of the case
@@ -58,102 +66,126 @@ Rules:
 
 // ─── Main handler ─────────────────────────────────────────────────
 serve(async (req: Request) => {
-  // Handle CORS preflight
-  if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: CORS })
+  const cors = corsHeaders(req)
+  const preflight = handlePreflight(req)
+  if (preflight) return preflight
+
+  if (req.method !== 'POST') {
+    return json({ error: 'Method not allowed' }, 405, cors, { Allow: 'POST, OPTIONS' })
   }
 
+  let caseIdForRecovery: string | null = null
+
   try {
-    // ── 1. Parse request body ──────────────────────────────────────
-    const { case_id, case_type, description } = await req.json()
+    // ── 1. Parse body ─────────────────────────────────────────────
+    const body = await req.json().catch(() => null)
+    if (!body || typeof body !== 'object') {
+      return json({ error: 'Invalid JSON body' }, 400, cors)
+    }
+    const { case_id, case_type, description } = body as {
+      case_id?: string
+      case_type?: string
+      description?: string
+    }
 
     if (!case_id || !case_type) {
-      return new Response(
-        JSON.stringify({ error: 'Missing required fields: case_id, case_type' }),
-        { status: 400, headers: { ...CORS, 'Content-Type': 'application/json' } }
+      return json(
+        { error: 'Missing required fields: case_id, case_type' },
+        400,
+        cors,
+      )
+    }
+    caseIdForRecovery = case_id
+
+    // ── 2. Verify auth + ownership ────────────────────────────────
+    // This throws AuthError if no/invalid JWT, or if the user does
+    // not own the case.
+    const { user, client: userClient } = await getUserFromRequest(req)
+    await verifyCaseAccess(userClient, case_id, user.id)
+
+    // ── 3. Rate limit ─────────────────────────────────────────────
+    if (!checkRateLimit(user.id)) {
+      return json(
+        {
+          error:
+            'Rate limit exceeded. Please wait 10 minutes before analyzing another case.',
+        },
+        429,
+        cors,
+        { 'Retry-After': '600' },
       )
     }
 
-    // ── 2. Verify auth + rate limit ───────────────────────────────
-    const authHeader = req.headers.get('Authorization')
-    if (authHeader) {
-      const supabaseUser = createClient(
-        Deno.env.get('SUPABASE_URL')!,
-        Deno.env.get('SUPABASE_ANON_KEY')!,
-        { global: { headers: { Authorization: authHeader } } }
-      )
-      const { data: { user } } = await supabaseUser.auth.getUser()
-      if (user && !checkRateLimit(user.id)) {
-        return new Response(
-          JSON.stringify({ error: 'Rate limit exceeded. Please wait 10 minutes before analyzing another case.' }),
-          { status: 429, headers: { ...CORS, 'Content-Type': 'application/json', 'Retry-After': '600' } }
-        )
-      }
-    }
+    // ── 4. Admin client for privileged writes ─────────────────────
+    const admin = createAdminClient()
 
-    // ── 3. Create Supabase admin client ───────────────────────────
-    const supabaseAdmin = createClient(
-      Deno.env.get('SUPABASE_URL')!,
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,
-      { auth: { persistSession: false } }
-    )
-
-    // ── 3. Mark case as processing ────────────────────────────────
-    await supabaseAdmin
+    // ── 5. Mark case as processing ────────────────────────────────
+    await admin
       .from('cases')
       .update({ ai_status: 'processing' })
       .eq('id', case_id)
 
-    // ── 4. Build user prompt ──────────────────────────────────────
+    // ── 6. Build prompt + call OpenAI ─────────────────────────────
     const userPrompt = `Case Type: ${case_type}
 Description: ${description || 'No description provided.'}
 
 Return JSON only.`
 
-    // ── 5. Call OpenAI ────────────────────────────────────────────
     const openAIKey = Deno.env.get('OPENAI_API_KEY')
-    if (!openAIKey) throw new Error('OPENAI_API_KEY not set in edge function secrets')
+    if (!openAIKey) {
+      console.error('[analyze-case] OPENAI_API_KEY missing')
+      throw new Error('AI service not configured')
+    }
 
     const openAIRes = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${openAIKey}`,
-        'Content-Type':  'application/json',
+        Authorization: `Bearer ${openAIKey}`,
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model:       'gpt-4o-mini',
-        max_tokens:  1024,
+        model: 'gpt-4o-mini',
+        max_tokens: 1024,
         temperature: 0.3,
         response_format: { type: 'json_object' },
         messages: [
           { role: 'system', content: SYSTEM_PROMPT },
-          { role: 'user',   content: userPrompt },
+          { role: 'user', content: userPrompt },
         ],
       }),
     })
 
     if (!openAIRes.ok) {
       const errBody = await openAIRes.text()
-      throw new Error(`OpenAI error ${openAIRes.status}: ${errBody}`)
+      // Log full detail server-side; return generic message to client
+      console.error(`[analyze-case] OpenAI error ${openAIRes.status}: ${errBody}`)
+      throw new Error('AI provider returned an error')
     }
 
     const openAIData = await openAIRes.json()
-    const rawContent  = openAIData.choices?.[0]?.message?.content
+    const rawContent = openAIData.choices?.[0]?.message?.content
+    if (!rawContent) throw new Error('Empty response from AI provider')
 
-    if (!rawContent) throw new Error('Empty response from OpenAI')
-
-    // ── 6. Parse AI JSON ──────────────────────────────────────────
+    // ── 7. Parse + validate AI JSON ───────────────────────────────
     let analysis: AIAnalysis
     try {
       analysis = JSON.parse(rawContent)
     } catch {
-      throw new Error(`Failed to parse OpenAI JSON: ${rawContent}`)
+      console.error('[analyze-case] Failed to parse AI JSON:', rawContent.slice(0, 500))
+      throw new Error('AI provider returned malformed JSON')
     }
 
-    // Validate required fields
-    const required = ['summary', 'risk_level', 'estimated_cost', 'estimated_time', 'steps']
+    const required: (keyof AIAnalysis)[] = [
+      'summary',
+      'risk_level',
+      'estimated_cost',
+      'estimated_time',
+      'steps',
+    ]
     for (const field of required) {
-      if (!(field in analysis)) throw new Error(`Missing field in AI response: ${field}`)
+      if (!(field in analysis)) {
+        throw new Error(`AI response missing field: ${field}`)
+      }
     }
     if (!['low', 'medium', 'high'].includes(analysis.risk_level)) {
       analysis.risk_level = 'medium'
@@ -162,61 +194,71 @@ Return JSON only.`
       throw new Error('AI response missing steps array')
     }
 
-    // ── 7. Update cases table ─────────────────────────────────────
-    const { error: caseUpdateErr } = await supabaseAdmin
+    // ── 8. Persist results (service role bypasses RLS) ────────────
+    // NOTE: ai_unlocked is left UNCHANGED. It can only be set to true
+    // by the stripe-webhook edge function after a successful payment.
+    const { error: caseUpdateErr } = await admin
       .from('cases')
       .update({
-        ai_summary:        analysis.summary,
-        ai_risk_level:     analysis.risk_level,
+        ai_summary: analysis.summary,
+        ai_risk_level: analysis.risk_level,
         ai_estimated_cost: analysis.estimated_cost,
         ai_estimated_time: analysis.estimated_time,
-        ai_status:         'done',
-        ai_unlocked:       false,   // locked by default — paywall
+        ai_status: 'done',
       })
       .eq('id', case_id)
 
-    if (caseUpdateErr) throw new Error(`Case update failed: ${caseUpdateErr.message}`)
+    if (caseUpdateErr) {
+      console.error('[analyze-case] Case update failed:', caseUpdateErr.message)
+      throw new Error('Failed to persist AI results')
+    }
 
-    // ── 8. Delete old steps then insert fresh ones ─────────────────
-    await supabaseAdmin
-      .from('case_steps')
-      .delete()
-      .eq('case_id', case_id)
+    // ── 9. Replace case_steps ─────────────────────────────────────
+    await admin.from('case_steps').delete().eq('case_id', case_id)
 
     const stepRows = analysis.steps.map((text: string, idx: number) => ({
-      case_id:     case_id,
-      step_text:   text,
+      case_id,
+      step_text: text,
       order_index: idx + 1,
-      status:      idx === 0 ? 'current' : 'pending',
+      status: idx === 0 ? 'current' : 'pending',
     }))
 
-    const { error: stepsErr } = await supabaseAdmin
-      .from('case_steps')
-      .insert(stepRows)
+    const { error: stepsErr } = await admin.from('case_steps').insert(stepRows)
+    if (stepsErr) {
+      console.error('[analyze-case] Steps insert failed:', stepsErr.message)
+      throw new Error('Failed to persist action steps')
+    }
 
-    if (stepsErr) throw new Error(`Steps insert failed: ${stepsErr.message}`)
-
-    // ── 9. Return success ─────────────────────────────────────────
-    return new Response(
-      JSON.stringify({ success: true, analysis }),
-      { status: 200, headers: { ...CORS, 'Content-Type': 'application/json' } }
-    )
-
+    // ── 10. Return success ────────────────────────────────────────
+    return json({ success: true, analysis }, 200, cors)
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : String(err)
     console.error('[analyze-case] Error:', message)
 
-    // Mark case as failed if we have a case_id
-    try {
-      const body = await (async () => {
-        try { return await (err as { body?: string }).body } catch { return null }
-      })()
-      void body
-    } catch { /* ignore */ }
+    // Mark case as failed (best-effort recovery)
+    if (caseIdForRecovery) {
+      try {
+        const admin = createAdminClient()
+        await admin
+          .from('cases')
+          .update({ ai_status: 'failed' })
+          .eq('id', caseIdForRecovery)
+      } catch {
+        /* ignore */
+      }
+    }
 
-    return new Response(
-      JSON.stringify({ error: message }),
-      { status: 500, headers: { ...CORS, 'Content-Type': 'application/json' } }
-    )
+    // Map known auth errors to their HTTP status; everything else is 500
+    if (err instanceof AuthError) {
+      return json({ error: err.message }, err.status, cors)
+    }
+    // Never leak internal error details to the client
+    const safeMessage =
+      message.includes('not configured') ||
+      message.includes('malformed') ||
+      message.includes('missing field')
+        ? message
+        : 'AI analysis failed. Please try again later.'
+    return json({ error: safeMessage }, 500, cors)
   }
 })

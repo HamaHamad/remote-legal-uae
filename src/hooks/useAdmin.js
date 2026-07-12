@@ -113,11 +113,16 @@ export function useAdmin() {
   }, [])
 
   // ─── Update user role ──────────────────────────────────────────
+  // SECURITY: Uses the set_user_role() RPC (added in migration_phase0_security.sql)
+  // instead of a direct UPDATE on the users table. The new
+  // users_update_own_safe RLS policy blocks direct role writes —
+  // only an admin calling this RPC (with their JWT) can change roles,
+  // and the function prevents demoting the last active admin.
   const updateUserRole = useCallback(async (userId, role) => {
-    const { error: err } = await supabase
-      .from('users')
-      .update({ role })
-      .eq('id', userId)
+    const { error: err } = await supabase.rpc('set_user_role', {
+      p_user_id: userId,
+      p_role:    role,
+    })
 
     if (!err) {
       setUsers(prev => prev.map(u => u.id === userId ? { ...u, role } : u))
@@ -135,9 +140,16 @@ export function useAdmin() {
 
     if (!err && data) {
       setPartners(prev => [...prev, data])
-      // Also update user role to partner
-      await supabase.from('users').update({ role: 'partner' }).eq('id', userId)
-      setUsers(prev => prev.map(u => u.id === userId ? { ...u, role: 'partner' } : u))
+      // Promote user to partner role via the admin-only RPC
+      const { error: roleErr } = await supabase.rpc('set_user_role', {
+        p_user_id: userId,
+        p_role:    'partner',
+      })
+      if (roleErr) {
+        console.warn('[useAdmin.createPartner] role promotion failed:', roleErr.message)
+      } else {
+        setUsers(prev => prev.map(u => u.id === userId ? { ...u, role: 'partner' } : u))
+      }
     }
     return { data, error: err?.message || null }
   }, [])

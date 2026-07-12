@@ -1,0 +1,132 @@
+# supabase/config.toml
+# Supabase CLI project configuration.
+#
+# This file is REQUIRED for reproducible edge function deployments
+# (`supabase functions deploy`). Without it, edge functions can only
+# be deployed by pasting code into the dashboard (no audit trail,
+# drift-prone, no version control).
+#
+# Phase 0 fix: the `stripe-webhook` function MUST have verify_jwt =
+# false, because Stripe sends webhook events without a Supabase JWT.
+# With the default (verify_jwt = true), Supabase would reject every
+# webhook call and payments would silently stop unlocking cases.
+# Stripe webhook signature verification is the authentication
+# mechanism instead.
+#
+# Setup:
+#   1. Install the Supabase CLI: https://supabase.com/docs/guides/cli
+#   2. `supabase login`
+#   3. `supabase link --project-ref <your-project-ref>`
+#   4. `supabase functions deploy <function-name>`
+#
+# Secrets (set once per environment):
+#   supabase secrets set \
+#     SUPABASE_URL=... \
+#     SUPABASE_ANON_KEY=... \
+#     SUPABASE_SERVICE_ROLE_KEY=... \
+#     OPENAI_API_KEY=... \
+#     STRIPE_SECRET_KEY=... \
+#     STRIPE_WEBHOOK_SECRET=... \
+#     RESEND_API_KEY=... \
+#     FROM_EMAIL=... \
+#     ALLOWED_ORIGINS=https://yourdomain.com,https://staging.yourdomain.com
+
+project_id = "remote-legal-uae"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[db]
+port = 54322
+shadow_project_id = ""
+major_version = 15
+
+[db.pooler]
+enabled = true
+port = 54329
+pool_mode = "transaction"
+default_pool_size = 20
+max_client_conn = 100
+
+[auth]
+enabled = true
+site_url = "http://localhost:5173"
+additional_redirect_urls = [
+  "http://localhost:5173/**",
+  "https://remote-legal-uae.vercel.app/**",
+]
+jwt_expiry = 3600
+refresh_token_rotation_enabled = true
+refresh_token_reuse_interval = 10
+enable_signup = true
+enable_anonymous_sign_ins = false
+email_confirm = true
+
+[auth.email]
+enable_signup = true
+double_confirm_changes = true
+enable_confirmations = true
+secure_password_change = true
+max_frequency = "1s"
+
+[auth.sessions]
+timebox = "7d"
+inactivity_timeout = "30d"
+
+[storage]
+enabled = true
+file_size_limit = "50MiB"
+
+[edge_runtime]
+enabled = true
+policy = "per_worker"
+inspector_port = 8083
+
+# ─── Edge Functions ────────────────────────────────────────────────
+# Each function has its own [functions.NAME] block.
+# verify_jwt defaults to true — only override to false where the
+# caller cannot send a Supabase JWT (e.g. Stripe webhooks).
+
+[functions.analyze-case]
+verify_jwt = true
+
+[functions.analyze-document]
+verify_jwt = true
+
+[functions.create-checkout]
+verify_jwt = true
+
+[functions.send-emails]
+# Internal-only: invoked by Supabase cron with the service-role key.
+# JWT verification is disabled because cron uses the service-role key,
+# not a user JWT. The function itself enforces service-role-only
+# access via requireServiceRole(req) in _shared/auth.ts.
+verify_jwt = false
+
+[functions.stripe-webhook]
+# CRITICAL: must be false. Stripe cannot send a Supabase JWT.
+# Authentication is via Stripe webhook signature verification
+# (STRIPE_WEBHOOK_SECRET) inside the function.
+verify_jwt = false
+
+# ─── Cron schedules (run via SQL after first deploy) ───────────────
+# These are documented here for reference; the actual schedule is
+# created via `SELECT cron.schedule(...)` in SQL Editor.
+#
+# send-emails      → every 5 minutes
+# SELECT cron.schedule(
+#   'send-emails',
+#   '*/5 * * * *',
+#   $$SELECT net.http_post(
+#     url := current_setting('app.supabase_url') || '/functions/v1/send-emails',
+#     headers := jsonb_build_object(
+#       'Authorization', 'Bearer ' || current_setting('app.service_role_key'),
+#       'Content-Type', 'application/json'
+#     ),
+#     body := '{}'
+#   )$$
+# );
