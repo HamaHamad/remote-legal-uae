@@ -41,3 +41,8 @@ Thumbs.db
 
 # TypeScript
 *.tsbuildinfo
+
+# Supabase CLI artifacts
+supabase/.temp/
+supabase/.branches
+supabase/.env

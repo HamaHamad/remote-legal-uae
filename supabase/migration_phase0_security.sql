@@ -97,14 +97,14 @@ GRANT  EXECUTE ON FUNCTION public.set_user_role(uuid, user_role) TO authenticate
 
 -- ─── CRITICAL 2: Replace users_update_own policy with a column-restricted one
 -- The old policy let a client UPDATE any column on their own row,
--- including `role`. PostgreSQL row-level security does NOT do
--- column-level checks by itself — so we split writes:
---   * clients can update: full_name, language, avatar_url, phone,
---     notification_prefs, last_seen_at
---   * role, is_active, email are writable ONLY by admin (via the
---     users_admin_all policy + the set_user_role RPC)
--- We enforce this with a CHECK constraint that compares OLD vs NEW
--- for protected columns.
+-- including `role`.
+--
+-- NOTE on PostgreSQL RLS limitation: the WITH CHECK clause of an RLS
+-- policy can ONLY reference the NEW row, not OLD. To enforce that
+-- clients cannot change protected columns (role, email, is_active,
+-- created_at), we use a BEFORE UPDATE TRIGGER that raises an
+-- exception if a non-admin attempts to change them. The RLS policy
+-- itself just gates which rows the user can touch.
 -- ============================================================
 DROP POLICY IF EXISTS "users_update_own"        ON public.users;
 DROP POLICY IF EXISTS "users_update_own_safe"   ON public.users;
@@ -113,18 +113,45 @@ CREATE POLICY "users_update_own_safe"
   ON public.users FOR UPDATE
   TO authenticated
   USING      (id = auth.uid() OR public.is_admin())
-  WITH CHECK (
-    id = auth.uid()
-    -- Clients cannot touch protected columns
-    AND OLD.role         = NEW.role
-    AND OLD.email        = NEW.email
-    AND OLD.is_active    = NEW.is_active
-    AND COALESCE(OLD.created_at, NEW.created_at) = NEW.created_at
-    OR public.is_admin()
-  );
+  WITH CHECK (id = auth.uid() OR public.is_admin());
 
 COMMENT ON POLICY "users_update_own_safe" ON public.users IS
-  'Clients may update only profile columns (name, language, avatar, phone, prefs). role/email/is_active/created_at are immutable for non-admins.';
+  'Clients may update their own row. Column-level protection (role/email/is_active/created_at) is enforced by the users_protect_columns trigger.';
+
+-- Trigger: block non-admins from changing protected columns
+CREATE OR REPLACE FUNCTION public.protect_user_columns()
+RETURNS trigger
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+BEGIN
+  IF NOT public.is_admin() THEN
+    IF NEW.role      IS DISTINCT FROM OLD.role      THEN
+      RAISE EXCEPTION 'Permission denied: clients cannot change role'
+        USING ERRCODE = '42501';
+    END IF;
+    IF NEW.email     IS DISTINCT FROM OLD.email     THEN
+      RAISE EXCEPTION 'Permission denied: clients cannot change email'
+        USING ERRCODE = '42501';
+    END IF;
+    IF NEW.is_active IS DISTINCT FROM OLD.is_active THEN
+      RAISE EXCEPTION 'Permission denied: clients cannot change is_active'
+        USING ERRCODE = '42501';
+    END IF;
+    IF NEW.created_at IS DISTINCT FROM OLD.created_at THEN
+      RAISE EXCEPTION 'Permission denied: clients cannot change created_at'
+        USING ERRCODE = '42501';
+    END IF;
+  END IF;
+  RETURN NEW;
+END;
+$$;
+
+DROP TRIGGER IF EXISTS users_protect_columns ON public.users;
+CREATE TRIGGER users_protect_columns
+  BEFORE UPDATE ON public.users
+  FOR EACH ROW EXECUTE FUNCTION public.protect_user_columns();
 
 
 -- ─── CRITICAL 3: Paywall bypass — protect ai_unlocked on cases
@@ -132,13 +159,9 @@ COMMENT ON POLICY "users_update_own_safe" ON public.users IS
 -- every other ai_* column) on their own pending cases. The
 -- useAI.unlockReport() hook used this directly to bypass payment.
 --
--- Fix: split the cases update policy so clients can update only a
--- narrow set of fields (title, description, type, priority) while
--- the ai_* fields are service-role-only (set by the analyze-case and
--- stripe-webhook edge functions, which use the service role key and
--- bypass RLS).
---
--- We enforce this with OLD vs NEW comparison in WITH CHECK.
+-- Same RLS limitation as CRITICAL 2: WITH CHECK can't reference OLD.
+-- We use a BEFORE UPDATE TRIGGER to block non-admins from touching
+-- any ai_* column. The RLS policy just gates which rows can be updated.
 -- ============================================================
 DROP POLICY IF EXISTS "cases_update_client"       ON public.cases;
 DROP POLICY IF EXISTS "cases_update_client_safe"  ON public.cases;
@@ -152,34 +175,56 @@ CREATE POLICY "cases_update_client_safe"
     OR (public.is_partner() AND assigned_to = auth.uid())
   )
   WITH CHECK (
-    -- Either admin (any change allowed)
-    public.is_admin()
-    -- Or partner assigned (status, internal_notes only)
-    OR (public.is_partner() AND assigned_to = auth.uid()
-        AND OLD.user_id             = NEW.user_id
-        AND OLD.assigned_to         = NEW.assigned_to
-        AND OLD.ai_status           = NEW.ai_status
-        AND OLD.ai_summary          IS NOT DISTINCT FROM NEW.ai_summary
-        AND OLD.ai_risk_level       IS NOT DISTINCT FROM NEW.ai_risk_level
-        AND OLD.ai_estimated_cost   IS NOT DISTINCT FROM NEW.ai_estimated_cost
-        AND OLD.ai_estimated_time   IS NOT DISTINCT FROM NEW.ai_estimated_time
-        AND OLD.ai_unlocked         = NEW.ai_unlocked)
-    -- Or client on pending case — narrow field set only
-    OR (user_id = auth.uid() AND status = 'pending'
-        AND OLD.user_id             = NEW.user_id
-        AND OLD.assigned_to         IS NOT DISTINCT FROM NEW.assigned_to
-        AND OLD.status              = NEW.status
-        AND OLD.ai_status           = NEW.ai_status
-        AND OLD.ai_summary          IS NOT DISTINCT FROM NEW.ai_summary
-        AND OLD.ai_risk_level       IS NOT DISTINCT FROM NEW.ai_risk_level
-        AND OLD.ai_estimated_cost   IS NOT DISTINCT FROM NEW.ai_estimated_cost
-        AND OLD.ai_estimated_time   IS NOT DISTINCT FROM NEW.ai_estimated_time
-        AND OLD.ai_unlocked         = NEW.ai_unlocked
-        AND OLD.resolved_at         IS NOT DISTINCT FROM NEW.resolved_at)
+    user_id = auth.uid()
+    OR public.is_admin()
+    OR (public.is_partner() AND assigned_to = auth.uid())
   );
 
 COMMENT ON POLICY "cases_update_client_safe" ON public.cases IS
-  'Clients may edit only title/description/type/priority on their own PENDING cases. All ai_* and status fields are service-role-only (set by edge functions).';
+  'Clients may update their own pending cases; partners may update assigned cases. Column-level protection on ai_* fields is enforced by the cases_protect_ai_columns trigger.';
+
+-- Trigger: block non-admins from changing ai_* columns (paywall protection)
+CREATE OR REPLACE FUNCTION public.protect_case_ai_columns()
+RETURNS trigger
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+BEGIN
+  IF NOT public.is_admin() THEN
+    IF NEW.ai_unlocked       IS DISTINCT FROM OLD.ai_unlocked       THEN
+      RAISE EXCEPTION 'Permission denied: ai_unlocked can only be set by the payment webhook'
+        USING ERRCODE = '42501';
+    END IF;
+    IF NEW.ai_status         IS DISTINCT FROM OLD.ai_status         THEN
+      RAISE EXCEPTION 'Permission denied: ai_status can only be set by the analyze-case edge function'
+        USING ERRCODE = '42501';
+    END IF;
+    IF NEW.ai_summary        IS DISTINCT FROM OLD.ai_summary        THEN
+      RAISE EXCEPTION 'Permission denied: ai_summary can only be set by the analyze-case edge function'
+        USING ERRCODE = '42501';
+    END IF;
+    IF NEW.ai_risk_level     IS DISTINCT FROM OLD.ai_risk_level     THEN
+      RAISE EXCEPTION 'Permission denied: ai_risk_level can only be set by the analyze-case edge function'
+        USING ERRCODE = '42501';
+    END IF;
+    IF NEW.ai_estimated_cost IS DISTINCT FROM OLD.ai_estimated_cost THEN
+      RAISE EXCEPTION 'Permission denied: ai_estimated_cost can only be set by the analyze-case edge function'
+        USING ERRCODE = '42501';
+    END IF;
+    IF NEW.ai_estimated_time IS DISTINCT FROM OLD.ai_estimated_time THEN
+      RAISE EXCEPTION 'Permission denied: ai_estimated_time can only be set by the analyze-case edge function'
+        USING ERRCODE = '42501';
+    END IF;
+  END IF;
+  RETURN NEW;
+END;
+$$;
+
+DROP TRIGGER IF EXISTS cases_protect_ai_columns ON public.cases;
+CREATE TRIGGER cases_protect_ai_columns
+  BEFORE UPDATE ON public.cases
+  FOR EACH ROW EXECUTE FUNCTION public.protect_case_ai_columns();
 
 
 -- ─── CRITICAL 6: Replace get_document_analysis() so it does NOT bypass RLS
