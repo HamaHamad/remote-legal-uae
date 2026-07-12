@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   Bell,
   Globe,
@@ -129,6 +130,7 @@ const DEFAULT_PREFS = {
 
 // ─── Main Page ─────────────────────────────────────────────────────
 export function SettingsPage() {
+  const { t } = useTranslation()
   const { user, profile, signOut, updateLanguage } = useAuth()
 
   const [prefs, setPrefs] = useState(DEFAULT_PREFS)
@@ -172,9 +174,9 @@ export function SettingsPage() {
         .eq('id', user.id)
 
       if (error) throw error
-      showToast('Notification preferences saved')
+      showToast(t('settings.prefsSaved'))
     } catch (err) {
-      showToast(err.message || 'Failed to save', 'error')
+      showToast(err.message || t('settings.saveFailed'), 'error')
     } finally {
       setSaving(false)
     }
@@ -185,9 +187,9 @@ export function SettingsPage() {
     setSaving(true)
     try {
       await updateLanguage(selectedLang)
-      showToast('Language updated')
+      showToast(t('settings.languageUpdated'))
     } catch (err) {
-      showToast('Failed to update language', 'error')
+      showToast(t('settings.languageUpdateFailed'), 'error')
     } finally {
       setSaving(false)
     }
@@ -207,7 +209,7 @@ export function SettingsPage() {
       // For now, redirect to home
       window.location.href = '/'
     } catch (err) {
-      showToast('Failed to delete account. Contact support.', 'error')
+      showToast(t('settings.deleteFailed'), 'error')
       setDeleting(false)
     }
   }
@@ -217,22 +219,20 @@ export function SettingsPage() {
       {/* Header */}
       <div className="animate-slide-up">
         <h1 className="font-display text-3xl font-semibold text-[var(--text-primary)] mb-1">
-          Settings
+          {t('settings.title')}
         </h1>
-        <p className="text-sm text-[var(--text-secondary)]">
-          Manage your preferences and account settings
-        </p>
+        <p className="text-sm text-[var(--text-secondary)]">{t('settings.subtitle')}</p>
       </div>
 
       {toast && <Toast msg={toast.msg} type={toast.type} />}
 
       {/* Language */}
       <div className="animate-slide-up-delay-1">
-        <SectionCard title="Language & Region" icon={Globe}>
+        <SectionCard title={t('settings.languageRegion')} icon={Globe}>
           <div className="space-y-4">
             <div>
               <label className="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-2">
-                Interface Language
+                {t('settings.interfaceLanguage')}
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {SUPPORTED_LANGUAGES.map((lang) => (
@@ -267,7 +267,7 @@ export function SettingsPage() {
               icon={CheckCircle}
               disabled={selectedLang === profile?.language}
             >
-              Save Language
+              {t('settings.saveLanguage')}
             </Button>
           </div>
         </SectionCard>
@@ -275,87 +275,99 @@ export function SettingsPage() {
 
       {/* Notifications */}
       <div className="animate-slide-up-delay-2">
-        <SectionCard title="Notification Preferences" icon={Bell}>
+        <SectionCard title={t('settings.notifPrefs')} icon={Bell}>
           <div className="space-y-1 mb-5">
             <p className="text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-widest mb-3">
-              Email Notifications
+              {t('settings.emailNotifs')}
             </p>
             <NotifRow
               icon={Brain}
-              label="AI Analysis Ready"
-              desc="Email when your AI case report is complete"
+              label={t('settings.aiAnalysisReady')}
+              desc={t('settings.aiAnalysisReadyDesc')}
               checked={prefs.email_ai_ready}
               onChange={togglePref('email_ai_ready')}
             />
             <NotifRow
               icon={Briefcase}
-              label="Case Assigned"
-              desc="Email when a specialist is assigned to your case"
+              label={t('settings.caseAssigned')}
+              desc={t('settings.caseAssignedDesc')}
               checked={prefs.email_case_assigned}
               onChange={togglePref('email_case_assigned')}
             />
             <NotifRow
               icon={CreditCard}
-              label="Payment Confirmation"
-              desc="Email when a payment is processed successfully"
+              label={t('settings.paymentConfirmation')}
+              desc={t('settings.paymentConfirmationDesc')}
               checked={prefs.email_payment}
               onChange={togglePref('email_payment')}
             />
             <NotifRow
               icon={Users}
-              label="Task Updates"
-              desc="Email when a task on your case is updated"
+              label={t('settings.taskUpdates')}
+              desc={t('settings.taskUpdatesDesc')}
               checked={prefs.email_task_update}
               onChange={togglePref('email_task_update')}
             />
 
             <p className="text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-widest mt-5 mb-3">
-              In-App Notifications
+              {t('settings.inappNotifs')}
             </p>
             <NotifRow
               icon={Brain}
-              label="AI Analysis Ready"
-              desc="In-app badge when report is complete"
+              label={t('settings.aiAnalysisReady')}
+              desc={t('settings.aiReadyInappDesc')}
               checked={prefs.inapp_ai_ready}
               onChange={togglePref('inapp_ai_ready')}
             />
             <NotifRow
               icon={Briefcase}
-              label="Case Updates"
-              desc="In-app alerts for case status changes"
+              label={t('settings.caseUpdates')}
+              desc={t('settings.caseUpdatesDesc')}
               checked={prefs.inapp_case_assigned}
               onChange={togglePref('inapp_case_assigned')}
             />
             <NotifRow
               icon={CreditCard}
-              label="Payment Events"
-              desc="In-app alerts for payment activity"
+              label={t('settings.paymentEvents')}
+              desc={t('settings.paymentEventsDesc')}
               checked={prefs.inapp_payment}
               onChange={togglePref('inapp_payment')}
             />
             <NotifRow
               icon={Users}
-              label="Task Notifications"
-              desc="In-app alerts for task assignments"
+              label={t('settings.taskNotifs')}
+              desc={t('settings.taskNotifsDesc')}
               checked={prefs.inapp_task_update}
               onChange={togglePref('inapp_task_update')}
             />
           </div>
 
           <Button onClick={handleSaveNotifications} loading={saving} size="sm" icon={Bell}>
-            Save Notification Preferences
+            {t('settings.saveNotifs')}
           </Button>
         </SectionCard>
       </div>
 
       {/* Security shortcuts */}
       <div className="animate-slide-up-delay-3">
-        <SectionCard title="Security" icon={Shield}>
+        <SectionCard title={t('settings.security')} icon={Shield}>
           <div className="space-y-2">
             {[
-              { label: 'Change Password', desc: 'Update your account password', href: '/profile' },
-              { label: 'Edit Profile', desc: 'Update your name and details', href: '/profile' },
-              { label: 'Active Sessions', desc: "Manage where you're logged in", href: null },
+              {
+                label: t('settings.changePassword'),
+                desc: t('settings.changePasswordDesc'),
+                href: '/profile',
+              },
+              {
+                label: t('settings.editProfile'),
+                desc: t('settings.editProfileDesc'),
+                href: '/profile',
+              },
+              {
+                label: t('settings.activeSessions'),
+                desc: t('settings.activeSessionsDesc'),
+                href: null,
+              },
             ].map((item) => (
               <button
                 key={item.label}
@@ -376,12 +388,11 @@ export function SettingsPage() {
 
       {/* Sign out */}
       <div className="animate-slide-up-delay-3">
-        <SectionCard title="Session" icon={LogOut}>
+        <SectionCard title={t('settings.session')} icon={LogOut}>
           <div className="space-y-3">
             <div>
               <p className="text-sm text-[var(--text-secondary)] mb-3">
-                Sign out of your current session, or revoke access on all devices where you're
-                logged in.
+                {t('settings.sessionDesc')}
               </p>
               <div className="flex flex-col sm:flex-row gap-2">
                 <Button
@@ -390,7 +401,7 @@ export function SettingsPage() {
                   icon={LogOut}
                   size="sm"
                 >
-                  Sign Out (This Device)
+                  {t('settings.signOutThisDevice')}
                 </Button>
                 <Button
                   onClick={() => signOut({ scope: 'global' })}
@@ -398,7 +409,7 @@ export function SettingsPage() {
                   icon={LogOut}
                   size="sm"
                 >
-                  Sign Out of All Devices
+                  {t('settings.signOutAllDevices')}
                 </Button>
               </div>
             </div>
@@ -408,32 +419,28 @@ export function SettingsPage() {
 
       {/* Danger zone */}
       <div className="animate-slide-up-delay-3">
-        <SectionCard title="Danger Zone" icon={Trash2} danger>
+        <SectionCard title={t('settings.dangerZone')} icon={Trash2} danger>
           {!showDelete ? (
             <div>
-              <p className="text-sm text-[#e8e2d8]/60 mb-4">
-                Permanently delete your account and all associated data. This action cannot be
-                undone.
-              </p>
+              <p className="text-sm text-[#e8e2d8]/60 mb-4">{t('settings.deleteDesc')}</p>
               <button
                 onClick={() => setShowDelete(true)}
                 className="flex items-center gap-2 px-4 py-2 rounded-lg border border-red-500/30 text-red-400 text-sm hover:bg-red-500/8 transition-all"
               >
                 <Trash2 size={14} />
-                Delete Account
+                {t('settings.deleteAccount')}
               </button>
             </div>
           ) : (
             <div className="space-y-4">
               <div className="p-3 rounded-xl bg-red-500/8 border border-red-500/20">
-                <p className="text-sm text-red-400 font-medium mb-1">⚠ This cannot be undone</p>
-                <p className="text-xs text-red-400/70">
-                  All your cases, documents, and payment history will be permanently deleted.
-                </p>
+                <p className="text-sm text-red-400 font-medium mb-1">{t('settings.cannotUndo')}</p>
+                <p className="text-xs text-red-400/70">{t('settings.deleteWarning')}</p>
               </div>
               <div>
                 <label className="block text-xs text-[var(--text-muted)] mb-1.5">
-                  Type your email to confirm: <span className="text-red-400">{user?.email}</span>
+                  {t('settings.typeEmailConfirm')}{' '}
+                  <span className="text-red-400">{user?.email}</span>
                 </label>
                 <input
                   type="email"
@@ -451,7 +458,7 @@ export function SettingsPage() {
                   }}
                   className="flex-1 px-4 py-2 rounded-lg border border-[var(--border)] text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-white/15 transition-all"
                 >
-                  Cancel
+                  {t('settings.cancel')}
                 </button>
                 <button
                   onClick={handleDeleteAccount}
@@ -463,7 +470,7 @@ export function SettingsPage() {
                   ) : (
                     <Trash2 size={13} />
                   )}
-                  {deleting ? 'Deleting…' : 'Delete My Account'}
+                  {deleting ? t('settings.deleting') : t('settings.deleteMyAccount')}
                 </button>
               </div>
             </div>

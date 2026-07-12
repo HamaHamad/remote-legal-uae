@@ -1,38 +1,67 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { clsx } from 'clsx'
 import {
-  Brain, Lock, Unlock, ShieldAlert, ShieldCheck, ShieldQuestion,
-  Clock, DollarSign, CheckCircle2, Circle,
-  Loader2, AlertTriangle, Sparkles, CreditCard, X,
-  Star
+  Brain,
+  Lock,
+  Unlock,
+  ShieldAlert,
+  ShieldCheck,
+  ShieldQuestion,
+  Clock,
+  DollarSign,
+  CheckCircle2,
+  Circle,
+  Loader2,
+  AlertTriangle,
+  Sparkles,
+  CreditCard,
+  X,
+  Star,
 } from 'lucide-react'
 import Button from '@/components/ui/Button'
 import { usePayments } from '@/hooks/usePayments'
 
 // ─── Risk badge ────────────────────────────────────────────────────
 const RISK_CONFIG = {
-  low:    { label: 'Low Risk',    icon: ShieldCheck,    className: 'bg-green-500/10  text-green-400  border-green-500/20'  },
-  medium: { label: 'Medium Risk', icon: ShieldQuestion, className: 'bg-amber-500/10  text-amber-400  border-amber-500/20'  },
-  high:   { label: 'High Risk',   icon: ShieldAlert,    className: 'bg-red-500/10    text-red-400    border-red-500/20'    },
+  low: {
+    labelKey: 'aiReport.riskLow',
+    icon: ShieldCheck,
+    className: 'bg-green-500/10  text-green-400  border-green-500/20',
+  },
+  medium: {
+    labelKey: 'aiReport.riskMedium',
+    icon: ShieldQuestion,
+    className: 'bg-amber-500/10  text-amber-400  border-amber-500/20',
+  },
+  high: {
+    labelKey: 'aiReport.riskHigh',
+    icon: ShieldAlert,
+    className: 'bg-red-500/10    text-red-400    border-red-500/20',
+  },
 }
 
 export function RiskBadge({ level, large = false }) {
-  const cfg  = RISK_CONFIG[level] || RISK_CONFIG.medium
+  const { t } = useTranslation()
+  const cfg = RISK_CONFIG[level] || RISK_CONFIG.medium
   const Icon = cfg.icon
   return (
-    <span className={clsx(
-      'inline-flex items-center gap-1.5 rounded-full border font-medium',
-      large ? 'px-3.5 py-1.5 text-sm' : 'px-2.5 py-1 text-xs',
-      cfg.className,
-    )}>
+    <span
+      className={clsx(
+        'inline-flex items-center gap-1.5 rounded-full border font-medium',
+        large ? 'px-3.5 py-1.5 text-sm' : 'px-2.5 py-1 text-xs',
+        cfg.className,
+      )}
+    >
       <Icon size={large ? 14 : 11} className="shrink-0" />
-      {cfg.label}
+      {t(cfg.labelKey)}
     </span>
   )
 }
 
 // ─── Payment modal ─────────────────────────────────────────────────
 function PaymentModal({ caseId, onClose }) {
+  const { t } = useTranslation()
   const { startCheckout, loading, redirecting, error } = usePayments()
 
   const handlePay = async () => {
@@ -40,12 +69,11 @@ function PaymentModal({ caseId, onClose }) {
   }
 
   const FEATURES = [
-    'Full AI-generated case summary',
-    'Risk level: Low / Medium / High',
-    'Estimated cost range in AED',
-    'Estimated timeline to resolve',
-    '4–7 actionable next steps',
-    'Specialist-matched action plan',
+    t('aiReport.summary'),
+    t('aiReport.riskLevel'),
+    t('aiReport.estimatedCost'),
+    t('aiReport.estimatedTime'),
+    t('aiReport.actionPlan'),
   ]
 
   return (
@@ -57,7 +85,7 @@ function PaymentModal({ caseId, onClose }) {
 
       <div
         className="relative z-10 w-full sm:max-w-md bg-[var(--bg-secondary)] border border-[var(--border)] rounded-t-2xl sm:rounded-2xl shadow-panel animate-slide-up overflow-hidden"
-        onClick={e => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
       >
         {/* Gold top accent line */}
         <div className="h-1 bg-gradient-to-r from-gold-700 via-gold-400 to-gold-700" />
@@ -70,9 +98,9 @@ function PaymentModal({ caseId, onClose }) {
             </div>
             <div>
               <h3 className="font-display text-xl font-semibold text-[var(--text-primary)]">
-                Unlock AI Report
+                {t('aiReport.unlockReport')}
               </h3>
-              <p className="text-xs text-[var(--text-muted)]">One-time payment · Instant access</p>
+              <p className="text-xs text-[var(--text-muted)]">{t('aiReport.unlockDesc')}</p>
             </div>
           </div>
           <button
@@ -86,8 +114,11 @@ function PaymentModal({ caseId, onClose }) {
         {/* Features */}
         <div className="px-6 pb-4">
           <div className="glass-panel rounded-xl p-4 space-y-2.5">
-            {FEATURES.map(f => (
-              <div key={f} className="flex items-center gap-2.5 text-sm text-[var(--text-secondary)]">
+            {FEATURES.map((f) => (
+              <div
+                key={f}
+                className="flex items-center gap-2.5 text-sm text-[var(--text-secondary)]"
+              >
                 <CheckCircle2 size={13} className="text-gold-400 shrink-0" />
                 {f}
               </div>
@@ -100,15 +131,17 @@ function PaymentModal({ caseId, onClose }) {
           {/* Price block */}
           <div className="flex items-center justify-between px-4 py-3.5 rounded-xl border border-gold-500/25 bg-gold-500/4">
             <div>
-              <p className="text-xs text-[var(--text-muted)] uppercase tracking-widest">One-time unlock fee</p>
+              <p className="text-xs text-[var(--text-muted)] uppercase tracking-widest">
+                {t('aiReport.unlockCta')}
+              </p>
               <div className="flex items-baseline gap-1.5 mt-0.5">
                 <span className="font-display text-3xl font-semibold text-gold-400">AED 99</span>
-                <span className="text-xs text-[var(--text-muted)]">per case</span>
+                <span className="text-xs text-[var(--text-muted)]">{t('case.id')}</span>
               </div>
             </div>
             <div className="flex items-center gap-1 text-[11px] text-[var(--text-muted)] bg-white/5 rounded-lg px-2.5 py-1.5">
               <Star size={10} className="text-gold-400 fill-gold-400" />
-              Instant
+              {t('aiReport.generated')}
             </div>
           </div>
 
@@ -129,11 +162,10 @@ function PaymentModal({ caseId, onClose }) {
             icon={CreditCard}
           >
             {redirecting
-              ? 'Redirecting to Stripe…'
+              ? t('aiReport.unlockCta')
               : loading
-                ? 'Preparing checkout…'
-                : 'Pay AED 99 — Unlock Now'
-            }
+                ? t('aiReport.unlockCta')
+                : t('aiReport.unlockCta')}
           </Button>
 
           {/* Trust badges */}
@@ -152,6 +184,7 @@ function PaymentModal({ caseId, onClose }) {
 
 // ─── Paywall blur overlay ──────────────────────────────────────────
 function PaywallOverlay({ onUnlock }) {
+  const { t } = useTranslation()
   return (
     <div className="absolute inset-0 z-10 flex flex-col items-center justify-center rounded-2xl overflow-hidden">
       <div className="absolute inset-0 backdrop-blur-md bg-[var(--bg-primary)]/65" />
@@ -160,17 +193,14 @@ function PaywallOverlay({ onUnlock }) {
           <Lock size={22} className="text-gold-400" />
         </div>
         <h4 className="font-display text-xl font-semibold text-[var(--text-primary)] mb-2">
-          AI Report Ready
+          {t('aiReport.title')}
         </h4>
         <p className="text-sm text-[var(--text-secondary)] mb-1.5 leading-relaxed">
-          Your AI case analysis is complete. Unlock for{' '}
-          <span className="text-gold-400 font-semibold">AED 99</span> to view your full report.
+          {t('aiReport.unlockDesc')} <span className="text-gold-400 font-semibold">AED 99</span>
         </p>
-        <p className="text-[11px] text-[var(--text-muted)] mb-5">
-          One-time payment · Powered by Stripe
-        </p>
+        <p className="text-[11px] text-[var(--text-muted)] mb-5">{t('aiReport.unlockCta')}</p>
         <Button onClick={onUnlock} icon={CreditCard} size="md">
-          Unlock for AED 99
+          {t('aiReport.unlockCta')}
         </Button>
       </div>
     </div>
@@ -182,40 +212,58 @@ function StepTimeline({ steps }) {
   return (
     <div>
       {steps.map((step, i) => {
-        const isLast    = i === steps.length - 1
-        const isDone    = step.status === 'done'
+        const isLast = i === steps.length - 1
+        const isDone = step.status === 'done'
         const isCurrent = step.status === 'current'
         return (
           <div key={step.id || i} className="flex gap-4">
             <div className="flex flex-col items-center">
-              <div className={clsx(
-                'w-7 h-7 rounded-full border-2 flex items-center justify-center shrink-0 z-10 transition-all duration-300',
-                isDone    && 'bg-green-500/15 border-green-500/40 text-green-400',
-                isCurrent && 'bg-gold-500/15  border-gold-500/50  text-gold-400 ring-4 ring-gold-500/10',
-                !isDone && !isCurrent && 'bg-[var(--bg-elevated)] border-[var(--border)] text-[var(--text-muted)]',
-              )}>
-                {isDone    ? <CheckCircle2 size={13} />
-                : isCurrent ? <span className="w-2 h-2 rounded-full bg-gold-400 animate-pulse" />
-                : <Circle size={10} className="opacity-40" />}
+              <div
+                className={clsx(
+                  'w-7 h-7 rounded-full border-2 flex items-center justify-center shrink-0 z-10 transition-all duration-300',
+                  isDone && 'bg-green-500/15 border-green-500/40 text-green-400',
+                  isCurrent &&
+                    'bg-gold-500/15  border-gold-500/50  text-gold-400 ring-4 ring-gold-500/10',
+                  !isDone &&
+                    !isCurrent &&
+                    'bg-[var(--bg-elevated)] border-[var(--border)] text-[var(--text-muted)]',
+                )}
+              >
+                {isDone ? (
+                  <CheckCircle2 size={13} />
+                ) : isCurrent ? (
+                  <span className="w-2 h-2 rounded-full bg-gold-400 animate-pulse" />
+                ) : (
+                  <Circle size={10} className="opacity-40" />
+                )}
               </div>
               {!isLast && (
                 <div
-                  className={clsx('w-px flex-1 mt-1 mb-1', isDone ? 'bg-green-500/30' : 'bg-[var(--border)]')}
+                  className={clsx(
+                    'w-px flex-1 mt-1 mb-1',
+                    isDone ? 'bg-green-500/30' : 'bg-[var(--border)]',
+                  )}
                   style={{ minHeight: 20 }}
                 />
               )}
             </div>
             <div className={clsx('flex-1 pb-4', isLast && 'pb-0')}>
-              <p className={clsx(
-                'text-sm leading-relaxed py-0.5',
-                isDone    && 'text-[var(--text-muted)] line-through',
-                isCurrent && 'text-[var(--text-primary)] font-medium',
-                !isDone && !isCurrent && 'text-[var(--text-secondary)]',
-              )}>
-                <span className={clsx(
-                  'inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-bold me-2 align-middle',
-                  isCurrent ? 'bg-gold-500/20 text-gold-400' : 'bg-white/5 text-[var(--text-muted)]',
-                )}>
+              <p
+                className={clsx(
+                  'text-sm leading-relaxed py-0.5',
+                  isDone && 'text-[var(--text-muted)] line-through',
+                  isCurrent && 'text-[var(--text-primary)] font-medium',
+                  !isDone && !isCurrent && 'text-[var(--text-secondary)]',
+                )}
+              >
+                <span
+                  className={clsx(
+                    'inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-bold me-2 align-middle',
+                    isCurrent
+                      ? 'bg-gold-500/20 text-gold-400'
+                      : 'bg-white/5 text-[var(--text-muted)]',
+                  )}
+                >
                   {i + 1}
                 </span>
                 {step.step_text}
@@ -237,14 +285,16 @@ function StepTimeline({ steps }) {
 // ─── Stat pill ─────────────────────────────────────────────────────
 function StatPill({ icon: Icon, label, value, color = 'gold' }) {
   const colorMap = {
-    gold:   'bg-gold-500/8   border-gold-500/20   text-gold-400',
+    gold: 'bg-gold-500/8   border-gold-500/20   text-gold-400',
     purple: 'bg-purple-500/8 border-purple-500/20 text-purple-400',
   }
   return (
     <div className={clsx('flex items-center gap-2.5 px-4 py-3 rounded-xl border', colorMap[color])}>
       <Icon size={16} className="shrink-0" />
       <div>
-        <p className="text-[10px] uppercase tracking-widest text-current opacity-60 leading-none">{label}</p>
+        <p className="text-[10px] uppercase tracking-widest text-current opacity-60 leading-none">
+          {label}
+        </p>
         <p className="text-sm font-semibold leading-tight mt-0.5">{value}</p>
       </div>
     </div>
@@ -264,7 +314,7 @@ function AISkeleton() {
         <div className="h-3 bg-white/5 rounded w-5/6" />
         <div className="h-3 bg-white/5 rounded w-4/6" />
       </div>
-      {[1,2,3,4].map(i => (
+      {[1, 2, 3, 4].map((i) => (
         <div key={i} className="flex gap-3">
           <div className="w-7 h-7 rounded-full bg-white/5 shrink-0" />
           <div className="flex-1 h-3 bg-white/5 rounded mt-2" />
@@ -276,11 +326,12 @@ function AISkeleton() {
 
 // ─── Main component ────────────────────────────────────────────────
 export function AICaseReport({ caseData, steps }) {
+  const { t } = useTranslation()
   const [showPayModal, setShowPayModal] = useState(false)
 
-  const aiStatus   = caseData?.ai_status   || 'idle'
+  const aiStatus = caseData?.ai_status || 'idle'
   const aiUnlocked = caseData?.ai_unlocked || false
-  const isLocked   = !aiUnlocked
+  const isLocked = !aiUnlocked
 
   if (aiStatus === 'idle') {
     return (
@@ -288,8 +339,10 @@ export function AICaseReport({ caseData, steps }) {
         <div className="w-12 h-12 rounded-xl bg-white/5 border border-[var(--border)] flex items-center justify-center mx-auto mb-3">
           <Brain size={22} className="text-[var(--text-muted)]" />
         </div>
-        <p className="text-sm font-medium text-[var(--text-primary)] mb-1">AI Analysis Pending</p>
-        <p className="text-xs text-[var(--text-muted)]">Analysis begins automatically after case submission.</p>
+        <p className="text-sm font-medium text-[var(--text-primary)] mb-1">
+          {t('aiReport.startAnalysis')}
+        </p>
+        <p className="text-xs text-[var(--text-muted)]">{t('aiReport.analyzing')}</p>
       </div>
     )
   }
@@ -302,8 +355,10 @@ export function AICaseReport({ caseData, steps }) {
             <Loader2 size={18} className="text-gold-400 animate-spin" />
           </div>
           <div>
-            <p className="text-sm font-semibold text-[var(--text-primary)]">AI is analysing your case…</p>
-            <p className="text-xs text-[var(--text-muted)]">Usually takes 5–15 seconds</p>
+            <p className="text-sm font-semibold text-[var(--text-primary)]">
+              {t('aiReport.analyzing')}
+            </p>
+            <p className="text-xs text-[var(--text-muted)]">{t('aiReport.generated')}</p>
           </div>
         </div>
         <AISkeleton />
@@ -318,8 +373,10 @@ export function AICaseReport({ caseData, steps }) {
           <AlertTriangle size={16} className="text-red-400" />
         </div>
         <div>
-          <p className="text-sm font-semibold text-[var(--text-primary)] mb-1">AI Analysis Failed</p>
-          <p className="text-xs text-[var(--text-secondary)]">There was an error analysing your case. Please try again or contact support.</p>
+          <p className="text-sm font-semibold text-[var(--text-primary)] mb-1">
+            {t('aiReport.analysisFailed')}
+          </p>
+          <p className="text-xs text-[var(--text-secondary)]">{t('aiReport.retryAnalysis')}</p>
         </div>
       </div>
     )
@@ -332,21 +389,30 @@ export function AICaseReport({ caseData, steps }) {
       <div className="relative">
         {isLocked && <PaywallOverlay onUnlock={() => setShowPayModal(true)} />}
 
-        <div className={clsx(
-          'glass-panel rounded-2xl overflow-hidden transition-all duration-300',
-          isLocked && 'select-none pointer-events-none',
-        )}>
+        <div
+          className={clsx(
+            'glass-panel rounded-2xl overflow-hidden transition-all duration-300',
+            isLocked && 'select-none pointer-events-none',
+          )}
+        >
           {/* Header */}
           <div className="px-5 py-4 border-b border-[var(--border)] flex items-center justify-between flex-wrap gap-2">
             <div className="flex items-center gap-2.5">
               <div className="w-7 h-7 rounded-lg bg-gold-500/10 border border-gold-500/20 flex items-center justify-center">
                 <Brain size={14} className="text-gold-400" />
               </div>
-              <span className="text-sm font-semibold text-[var(--text-primary)]">AI Case Analysis</span>
-              {isLocked
-                ? <span className="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-gold-500/10 text-gold-400 border border-gold-500/20"><Lock size={9} /> Locked</span>
-                : <span className="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-green-500/10 text-green-400 border border-green-500/20"><Unlock size={9} /> Unlocked</span>
-              }
+              <span className="text-sm font-semibold text-[var(--text-primary)]">
+                {t('aiReport.title')}
+              </span>
+              {isLocked ? (
+                <span className="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-gold-500/10 text-gold-400 border border-gold-500/20">
+                  <Lock size={9} /> {t('aiReport.locked')}
+                </span>
+              ) : (
+                <span className="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-green-500/10 text-green-400 border border-green-500/20">
+                  <Unlock size={9} /> {t('aiReport.generated')}
+                </span>
+              )}
             </div>
             <RiskBadge level={caseData.ai_risk_level} />
           </div>
@@ -354,21 +420,35 @@ export function AICaseReport({ caseData, steps }) {
           <div className="p-5 space-y-6">
             {/* Summary */}
             <div>
-              <p className="text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-widest mb-2">Summary</p>
-              <p className="text-sm text-[var(--text-secondary)] leading-relaxed">{caseData.ai_summary}</p>
+              <p className="text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-widest mb-2">
+                {t('aiReport.summary')}
+              </p>
+              <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
+                {caseData.ai_summary}
+              </p>
             </div>
 
             {/* Stats */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-              <StatPill icon={DollarSign} label="Estimated Cost"     value={caseData.ai_estimated_cost || '—'} color="gold"   />
-              <StatPill icon={Clock}      label="Estimated Timeline" value={caseData.ai_estimated_time || '—'} color="purple" />
+              <StatPill
+                icon={DollarSign}
+                label={t('aiReport.estimatedCost')}
+                value={caseData.ai_estimated_cost || '—'}
+                color="gold"
+              />
+              <StatPill
+                icon={Clock}
+                label={t('aiReport.estimatedTime')}
+                value={caseData.ai_estimated_time || '—'}
+                color="purple"
+              />
             </div>
 
             {/* Steps */}
             {steps?.length > 0 && (
               <div>
                 <p className="text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-widest mb-4">
-                  Action Plan — {steps.length} steps
+                  {t('aiReport.actionPlan')} — {steps.length} {t('aiReport.step')}
                 </p>
                 <StepTimeline steps={steps} />
               </div>
@@ -378,10 +458,7 @@ export function AICaseReport({ caseData, steps }) {
       </div>
 
       {showPayModal && (
-        <PaymentModal
-          caseId={caseData?.id}
-          onClose={() => setShowPayModal(false)}
-        />
+        <PaymentModal caseId={caseData?.id} onClose={() => setShowPayModal(false)} />
       )}
     </>
   )

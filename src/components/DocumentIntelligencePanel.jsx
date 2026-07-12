@@ -1,10 +1,24 @@
 import { useState, useEffect, useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
 import { clsx } from 'clsx'
 import {
-  FileSearch, Brain, AlertTriangle, DollarSign,
-  CheckCircle, ChevronRight, Loader2, RotateCcw,
-  Users, Calendar, Hash, FileText, Shield,
-  Lightbulb, Scale, X, RefreshCw
+  FileSearch,
+  Brain,
+  AlertTriangle,
+  DollarSign,
+  CheckCircle,
+  ChevronRight,
+  Loader2,
+  RotateCcw,
+  Users,
+  Calendar,
+  Hash,
+  FileText,
+  Shield,
+  Lightbulb,
+  Scale,
+  X,
+  RefreshCw,
 } from 'lucide-react'
 import Button from '@/components/ui/Button'
 import { LegalDisclaimer } from '@/components/LegalDisclaimer'
@@ -13,17 +27,22 @@ import { useDocumentAnalysis } from '@/hooks/useDocumentAnalysis'
 // ─── Section wrapper ───────────────────────────────────────────────
 function Section({ icon: Icon, title, color = 'gold', children }) {
   const colorMap = {
-    gold:   'text-gold-400   bg-gold-500/10   border-gold-500/20',
-    red:    'text-red-400    bg-red-500/10    border-red-500/20',
-    green:  'text-green-400  bg-green-500/10  border-green-500/20',
-    blue:   'text-blue-400   bg-blue-500/10   border-blue-500/20',
+    gold: 'text-gold-400   bg-gold-500/10   border-gold-500/20',
+    red: 'text-red-400    bg-red-500/10    border-red-500/20',
+    green: 'text-green-400  bg-green-500/10  border-green-500/20',
+    blue: 'text-blue-400   bg-blue-500/10   border-blue-500/20',
     purple: 'text-purple-400 bg-purple-500/10 border-purple-500/20',
-    amber:  'text-amber-400  bg-amber-500/10  border-amber-500/20',
+    amber: 'text-amber-400  bg-amber-500/10  border-amber-500/20',
   }
   return (
     <div>
       <div className="flex items-center gap-2.5 mb-3">
-        <div className={clsx('w-7 h-7 rounded-lg border flex items-center justify-center shrink-0', colorMap[color])}>
+        <div
+          className={clsx(
+            'w-7 h-7 rounded-lg border flex items-center justify-center shrink-0',
+            colorMap[color],
+          )}
+        >
           <Icon size={13} />
         </div>
         <h3 className="text-sm font-semibold text-[var(--text-primary)]">{title}</h3>
@@ -34,10 +53,13 @@ function Section({ icon: Icon, title, color = 'gold', children }) {
 }
 
 // ─── Bullet list ───────────────────────────────────────────────────
-function BulletList({ items, color = 'text-[var(--text-secondary)]', dot = 'bg-[var(--text-muted)]' }) {
-  if (!items || items.length === 0) return (
-    <p className="text-xs text-[var(--text-muted)] italic">None identified</p>
-  )
+function BulletList({
+  items,
+  color = 'text-[var(--text-secondary)]',
+  dot = 'bg-[var(--text-muted)]',
+}) {
+  if (!items || items.length === 0)
+    return <p className="text-xs text-[var(--text-muted)] italic">None identified</p>
   return (
     <ul className="space-y-2">
       {items.map((item, i) => (
@@ -71,7 +93,7 @@ function AnalysisSkeleton() {
         <div className="h-3 bg-white/5 rounded w-5/6" />
         <div className="h-3 bg-white/5 rounded w-4/6" />
       </div>
-      {[1,2,3].map(i => (
+      {[1, 2, 3].map((i) => (
         <div key={i} className="space-y-2">
           <div className="h-3.5 bg-white/5 rounded w-1/4" />
           <div className="h-3 bg-white/5 rounded w-3/4" />
@@ -84,18 +106,19 @@ function AnalysisSkeleton() {
 
 // ─── Main component ────────────────────────────────────────────────
 export function DocumentIntelligencePanel({
-  document,        // { id, file_name, storage_path, mime_type, case_id }
+  document, // { id, file_name, storage_path, mime_type, case_id }
   initialAnalysis, // pre-fetched analysis object (optional)
-  onCaseCreated,   // callback when auto-case is created
+  onCaseCreated, // callback when auto-case is created
   compact = false, // compact mode for inline display
 }) {
+  const { t } = useTranslation()
   const { analyzeDocument, fetchAnalysis, pollUntilDone, deleteAnalysis } = useDocumentAnalysis()
 
-  const [analysis,  setAnalysis]  = useState(initialAnalysis || null)
-  const [loading,   setLoading]   = useState(!initialAnalysis)
-  const [running,   setRunning]   = useState(false)
-  const [error,     setError]     = useState(null)
-  const [stage,     setStage]     = useState('')  // progress label
+  const [analysis, setAnalysis] = useState(initialAnalysis || null)
+  const [loading, setLoading] = useState(!initialAnalysis)
+  const [running, setRunning] = useState(false)
+  const [error, setError] = useState(null)
+  const [stage, setStage] = useState('') // progress label
 
   // ─── Load existing analysis on mount ────────────────────────────
   const loadAnalysis = useCallback(async () => {
@@ -120,13 +143,13 @@ export function DocumentIntelligencePanel({
     if (!document) return
     setRunning(true)
     setError(null)
-    setStage('Uploading to AI engine…')
+    setStage(t('docIntelligence.analyzing'))
 
     const { error: triggerErr } = await analyzeDocument({
-      documentId:  document.id,
-      caseId:      document.case_id || null,
+      documentId: document.id,
+      caseId: document.case_id || null,
       storagePath: document.storage_path,
-      mimeType:    document.mime_type,
+      mimeType: document.mime_type,
     })
 
     if (triggerErr) {
@@ -196,13 +219,8 @@ export function DocumentIntelligencePanel({
             <span>{error}</span>
           </div>
         )}
-        <Button
-          onClick={handleAnalyze}
-          loading={running}
-          icon={Brain}
-          size="md"
-        >
-          {running ? stage || 'Analysing…' : 'Analyse Document'}
+        <Button onClick={handleAnalyze} loading={running} icon={Brain} size="md">
+          {running ? stage || t('docIntelligence.analyzing') : t('docIntelligence.analyzeDocument')}
         </Button>
         <p className="text-[10px] text-[var(--text-muted)] mt-3">
           Powered by GPT-4o Vision · Takes 10–30 seconds
@@ -241,7 +259,7 @@ export function DocumentIntelligencePanel({
         <div className="flex-1">
           <p className="text-sm font-semibold text-[var(--text-primary)] mb-1">Analysis Failed</p>
           <p className="text-xs text-[var(--text-secondary)] mb-3">
-            {analysis.error_message || 'Something went wrong. Please try again.'}
+            {analysis.error_message || t('docIntelligence.analysisFailed')}
           </p>
           <Button variant="secondary" size="sm" icon={RotateCcw} onClick={handleReanalyze}>
             Try Again
@@ -254,7 +272,7 @@ export function DocumentIntelligencePanel({
   // ─── Render: done ─────────────────────────────────────────────────
   const ai = analysis.extracted_json || {}
   const financials = ai.financials || {}
-  const entities   = ai.key_entities || {}
+  const entities = ai.key_entities || {}
 
   return (
     <div className="space-y-4">
@@ -268,7 +286,9 @@ export function DocumentIntelligencePanel({
             <div className="w-7 h-7 rounded-lg bg-gold-500/10 border border-gold-500/20 flex items-center justify-center">
               <Brain size={14} className="text-gold-400" />
             </div>
-            <span className="text-sm font-semibold text-[var(--text-primary)]">Document Intelligence</span>
+            <span className="text-sm font-semibold text-[var(--text-primary)]">
+              {t('docIntelligence.title')}
+            </span>
             <span className="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-green-500/10 text-green-400 border border-green-500/20">
               <CheckCircle size={9} /> Analysed
             </span>
@@ -281,7 +301,7 @@ export function DocumentIntelligencePanel({
             )}
             <button
               onClick={handleReanalyze}
-              title="Re-analyse"
+              title={t('docIntelligence.reanalyze')}
               className="w-6 h-6 rounded-md flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-white/8 transition-all"
             >
               <RefreshCw size={11} />
@@ -293,13 +313,17 @@ export function DocumentIntelligencePanel({
           {/* Summary */}
           <Section icon={FileText} title="Document Summary" color="gold">
             <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
-              {analysis.summary || ai.summary || 'No summary available.'}
+              {analysis.summary || ai.summary || t('docIntelligence.notAvailable')}
             </p>
             {entities.dates && entities.dates.length > 0 && (
               <div className="flex flex-wrap gap-2 mt-3">
                 {entities.dates.map((d, i) => (
-                  <span key={i} className="text-[10px] px-2 py-0.5 rounded-full bg-white/5 text-[var(--text-muted)] border border-[var(--border)]">
-                    <Calendar size={9} className="inline me-1" />{d}
+                  <span
+                    key={i}
+                    className="text-[10px] px-2 py-0.5 rounded-full bg-white/5 text-[var(--text-muted)] border border-[var(--border)]"
+                  >
+                    <Calendar size={9} className="inline me-1" />
+                    {d}
                   </span>
                 ))}
               </div>
@@ -311,10 +335,15 @@ export function DocumentIntelligencePanel({
             <Section icon={Users} title="Key Parties & References" color="blue">
               {entities.parties?.length > 0 && (
                 <div className="mb-3">
-                  <p className="text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-2">Parties</p>
+                  <p className="text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-2">
+                    {t('docIntelligence.parties')}
+                  </p>
                   <div className="flex flex-wrap gap-2">
                     {entities.parties.map((p, i) => (
-                      <span key={i} className="text-xs px-2.5 py-1 rounded-lg bg-blue-500/8 text-blue-400 border border-blue-500/20">
+                      <span
+                        key={i}
+                        className="text-xs px-2.5 py-1 rounded-lg bg-blue-500/8 text-blue-400 border border-blue-500/20"
+                      >
                         {p}
                       </span>
                     ))}
@@ -323,10 +352,15 @@ export function DocumentIntelligencePanel({
               )}
               {entities.reference_numbers?.length > 0 && (
                 <div>
-                  <p className="text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-2">References</p>
+                  <p className="text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-2">
+                    References
+                  </p>
                   <div className="flex flex-wrap gap-2">
                     {entities.reference_numbers.map((r, i) => (
-                      <span key={i} className="text-xs px-2.5 py-1 rounded-lg bg-white/5 text-[var(--text-secondary)] border border-[var(--border)] font-mono">
+                      <span
+                        key={i}
+                        className="text-xs px-2.5 py-1 rounded-lg bg-white/5 text-[var(--text-secondary)] border border-[var(--border)] font-mono"
+                      >
                         {r}
                       </span>
                     ))}
@@ -337,17 +371,33 @@ export function DocumentIntelligencePanel({
           )}
 
           {/* Financials */}
-          {(financials.total_amount || financials.monthly_payment || financials.outstanding_balance) && (
+          {(financials.total_amount ||
+            financials.monthly_payment ||
+            financials.outstanding_balance) && (
             <Section icon={DollarSign} title="Financial Overview" color="green">
               <div className="glass-panel-elevated rounded-xl px-4">
-                <FinancialRow label="Total Amount"         value={financials.total_amount}         />
-                <FinancialRow label="Monthly Payment"      value={financials.monthly_payment}      />
-                <FinancialRow label="Outstanding Balance"  value={financials.outstanding_balance}  />
-                <FinancialRow label="Payment Schedule"     value={financials.payment_schedule}     />
+                <FinancialRow
+                  label={t('docIntelligence.totalAmount')}
+                  value={financials.total_amount}
+                />
+                <FinancialRow
+                  label={t('docIntelligence.monthlyPayment')}
+                  value={financials.monthly_payment}
+                />
+                <FinancialRow
+                  label={t('docIntelligence.outstandingBalance')}
+                  value={financials.outstanding_balance}
+                />
+                <FinancialRow
+                  label={t('docIntelligence.paymentSchedule')}
+                  value={financials.payment_schedule}
+                />
               </div>
               {financials.fees?.length > 0 && (
                 <div className="mt-3">
-                  <p className="text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-2">Fees & Penalties</p>
+                  <p className="text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-2">
+                    Fees & Penalties
+                  </p>
                   <BulletList items={financials.fees} color="text-amber-400" dot="bg-amber-400" />
                 </div>
               )}
@@ -356,8 +406,12 @@ export function DocumentIntelligencePanel({
 
           {/* Obligations */}
           {ai.obligations?.length > 0 && (
-            <Section icon={Scale} title="Obligations" color="purple">
-              <BulletList items={ai.obligations} dot="bg-purple-400" color="text-[var(--text-secondary)]" />
+            <Section icon={Scale} title={t('docIntelligence.obligations')} color="purple">
+              <BulletList
+                items={ai.obligations}
+                dot="bg-purple-400"
+                color="text-[var(--text-secondary)]"
+              />
             </Section>
           )}
 
@@ -366,7 +420,10 @@ export function DocumentIntelligencePanel({
             <Section icon={AlertTriangle} title="Risks & Red Flags" color="red">
               <div className="space-y-2">
                 {ai.risks.map((risk, i) => (
-                  <div key={i} className="flex items-start gap-2.5 p-3 rounded-xl bg-red-500/6 border border-red-500/15">
+                  <div
+                    key={i}
+                    className="flex items-start gap-2.5 p-3 rounded-xl bg-red-500/6 border border-red-500/15"
+                  >
                     <AlertTriangle size={13} className="text-red-400 shrink-0 mt-0.5" />
                     <p className="text-sm text-red-300/90 leading-relaxed">{risk}</p>
                   </div>
@@ -377,14 +434,18 @@ export function DocumentIntelligencePanel({
 
           {/* Important clauses */}
           {ai.important_clauses?.length > 0 && (
-            <Section icon={FileText} title="Important Clauses" color="amber">
-              <BulletList items={ai.important_clauses} dot="bg-amber-400" color="text-[var(--text-secondary)]" />
+            <Section icon={FileText} title={t('docIntelligence.importantClauses')} color="amber">
+              <BulletList
+                items={ai.important_clauses}
+                dot="bg-amber-400"
+                color="text-[var(--text-secondary)]"
+              />
             </Section>
           )}
 
           {/* Recommended next steps */}
           {ai.recommended_next_steps?.length > 0 && (
-            <Section icon={Lightbulb} title="Recommended Next Steps" color="gold">
+            <Section icon={Lightbulb} title={t('docIntelligence.recommendedSteps')} color="gold">
               <div className="space-y-2">
                 {ai.recommended_next_steps.map((step, i) => (
                   <div key={i} className="flex items-start gap-3">
