@@ -1,0 +1,15 @@
+# CODEOWNERS — request review from these users for matching paths.
+# Format: <path-pattern> @username1 @username2
+
+# Default — everything falls under the project owner
+* @HamaHamad
+
+# Security-sensitive paths — require extra review
+/supabase/                 @HamaHamad
+/supabase/functions/       @HamaHamad
+/supabase/schema.sql       @HamaHamad
+/supabase/migration_*.sql  @HamaHamad
+/src/context/AuthContext.jsx @HamaHamad
+/src/components/ProtectedRoute.jsx @HamaHamad
+/.github/                  @HamaHamad
+/vercel.json               @HamaHamad

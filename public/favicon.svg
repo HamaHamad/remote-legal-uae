@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <!-- Background: deep navy with subtle gradient -->
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0c14"/>
+      <stop offset="100%" stop-color="#131629"/>
+    </linearGradient>
+  </defs>
+  <rect width="32" height="32" rx="7" fill="url(#bg)"/>
+
+  <!-- Scales of justice (gold) — matches the in-app logo -->
+  <g stroke="#d99d18" stroke-width="1.4" stroke-linecap="round" fill="none">
+    <!-- Vertical post -->
+    <line x1="16" y1="6" x2="16" y2="26"/>
+    <!-- Top beam -->
+    <line x1="9" y1="6" x2="23" y2="6"/>
+    <!-- Left hanger -->
+    <line x1="16" y1="6" x2="7" y2="13"/>
+    <!-- Right hanger -->
+    <line x1="16" y1="6" x2="25" y2="13"/>
+    <!-- Left pan (curve) -->
+    <path d="M 4 14 Q 7.5 18 11 14"/>
+    <!-- Right pan (curve) -->
+    <path d="M 21 14 Q 24.5 18 28 14"/>
+    <!-- Base -->
+    <line x1="12" y1="26" x2="20" y2="26"/>
+  </g>
+
+  <!-- Small gold dot at the top of the scales -->
+  <circle cx="16" cy="6" r="1.2" fill="#f0ca5a"/>
+</svg>

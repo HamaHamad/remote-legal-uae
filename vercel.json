@@ -1,6 +1,10 @@
 {
+  "redirects": [
+    { "source": "/landing.html", "destination": "/", "permanent": true },
+    { "source": "/LandingPage.html", "destination": "/", "permanent": true }
+  ],
   "rewrites": [
-    { "source": "/((?!api/).*)", "destination": "/index.html" }
+    { "source": "/((?!api/|favicon.svg|robots.txt|sitemap.xml).*)", "destination": "/index.html" }
   ],
   "headers": [
     {

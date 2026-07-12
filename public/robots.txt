@@ -1,0 +1,18 @@
+# robots.txt — https://www.robotstxt.org/
+# Allow all crawlers to index the public landing page.
+# Disallow the authenticated app routes (they require login and have
+# no SEO value).
+
+User-agent: *
+Allow: /
+Allow: /$
+Disallow: /dashboard
+Disallow: /admin
+Disallow: /partner
+Disallow: /settings
+Disallow: /profile
+Disallow: /api/
+Disallow: /payment/
+
+# Sitemap
+Sitemap: https://remote-legal-uae.vercel.app/sitemap.xml
