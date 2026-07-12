@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Mail, Lock, User, ArrowRight, AlertCircle, CheckCircle2 } from 'lucide-react'
@@ -6,6 +6,14 @@ import { useAuth } from '@/context/AuthContext'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
+import {
+  validatePassword,
+  passwordStrengthLabel,
+  passwordStrengthColor,
+  isValidEmail,
+  validateFullName,
+  validatePasswordMatch,
+} from '@/lib/validation'
 
 export function SignupPage() {
   const { t } = useTranslation()
@@ -18,25 +26,42 @@ export function SignupPage() {
     password: '',
     confirmPassword: '',
   })
-  const [errors, setErrors]       = useState({})
+  const [errors, setErrors] = useState({})
   const [serverError, setServerError] = useState('')
-  const [loading, setLoading]     = useState(false)
-  const [success, setSuccess]     = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [success, setSuccess] = useState(false)
+
+  // Live password strength (memoized so it only recomputes when password changes)
+  const passwordCheck = useMemo(() => validatePassword(form.password), [form.password])
 
   const update = (field) => (e) => {
-    setForm(f => ({ ...f, [field]: e.target.value }))
-    setErrors(v => ({ ...v, [field]: '' }))
+    setForm((f) => ({ ...f, [field]: e.target.value }))
+    setErrors((v) => ({ ...v, [field]: '' }))
   }
 
   // ─── Validation ─────────────────────────────────────────────────
   const validate = () => {
     const e = {}
-    if (!form.fullName.trim())                                     e.fullName = t('errors.nameRequired')
-    if (!form.email.trim())                                         e.email = t('errors.emailRequired')
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))      e.email = t('errors.invalidEmail')
-    if (!form.password)                                             e.password = t('errors.passwordRequired')
-    else if (form.password.length < 8)                             e.password = t('errors.passwordTooShort')
-    if (form.password !== form.confirmPassword)                     e.confirmPassword = t('errors.passwordMismatch')
+
+    // Full name
+    const nameErr = validateFullName(form.fullName)
+    if (nameErr) e.fullName = nameErr
+
+    // Email
+    if (!form.email.trim()) e.email = t('errors.emailRequired')
+    else if (!isValidEmail(form.email)) e.email = t('errors.invalidEmail')
+
+    // Password — enforce full policy (not just length)
+    if (!form.password) {
+      e.password = t('errors.passwordRequired')
+    } else if (!passwordCheck.valid) {
+      e.password = passwordCheck.suggestions[0] || 'Password is too weak'
+    }
+
+    // Confirm password
+    const matchErr = validatePasswordMatch(form.password, form.confirmPassword)
+    if (matchErr) e.confirmPassword = matchErr
+
     setErrors(e)
     return Object.keys(e).length === 0
   }
@@ -49,7 +74,7 @@ export function SignupPage() {
 
     setLoading(true)
     const { error } = await signUp({
-      email:    form.email,
+      email: form.email,
       password: form.password,
       fullName: form.fullName,
       // NOTE: role is intentionally omitted — server hardcodes 'client'.
@@ -80,7 +105,10 @@ export function SignupPage() {
             Your account is ready. Redirecting to login…
           </p>
           <div className="mt-5 h-1 rounded-full bg-white/5 overflow-hidden">
-            <div className="h-full bg-gold-500 rounded-full" style={{ animation: 'countdown 3s linear forwards', width: '100%' }} />
+            <div
+              className="h-full bg-gold-500 rounded-full"
+              style={{ animation: 'countdown 3s linear forwards', width: '100%' }}
+            />
           </div>
         </div>
         <style>{`@keyframes countdown { from { width: 100%; } to { width: 0%; } }`}</style>
@@ -111,9 +139,7 @@ export function SignupPage() {
             <h1 className="font-display text-3xl font-semibold text-[var(--text-primary)] mb-2">
               {t('auth.joinUs')}
             </h1>
-            <p className="text-sm text-[var(--text-secondary)]">
-              {t('auth.signupSubtitle')}
-            </p>
+            <p className="text-sm text-[var(--text-secondary)]">{t('auth.signupSubtitle')}</p>
           </div>
 
           {/* Card */}
@@ -159,8 +185,53 @@ export function SignupPage() {
                 error={errors.password}
                 required
                 autoComplete="new-password"
-                hint="Minimum 8 characters"
               />
+
+              {/* Live password strength indicator */}
+              {form.password && (
+                <div className="px-1 -mt-2 mb-1">
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <div className="flex-1 flex gap-1">
+                      {[0, 1, 2, 3].map((i) => (
+                        <div
+                          key={i}
+                          className="h-1 flex-1 rounded-full transition-all duration-300"
+                          style={{
+                            backgroundColor:
+                              i < passwordCheck.score
+                                ? passwordStrengthColor(passwordCheck.score)
+                                : 'rgba(255,255,255,0.08)',
+                          }}
+                        />
+                      ))}
+                    </div>
+                    <span
+                      className="text-[10px] font-medium"
+                      style={{ color: passwordStrengthColor(passwordCheck.score) }}
+                    >
+                      {passwordStrengthLabel(passwordCheck.score)}
+                    </span>
+                  </div>
+                  {/* Requirement checklist */}
+                  <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-[10px] text-[var(--text-muted)]">
+                    <span style={{ color: passwordCheck.checks.length ? '#22c55e' : undefined }}>
+                      {passwordCheck.checks.length ? '✓' : '○'} 8+ chars
+                    </span>
+                    <span style={{ color: passwordCheck.checks.upper ? '#22c55e' : undefined }}>
+                      {passwordCheck.checks.upper ? '✓' : '○'} Uppercase
+                    </span>
+                    <span style={{ color: passwordCheck.checks.lower ? '#22c55e' : undefined }}>
+                      {passwordCheck.checks.lower ? '✓' : '○'} Lowercase
+                    </span>
+                    <span style={{ color: passwordCheck.checks.digit ? '#22c55e' : undefined }}>
+                      {passwordCheck.checks.digit ? '✓' : '○'} Number
+                    </span>
+                    <span style={{ color: passwordCheck.checks.special ? '#22c55e' : undefined }}>
+                      {passwordCheck.checks.special ? '✓' : '○'} Special
+                    </span>
+                  </div>
+                </div>
+              )}
 
               <Input
                 label={t('auth.confirmPassword')}
@@ -177,9 +248,12 @@ export function SignupPage() {
               {/* Role note — clients can sign up directly; partners/admins are invited */}
               <div className="rounded-xl bg-[var(--bg-elevated)] border border-[var(--border)] p-3.5">
                 <p className="text-[12px] text-[var(--text-secondary)] leading-relaxed">
-                  <span className="text-[var(--text-primary)] font-medium">👤 {t('auth.roleClient')}</span>
+                  <span className="text-[var(--text-primary)] font-medium">
+                    👤 {t('auth.roleClient')}
+                  </span>
                   <br />
-                  {t('auth.roleDescription') || 'Submit and track legal cases. Specialist and admin accounts are created by invitation only.'}
+                  {t('auth.roleDescription') ||
+                    'Submit and track legal cases. Specialist and admin accounts are created by invitation only.'}
                 </p>
               </div>
 
@@ -209,13 +283,19 @@ export function SignupPage() {
 
           <p className="text-center text-[11px] text-[var(--text-muted)] mt-5 px-4 leading-relaxed">
             {t('auth.termsAgreement')}{' '}
-            <a href="#" className="text-gold-500/70 hover:text-gold-400 transition-colors">
+            <Link
+              to="/terms-of-service"
+              className="text-gold-500/70 hover:text-gold-400 transition-colors"
+            >
               {t('auth.termsLink')}
-            </a>{' '}
+            </Link>{' '}
             {t('auth.andText')}{' '}
-            <a href="#" className="text-gold-500/70 hover:text-gold-400 transition-colors">
+            <Link
+              to="/privacy-policy"
+              className="text-gold-500/70 hover:text-gold-400 transition-colors"
+            >
               {t('auth.privacyLink')}
-            </a>
+            </Link>
           </p>
         </div>
       </div>
@@ -227,13 +307,23 @@ function ScalesLogo({ large = false }) {
   const size = large ? 28 : 20
   return (
     <svg width={size} height={size} viewBox="0 0 28 28" fill="none">
-      <path d="M14 3V25" stroke="#D99D18" strokeWidth="1.6" strokeLinecap="round"/>
-      <path d="M8 3H20" stroke="#D99D18" strokeWidth="1.6" strokeLinecap="round"/>
-      <path d="M14 3L5 11" stroke="#D99D18" strokeWidth="1.6" strokeLinecap="round"/>
-      <path d="M14 3L23 11" stroke="#D99D18" strokeWidth="1.6" strokeLinecap="round"/>
-      <path d="M3 14C3 14 4 18 8 18C12 18 13 14 13 14" stroke="#D99D18" strokeWidth="1.6" strokeLinecap="round"/>
-      <path d="M15 14C15 14 16 18 20 18C24 18 25 14 25 14" stroke="#D99D18" strokeWidth="1.6" strokeLinecap="round"/>
-      <path d="M10 25H18" stroke="#D99D18" strokeWidth="1.6" strokeLinecap="round"/>
+      <path d="M14 3V25" stroke="#D99D18" strokeWidth="1.6" strokeLinecap="round" />
+      <path d="M8 3H20" stroke="#D99D18" strokeWidth="1.6" strokeLinecap="round" />
+      <path d="M14 3L5 11" stroke="#D99D18" strokeWidth="1.6" strokeLinecap="round" />
+      <path d="M14 3L23 11" stroke="#D99D18" strokeWidth="1.6" strokeLinecap="round" />
+      <path
+        d="M3 14C3 14 4 18 8 18C12 18 13 14 13 14"
+        stroke="#D99D18"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+      />
+      <path
+        d="M15 14C15 14 16 18 20 18C24 18 25 14 25 14"
+        stroke="#D99D18"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+      />
+      <path d="M10 25H18" stroke="#D99D18" strokeWidth="1.6" strokeLinecap="round" />
     </svg>
   )
 }

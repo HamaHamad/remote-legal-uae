@@ -9,10 +9,12 @@ dist-ssr/
 build/
 
 # Environment variables
-# .env.production is intentionally committed (contains only public anon keys)
+# .env.production is NOT committed — set VITE_SUPABASE_URL and
+# VITE_SUPABASE_ANON_KEY in the Vercel dashboard instead.
 .env
 .env.local
 .env.*.local
+.env.production
 .env.development.local
 .env.test.local
 .env.production.local

@@ -1,0 +1,277 @@
+// src/pages/TermsOfServicePage.jsx
+import { LegalPageLayout } from '@/components/LegalPageLayout'
+
+export function TermsOfServicePage() {
+  return (
+    <LegalPageLayout title="Terms of Service" lastUpdated="July 2026">
+      <p className="text-[var(--text-secondary)] mb-6">
+        These Terms of Service (&quot;Terms&quot;) govern your use of the Remote Legal Case
+        Orchestrator platform (&quot;ResolveUAE&quot;, the &quot;Service&quot;, &quot;we&quot;,
+        &quot;us&quot;). By creating an account or using the Service, you agree to these Terms. If
+        you do not agree, do not use the Service.
+      </p>
+
+      <h2>1. Important Disclaimer — Not Legal Advice</h2>
+      <div className="legal-callout">
+        <p>
+          <strong>CRITICAL:</strong> ResolveUAE is an{' '}
+          <strong>AI-assisted case organization and coordination platform</strong>. It does{' '}
+          <strong>NOT</strong> provide legal advice, legal representation, or guaranteed legal
+          outcomes. The AI-generated case summaries, risk assessments, cost estimates, and action
+          plans are informational only and should not be relied upon as legal advice.
+        </p>
+        <p>
+          You should consult a licensed legal practitioner registered with the{' '}
+          <strong>UAE Ministry of Justice</strong> for advice specific to your situation before
+          taking any legal action.
+        </p>
+      </div>
+
+      <h2>2. Definitions</h2>
+      <ul>
+        <li>
+          <strong>&quot;Platform&quot;</strong> refers to the ResolveUAE web application and all
+          related services.
+        </li>
+        <li>
+          <strong>&quot;User&quot;</strong> refers to any person who creates an account (Client,
+          Partner, or Admin).
+        </li>
+        <li>
+          <strong>&quot;Client&quot;</strong> refers to a User who submits cases for management and
+          AI analysis.
+        </li>
+        <li>
+          <strong>&quot;Partner&quot;</strong> refers to a legal specialist assigned to handle
+          cases.
+        </li>
+        <li>
+          <strong>&quot;AI Report&quot;</strong> refers to the AI-generated case analysis including
+          summary, risk level, cost estimate, time estimate, and recommended action steps.
+        </li>
+        <li>
+          <strong>&quot;Unlock Fee&quot;</strong> refers to the fee (currently AED 99) charged to
+          access the full AI Report.
+        </li>
+      </ul>
+
+      <h2>3. Eligibility</h2>
+      <p>
+        You must be at least <strong>18 years old</strong> and legally capable of entering into
+        binding contracts under the laws of the United Arab Emirates to use this Service. By
+        registering, you confirm that you meet these requirements.
+      </p>
+
+      <h2>4. Account Registration and Security</h2>
+      <ul>
+        <li>You must provide accurate and complete information when registering.</li>
+        <li>
+          You are responsible for maintaining the confidentiality of your password and for all
+          activities under your account.
+        </li>
+        <li>
+          New accounts are created with the &quot;client&quot; role. Admin and Partner roles are
+          assigned only by existing administrators. You may not attempt to escalate your role
+          through any technical means.
+        </li>
+        <li>
+          You must not share your account credentials or use another User&apos;s account without
+          authorization.
+        </li>
+        <li>
+          Notify us immediately at{' '}
+          <a href="mailto:security@resolveuae.com">security@resolveuae.com</a> if you suspect
+          unauthorized access.
+        </li>
+      </ul>
+
+      <h2>5. Acceptable Use</h2>
+      <p>You agree NOT to:</p>
+      <ul>
+        <li>Use the Service for any illegal purpose or in violation of UAE law.</li>
+        <li>
+          Upload documents containing another person&apos;s personal data without their consent, or
+          documents that you do not have the right to share.
+        </li>
+        <li>
+          Attempt to reverse-engineer, decompile, hack, or otherwise compromise the security of the
+          Platform or its infrastructure.
+        </li>
+        <li>
+          Use the AI analysis to generate content that is defamatory, fraudulent, or that promotes
+          illegal activity.
+        </li>
+        <li>
+          Scrape, crawl, or use automated tools to extract data from the Platform without our
+          written permission.
+        </li>
+        <li>Share your AI Report in a way that misrepresents it as professional legal advice.</li>
+        <li>
+          Attempt to bypass the Unlock Fee through technical means (e.g., modifying database records
+          directly).
+        </li>
+      </ul>
+
+      <h2>6. AI Analysis Service</h2>
+      <h3>6.1 Nature of the Service</h3>
+      <p>
+        The AI Report is generated by a large language model (OpenAI GPT-4o). While we take steps to
+        ensure accuracy and relevance, AI-generated content may contain errors, omissions, or
+        outdated information. The AI Report is{' '}
+        <strong>not a substitute for professional legal advice</strong>.
+      </p>
+
+      <h3>6.2 No Guarantee of Outcomes</h3>
+      <p>
+        Cost estimates and time estimates are based on typical UAE legal practice and do not
+        represent a guarantee of actual costs or timelines. Risk levels are indicative and depend on
+        factors not captured by the case description. We do not guarantee any legal outcome.
+      </p>
+
+      <h3>6.3 Unlock Fee</h3>
+      <p>
+        The AI Report is locked by default. To unlock the full report (summary, risk level,
+        cost/time estimates, and action plan), a one-time fee of <strong>AED 99</strong> per case is
+        charged, payable via Stripe Checkout. This fee is non-refundable except where required by
+        UAE Consumer Protection Law.
+      </p>
+
+      <h3>6.4 Rate Limits</h3>
+      <p>
+        To prevent abuse, AI analysis is rate-limited to 5 case analyses and 10 document analyses
+        per user per 10-minute window. These limits may change without notice.
+      </p>
+
+      <h2>7. Payments and Refunds</h2>
+      <ul>
+        <li>
+          All payments are processed by <strong>Stripe</strong> in UAE Dirhams (AED). We do not
+          store your card details.
+        </li>
+        <li>
+          The Unlock Fee is charged at the time you initiate checkout and is non-refundable once the
+          AI Report is unlocked and accessible.
+        </li>
+        <li>
+          If the AI Report fails to generate due to a technical error on our side, contact us within
+          7 days for a full refund.
+        </li>
+        <li>
+          Refunds, where applicable, will be returned to the original payment method within 10
+          business days.
+        </li>
+      </ul>
+
+      <h2>8. Intellectual Property</h2>
+      <ul>
+        <li>
+          The Platform, including its design, code, branding, and content (excluding User data), is
+          owned by ResolveUAE and protected by UAE copyright law.
+        </li>
+        <li>
+          You retain all rights to the documents and case information you upload. By uploading, you
+          grant us a limited license to process this data solely for providing the Service
+          (including AI analysis).
+        </li>
+        <li>
+          The AI Report generated for your case is yours to use for personal informational purposes.
+          You may not resell or redistribute AI Reports as a commercial service.
+        </li>
+      </ul>
+
+      <h2>9. Data Protection</h2>
+      <p>
+        Our handling of your personal data is described in our{' '}
+        <a href="/privacy-policy" className="text-gold-400 hover:text-gold-300">
+          Privacy Policy
+        </a>
+        , which is incorporated into these Terms by reference.
+      </p>
+
+      <h2>10. Service Availability</h2>
+      <p>
+        We strive for 99.5% uptime but do not guarantee uninterrupted service. The Platform may be
+        unavailable during scheduled maintenance, infrastructure outages, or force majeure events.
+        We are not liable for any losses resulting from service unavailability.
+      </p>
+
+      <h2>11. Limitation of Liability</h2>
+      <p>To the maximum extent permitted by UAE law:</p>
+      <ul>
+        <li>
+          The Service is provided &quot;as is&quot; and &quot;as available&quot; without warranties
+          of any kind, express or implied.
+        </li>
+        <li>
+          We are not liable for indirect, incidental, special, consequential, or punitive damages,
+          including loss of profits, data, or business opportunities.
+        </li>
+        <li>
+          Our total liability for any claim arising from the Service shall not exceed the amount you
+          paid us in the 3 months preceding the claim (i.e., up to AED 99 per case unlock).
+        </li>
+        <li>
+          We are not liable for decisions you make based on the AI Report. You are solely
+          responsible for verifying the accuracy and applicability of any information before taking
+          legal action.
+        </li>
+      </ul>
+
+      <h2>12. Indemnification</h2>
+      <p>
+        You agree to indemnify and hold ResolveUAE harmless from any claims, damages, or expenses
+        (including legal fees) arising from: (a) your breach of these Terms; (b) your misuse of the
+        Service; (c) content you upload that infringes third-party rights; or (d) decisions you make
+        based on the AI Report.
+      </p>
+
+      <h2>13. Account Suspension and Termination</h2>
+      <p>
+        We may suspend or terminate your account if: (a) you violate these Terms; (b) we suspect
+        fraudulent or illegal activity; (c) your account is inactive for more than 90 days (free
+        tier); or (d) we discontinue the Service (with 30 days&apos; notice). Upon termination, your
+        data will be deleted in accordance with our retention schedule (Privacy Policy §6), except
+        for payment records retained for 7 years as required by UAE tax law.
+      </p>
+
+      <h2>14. Governing Law and Dispute Resolution</h2>
+      <ul>
+        <li>
+          These Terms are governed by the laws of the <strong>United Arab Emirates</strong>.
+        </li>
+        <li>
+          Any dispute arising from these Terms or the Service shall first be attempted to be
+          resolved through good-faith negotiation for 30 days.
+        </li>
+        <li>
+          If unresolved, the dispute shall be submitted to the exclusive jurisdiction of the courts
+          of <strong>Dubai, United Arab Emirates</strong>.
+        </li>
+      </ul>
+
+      <h2>15. Changes to These Terms</h2>
+      <p>
+        We may update these Terms from time to time. We will notify you by email of any material
+        changes at least 30 days before they take effect. Continued use of the Service after the
+        effective date constitutes acceptance of the updated Terms.
+      </p>
+
+      <h2>16. Severability</h2>
+      <p>
+        If any provision of these Terms is found to be unenforceable, the remaining provisions shall
+        remain in full force and effect.
+      </p>
+
+      <h2>17. Contact</h2>
+      <p>
+        For questions about these Terms, contact us at{' '}
+        <a href="mailto:legal@resolveuae.com" className="text-gold-400 hover:text-gold-300">
+          legal@resolveuae.com
+        </a>
+        .
+      </p>
+    </LegalPageLayout>
+  )
+}
+
+export default TermsOfServicePage

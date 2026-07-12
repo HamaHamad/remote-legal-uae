@@ -1,11 +1,13 @@
 import { Component } from 'react'
 import { AlertTriangle, RefreshCw, Home } from 'lucide-react'
+import { captureException } from '@/lib/monitoring'
 
 /**
  * ErrorBoundary
  * Wraps the entire app — catches any unhandled JS/React errors
  * and shows a friendly recovery screen instead of a blank white page.
  *
+ * In production, errors are sent to Sentry via captureException().
  * Must be a class component (React hooks can't catch render errors).
  */
 export class ErrorBoundary extends Component {
@@ -25,7 +27,8 @@ export class ErrorBoundary extends Component {
       console.error('[ErrorBoundary] Caught error:', error)
       console.error('[ErrorBoundary] Component stack:', info?.componentStack)
     }
-    // In production you'd send this to an error tracking service (Sentry etc.)
+    // Send to Sentry in production (no-op if Sentry is not initialized)
+    captureException(error, { componentStack: info?.componentStack })
   }
 
   handleReload = () => {
@@ -43,7 +46,7 @@ export class ErrorBoundary extends Component {
     }
 
     const isDev = import.meta.env.DEV
-    const msg   = this.state.error?.message || 'An unexpected error occurred'
+    const msg = this.state.error?.message || 'An unexpected error occurred'
 
     return (
       <div
@@ -71,11 +74,14 @@ export class ErrorBoundary extends Component {
           {/* Icon */}
           <div
             style={{
-              width: '64px', height: '64px',
+              width: '64px',
+              height: '64px',
               borderRadius: '50%',
               background: 'rgba(239,68,68,0.08)',
               border: '1.5px solid rgba(239,68,68,0.2)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
               margin: '0 auto 20px',
             }}
           >
@@ -85,15 +91,24 @@ export class ErrorBoundary extends Component {
           {/* Title */}
           <h1
             style={{
-              fontSize: '22px', fontWeight: 700,
-              color: '#f5f0e8', margin: '0 0 10px',
+              fontSize: '22px',
+              fontWeight: 700,
+              color: '#f5f0e8',
+              margin: '0 0 10px',
               fontFamily: "'Cormorant Garamond', Georgia, serif",
             }}
           >
             Something went wrong
           </h1>
 
-          <p style={{ fontSize: '14px', color: 'rgba(232,226,216,0.55)', lineHeight: 1.65, margin: '0 0 24px' }}>
+          <p
+            style={{
+              fontSize: '14px',
+              color: 'rgba(232,226,216,0.55)',
+              lineHeight: 1.65,
+              margin: '0 0 24px',
+            }}
+          >
             An unexpected error occurred. Your data is safe — please try refreshing the page.
           </p>
 
@@ -109,10 +124,27 @@ export class ErrorBoundary extends Component {
                 textAlign: 'start',
               }}
             >
-              <p style={{ fontSize: '11px', fontWeight: 700, color: 'rgba(239,68,68,0.7)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '6px' }}>
+              <p
+                style={{
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  color: 'rgba(239,68,68,0.7)',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em',
+                  marginBottom: '6px',
+                }}
+              >
                 Error (dev only)
               </p>
-              <p style={{ fontSize: '12px', color: '#ef4444', fontFamily: 'monospace', wordBreak: 'break-all', lineHeight: 1.5 }}>
+              <p
+                style={{
+                  fontSize: '12px',
+                  color: '#ef4444',
+                  fontFamily: 'monospace',
+                  wordBreak: 'break-all',
+                  lineHeight: 1.5,
+                }}
+              >
                 {msg}
               </p>
             </div>
@@ -123,11 +155,17 @@ export class ErrorBoundary extends Component {
             <button
               onClick={this.handleReload}
               style={{
-                display: 'flex', alignItems: 'center', gap: '6px',
-                padding: '10px 20px', borderRadius: '10px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                padding: '10px 20px',
+                borderRadius: '10px',
                 background: 'linear-gradient(135deg, #c9992e, #e8b84b)',
-                color: '#060c1a', fontWeight: 700, fontSize: '13px',
-                border: 'none', cursor: 'pointer',
+                color: '#060c1a',
+                fontWeight: 700,
+                fontSize: '13px',
+                border: 'none',
+                cursor: 'pointer',
                 transition: 'all 0.2s',
               }}
             >
@@ -137,12 +175,16 @@ export class ErrorBoundary extends Component {
             <button
               onClick={this.handleHome}
               style={{
-                display: 'flex', alignItems: 'center', gap: '6px',
-                padding: '10px 20px', borderRadius: '10px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                padding: '10px 20px',
+                borderRadius: '10px',
                 background: 'transparent',
                 color: 'rgba(232,226,216,0.6)',
                 border: '1px solid rgba(255,255,255,0.1)',
-                fontWeight: 500, fontSize: '13px',
+                fontWeight: 500,
+                fontSize: '13px',
                 cursor: 'pointer',
               }}
             >

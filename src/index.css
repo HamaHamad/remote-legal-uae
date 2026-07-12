@@ -280,3 +280,118 @@ h3 {
     transform: translateX(0);
   }
 }
+
+/* ─── Legal page prose styling ───────────────────────────────── */
+.prose-legal {
+  color: var(--text-secondary);
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+.prose-legal h2 {
+  color: var(--text-primary);
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.prose-legal h3 {
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.prose-legal p {
+  margin-bottom: 1rem;
+}
+
+.prose-legal ul,
+.prose-legal ol {
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+}
+
+.prose-legal ul {
+  list-style: disc;
+}
+
+.prose-legal ol {
+  list-style: decimal;
+}
+
+.prose-legal li {
+  margin-bottom: 0.5rem;
+}
+
+.prose-legal strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.prose-legal a {
+  color: var(--gold-light);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.prose-legal a:hover {
+  color: var(--gold-primary);
+}
+
+.prose-legal code {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border);
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.85em;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--gold-light);
+}
+
+.prose-legal .legal-callout {
+  background: rgba(217, 157, 24, 0.06);
+  border: 1px solid rgba(217, 157, 24, 0.2);
+  border-left: 3px solid var(--gold-primary);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.prose-legal .legal-callout p {
+  margin-bottom: 0.5rem;
+}
+
+.prose-legal .legal-callout p:last-child {
+  margin-bottom: 0;
+}
+
+.prose-legal .legal-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.9rem;
+}
+
+.prose-legal .legal-table th {
+  text-align: left;
+  color: var(--text-primary);
+  font-weight: 600;
+  padding: 0.6rem 0.8rem;
+  border-bottom: 2px solid var(--gold-primary);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.prose-legal .legal-table td {
+  padding: 0.6rem 0.8rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-secondary);
+}
+
+.prose-legal .legal-table tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+}
