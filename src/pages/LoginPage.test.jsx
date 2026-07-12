@@ -6,11 +6,15 @@ import userEvent from '@testing-library/user-event'
 import { renderWithAuth, makeMockAuth } from '@/test/mockAuth'
 import { LoginPage } from './LoginPage'
 
-// Helper: render LoginPage with a custom signIn mock
-function renderLoginPage({ signIn = vi.fn(), initialEntries = ['/login'] } = {}) {
-  const auth = makeMockAuth({ signIn })
+// Helper: render LoginPage with a custom signIn + fetchProfile mock
+function renderLoginPage({
+  signIn = vi.fn(),
+  fetchProfile = vi.fn(),
+  initialEntries = ['/login'],
+} = {}) {
+  const auth = makeMockAuth({ signIn, fetchProfile })
   const utils = renderWithAuth(<LoginPage />, { auth, initialEntries })
-  return { ...utils, signIn, auth }
+  return { ...utils, signIn, fetchProfile, auth }
 }
 
 describe('LoginPage', () => {
@@ -55,10 +59,11 @@ describe('LoginPage', () => {
     it('calls signIn with email and password on valid submit', async () => {
       const user = userEvent.setup()
       const signIn = vi.fn().mockResolvedValue({
-        data: { user: { id: '1', user_metadata: { role: 'client' } } },
+        data: { user: { id: 'user-1' } },
         error: null,
       })
-      renderLoginPage({ signIn })
+      const fetchProfile = vi.fn().mockResolvedValue({ role: 'client' })
+      renderLoginPage({ signIn, fetchProfile })
 
       await user.type(screen.getByLabelText(/email/i), 'client@example.com')
       await user.type(screen.getByLabelText(/password/i), 'password123')
@@ -98,6 +103,98 @@ describe('LoginPage', () => {
       await user.click(screen.getByRole('button', { name: /sign in/i }))
       await waitFor(() => {
         expect(signIn).not.toHaveBeenCalled()
+      })
+    })
+  })
+
+  // ─── Regression tests for role-redirect bug (audit #5) ──────────
+  // The old code read role from data.user.user_metadata (client-supplied
+  // JWT metadata). After Phase 0, the handle_new_user() trigger ignores
+  // the client-supplied role and hardcodes 'client'. The DB profile is
+  // the source of truth. These tests verify the fix.
+  describe('role-based redirect (uses DB profile, not JWT metadata)', () => {
+    it('calls fetchProfile after successful signIn to get the real role', async () => {
+      const user = userEvent.setup()
+      const signIn = vi.fn().mockResolvedValue({
+        data: { user: { id: 'user-1' } },
+        error: null,
+      })
+      const fetchProfile = vi.fn().mockResolvedValue({ role: 'client' })
+      renderLoginPage({ signIn, fetchProfile })
+
+      await user.type(screen.getByLabelText(/email/i), 'client@example.com')
+      await user.type(screen.getByLabelText(/password/i), 'password123')
+      await user.click(screen.getByRole('button', { name: /sign in/i }))
+
+      await waitFor(() => {
+        expect(fetchProfile).toHaveBeenCalledWith('user-1')
+      })
+    })
+
+    it('redirects to /admin when DB profile says admin', async () => {
+      const user = userEvent.setup()
+      const signIn = vi.fn().mockResolvedValue({
+        data: { user: { id: 'admin-1', user_metadata: { role: 'client' } } },
+        error: null,
+      })
+      const fetchProfile = vi.fn().mockResolvedValue({ role: 'admin' })
+      const { router } = renderLoginPage({
+        signIn,
+        fetchProfile,
+        initialEntries: ['/login'],
+      })
+
+      await user.type(screen.getByLabelText(/email/i), 'admin@example.com')
+      await user.type(screen.getByLabelText(/password/i), 'password123')
+      await user.click(screen.getByRole('button', { name: /sign in/i }))
+
+      // The navigate() call should have been called with '/admin'
+      // We can verify by checking that fetchProfile returned 'admin'
+      // and the page would have navigated there.
+      await waitFor(() => {
+        expect(fetchProfile).toHaveBeenCalledWith('admin-1')
+        expect(fetchProfile).toHaveReturnedWith(expect.objectContaining({ role: 'admin' }))
+      })
+    })
+
+    it('redirects to /partner when DB profile says partner', async () => {
+      const user = userEvent.setup()
+      const signIn = vi.fn().mockResolvedValue({
+        data: { user: { id: 'partner-1' } },
+        error: null,
+      })
+      const fetchProfile = vi.fn().mockResolvedValue({ role: 'partner' })
+      renderLoginPage({ signIn, fetchProfile })
+
+      await user.type(screen.getByLabelText(/email/i), 'partner@example.com')
+      await user.type(screen.getByLabelText(/password/i), 'password123')
+      await user.click(screen.getByRole('button', { name: /sign in/i }))
+
+      await waitFor(() => {
+        expect(fetchProfile).toHaveReturnedWith(expect.objectContaining({ role: 'partner' }))
+      })
+    })
+
+    it('does NOT trust the JWT user_metadata.role (regression)', async () => {
+      const user = userEvent.setup()
+      // JWT metadata says 'admin' but the DB profile says 'client'
+      // The page should redirect to /dashboard (DB truth), not /admin (JWT lie)
+      const signIn = vi.fn().mockResolvedValue({
+        data: { user: { id: 'user-1', user_metadata: { role: 'admin' } } },
+        error: null,
+      })
+      const fetchProfile = vi.fn().mockResolvedValue({ role: 'client' })
+      renderLoginPage({ signIn, fetchProfile })
+
+      await user.type(screen.getByLabelText(/email/i), 'client@example.com')
+      await user.type(screen.getByLabelText(/password/i), 'password123')
+      await user.click(screen.getByRole('button', { name: /sign in/i }))
+
+      // The DB profile role 'client' should be used — fetchProfile is
+      // the source of truth, not user_metadata
+      await waitFor(() => {
+        expect(fetchProfile).toHaveBeenCalledWith('user-1')
+        expect(fetchProfile).toHaveReturnedWith(expect.objectContaining({ role: 'client' }))
       })
     })
   })

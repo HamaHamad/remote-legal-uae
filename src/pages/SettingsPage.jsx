@@ -1,8 +1,18 @@
 import { useState, useEffect } from 'react'
 import {
-  Bell, Globe, Shield, Trash2, LogOut,
-  CheckCircle, AlertCircle, ChevronRight,
-  Mail, Brain, CreditCard, Briefcase, Users
+  Bell,
+  Globe,
+  Shield,
+  Trash2,
+  LogOut,
+  CheckCircle,
+  AlertCircle,
+  ChevronRight,
+  Mail,
+  Brain,
+  CreditCard,
+  Briefcase,
+  Users,
 } from 'lucide-react'
 import { clsx } from 'clsx'
 import { supabase } from '@/lib/supabase'
@@ -25,10 +35,12 @@ function Toggle({ checked, onChange, disabled = false }) {
         disabled && 'opacity-40 cursor-not-allowed',
       )}
     >
-      <span className={clsx(
-        'inline-block h-5 w-5 rounded-full bg-white shadow-sm transition-transform duration-200',
-        checked ? 'translate-x-5' : 'translate-x-0',
-      )} />
+      <span
+        className={clsx(
+          'inline-block h-5 w-5 rounded-full bg-white shadow-sm transition-transform duration-200',
+          checked ? 'translate-x-5' : 'translate-x-0',
+        )}
+      />
     </button>
   )
 }
@@ -36,25 +48,29 @@ function Toggle({ checked, onChange, disabled = false }) {
 // ─── Section card ──────────────────────────────────────────────────
 function SectionCard({ title, icon: Icon, children, danger = false }) {
   return (
-    <div className={clsx(
-      'rounded-2xl p-6',
-      danger
-        ? 'bg-red-500/5 border border-red-500/15'
-        : 'glass-panel',
-    )}>
+    <div
+      className={clsx(
+        'rounded-2xl p-6',
+        danger ? 'bg-red-500/5 border border-red-500/15' : 'glass-panel',
+      )}
+    >
       <div className="flex items-center gap-2.5 mb-5 pb-4 border-b border-[var(--border)]">
-        <div className={clsx(
-          'w-7 h-7 rounded-lg flex items-center justify-center',
-          danger
-            ? 'bg-red-500/10 border border-red-500/20 text-red-400'
-            : 'bg-gold-500/10 border border-gold-500/20 text-gold-400',
-        )}>
+        <div
+          className={clsx(
+            'w-7 h-7 rounded-lg flex items-center justify-center',
+            danger
+              ? 'bg-red-500/10 border border-red-500/20 text-red-400'
+              : 'bg-gold-500/10 border border-gold-500/20 text-gold-400',
+          )}
+        >
           <Icon size={14} />
         </div>
-        <h2 className={clsx(
-          'text-sm font-semibold',
-          danger ? 'text-red-400' : 'text-[var(--text-primary)]',
-        )}>
+        <h2
+          className={clsx(
+            'text-sm font-semibold',
+            danger ? 'text-red-400' : 'text-[var(--text-primary)]',
+          )}
+        >
           {title}
         </h2>
       </div>
@@ -85,12 +101,14 @@ function NotifRow({ icon: Icon, label, desc, checked, onChange }) {
 function Toast({ msg, type = 'success' }) {
   if (!msg) return null
   return (
-    <div className={clsx(
-      'flex items-center gap-2.5 px-4 py-3 rounded-xl text-sm font-medium animate-fade-in',
-      type === 'success'
-        ? 'bg-green-500/10 border border-green-500/25 text-green-400'
-        : 'bg-red-500/10 border border-red-500/25 text-red-400',
-    )}>
+    <div
+      className={clsx(
+        'flex items-center gap-2.5 px-4 py-3 rounded-xl text-sm font-medium animate-fade-in',
+        type === 'success'
+          ? 'bg-green-500/10 border border-green-500/25 text-green-400'
+          : 'bg-red-500/10 border border-red-500/25 text-red-400',
+      )}
+    >
       {type === 'success' ? <CheckCircle size={15} /> : <AlertCircle size={15} />}
       {msg}
     </div>
@@ -99,27 +117,27 @@ function Toast({ msg, type = 'success' }) {
 
 // ─── Default notification prefs ────────────────────────────────────
 const DEFAULT_PREFS = {
-  email_ai_ready:       true,
-  email_case_assigned:  true,
-  email_payment:        true,
-  email_task_update:    true,
-  inapp_ai_ready:       true,
-  inapp_case_assigned:  true,
-  inapp_payment:        true,
-  inapp_task_update:    true,
+  email_ai_ready: true,
+  email_case_assigned: true,
+  email_payment: true,
+  email_task_update: true,
+  inapp_ai_ready: true,
+  inapp_case_assigned: true,
+  inapp_payment: true,
+  inapp_task_update: true,
 }
 
 // ─── Main Page ─────────────────────────────────────────────────────
 export function SettingsPage() {
   const { user, profile, signOut, updateLanguage } = useAuth()
 
-  const [prefs,       setPrefs]       = useState(DEFAULT_PREFS)
+  const [prefs, setPrefs] = useState(DEFAULT_PREFS)
   const [selectedLang, setSelectedLang] = useState(profile?.language || 'en')
-  const [saving,      setSaving]      = useState(false)
-  const [toast,       setToast]       = useState(null)
-  const [showDelete,  setShowDelete]  = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [toast, setToast] = useState(null)
+  const [showDelete, setShowDelete] = useState(false)
   const [deleteInput, setDeleteInput] = useState('')
-  const [deleting,    setDeleting]    = useState(false)
+  const [deleting, setDeleting] = useState(false)
 
   // Load saved prefs from Supabase
   useEffect(() => {
@@ -176,7 +194,7 @@ export function SettingsPage() {
   }
 
   // ── Toggle pref helper ───────────────────────────────────────────
-  const togglePref = (key) => (val) => setPrefs(p => ({ ...p, [key]: val }))
+  const togglePref = (key) => (val) => setPrefs((p) => ({ ...p, [key]: val }))
 
   // ── Delete account ───────────────────────────────────────────────
   const handleDeleteAccount = async () => {
@@ -196,7 +214,6 @@ export function SettingsPage() {
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
-
       {/* Header */}
       <div className="animate-slide-up">
         <h1 className="font-display text-3xl font-semibold text-[var(--text-primary)] mb-1">
@@ -218,7 +235,7 @@ export function SettingsPage() {
                 Interface Language
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                {SUPPORTED_LANGUAGES.map(lang => (
+                {SUPPORTED_LANGUAGES.map((lang) => (
                   <button
                     key={lang.code}
                     onClick={() => setSelectedLang(lang.code)}
@@ -325,12 +342,7 @@ export function SettingsPage() {
             />
           </div>
 
-          <Button
-            onClick={handleSaveNotifications}
-            loading={saving}
-            size="sm"
-            icon={Bell}
-          >
+          <Button onClick={handleSaveNotifications} loading={saving} size="sm" icon={Bell}>
             Save Notification Preferences
           </Button>
         </SectionCard>
@@ -341,13 +353,13 @@ export function SettingsPage() {
         <SectionCard title="Security" icon={Shield}>
           <div className="space-y-2">
             {[
-              { label: 'Change Password',      desc: 'Update your account password',     href: '/profile' },
-              { label: 'Edit Profile',          desc: 'Update your name and details',     href: '/profile' },
-              { label: 'Active Sessions',       desc: 'Manage where you\'re logged in',   href: null },
-            ].map(item => (
+              { label: 'Change Password', desc: 'Update your account password', href: '/profile' },
+              { label: 'Edit Profile', desc: 'Update your name and details', href: '/profile' },
+              { label: 'Active Sessions', desc: "Manage where you're logged in", href: null },
+            ].map((item) => (
               <button
                 key={item.label}
-                onClick={() => item.href ? (window.location.href = item.href) : null}
+                onClick={() => (item.href ? (window.location.href = item.href) : null)}
                 disabled={!item.href}
                 className="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] hover:border-white/15 hover:bg-[var(--bg-card)] transition-all disabled:opacity-50 disabled:cursor-not-allowed text-start"
               >
@@ -365,14 +377,32 @@ export function SettingsPage() {
       {/* Sign out */}
       <div className="animate-slide-up-delay-3">
         <SectionCard title="Session" icon={LogOut}>
-          <Button
-            onClick={signOut}
-            variant="secondary"
-            icon={LogOut}
-            size="sm"
-          >
-            Sign Out of All Devices
-          </Button>
+          <div className="space-y-3">
+            <div>
+              <p className="text-sm text-[var(--text-secondary)] mb-3">
+                Sign out of your current session, or revoke access on all devices where you're
+                logged in.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-2">
+                <Button
+                  onClick={() => signOut({ scope: 'local' })}
+                  variant="secondary"
+                  icon={LogOut}
+                  size="sm"
+                >
+                  Sign Out (This Device)
+                </Button>
+                <Button
+                  onClick={() => signOut({ scope: 'global' })}
+                  variant="danger"
+                  icon={LogOut}
+                  size="sm"
+                >
+                  Sign Out of All Devices
+                </Button>
+              </div>
+            </div>
+          </div>
         </SectionCard>
       </div>
 
@@ -382,7 +412,8 @@ export function SettingsPage() {
           {!showDelete ? (
             <div>
               <p className="text-sm text-[#e8e2d8]/60 mb-4">
-                Permanently delete your account and all associated data. This action cannot be undone.
+                Permanently delete your account and all associated data. This action cannot be
+                undone.
               </p>
               <button
                 onClick={() => setShowDelete(true)}
@@ -407,14 +438,17 @@ export function SettingsPage() {
                 <input
                   type="email"
                   value={deleteInput}
-                  onChange={e => setDeleteInput(e.target.value)}
+                  onChange={(e) => setDeleteInput(e.target.value)}
                   placeholder={user?.email}
                   className="w-full px-3 py-2.5 bg-[var(--bg-elevated)] border border-red-500/30 rounded-lg text-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:border-red-500 transition-all"
                 />
               </div>
               <div className="flex gap-2">
                 <button
-                  onClick={() => { setShowDelete(false); setDeleteInput('') }}
+                  onClick={() => {
+                    setShowDelete(false)
+                    setDeleteInput('')
+                  }}
                   className="flex-1 px-4 py-2 rounded-lg border border-[var(--border)] text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-white/15 transition-all"
                 >
                   Cancel

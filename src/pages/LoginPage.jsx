@@ -9,7 +9,7 @@ import LanguageSwitcher from '@/components/LanguageSwitcher'
 import { LegalDisclaimer } from '@/components/LegalDisclaimer'
 export function LoginPage() {
   const { t } = useTranslation()
-  const { signIn } = useAuth()
+  const { signIn, fetchProfile } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -23,9 +23,9 @@ export function LoginPage() {
   // ─── Validation ─────────────────────────────────────────────────
   const validate = () => {
     const e = {}
-    if (!form.email.trim())                             e.email = t('errors.emailRequired')
+    if (!form.email.trim()) e.email = t('errors.emailRequired')
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = t('errors.invalidEmail')
-    if (!form.password)                                 e.password = t('errors.passwordRequired')
+    if (!form.password) e.password = t('errors.passwordRequired')
     setErrors(e)
     return Object.keys(e).length === 0
   }
@@ -38,17 +38,29 @@ export function LoginPage() {
 
     setLoading(true)
     const { data, error } = await signIn({ email: form.email, password: form.password })
-    setLoading(false)
 
     if (error) {
+      setLoading(false)
       setServerError(error.message)
       return
     }
 
-    // Redirect based on role
-    const role = data?.user?.user_metadata?.role
+    // ── Redirect based on role from the DB profile ──────────────
+    // SECURITY: Do NOT read role from data.user.user_metadata — that's
+    // the client-supplied JWT metadata, which after Phase 0 is always
+    // ignored by the handle_new_user() trigger (role is hardcoded to
+    // 'client'). The DB profile is the source of truth.
     const destMap = { admin: '/admin', partner: '/partner', client: '/dashboard' }
-    navigate(from || destMap[role] || '/dashboard', { replace: true })
+
+    if (data?.user?.id) {
+      const profile = await fetchProfile(data.user.id)
+      const role = profile?.role || 'client'
+      navigate(from || destMap[role] || '/dashboard', { replace: true })
+    } else {
+      // No user id — fall back to dashboard
+      navigate(from || '/dashboard', { replace: true })
+    }
+    setLoading(false)
   }
 
   return (
@@ -67,7 +79,6 @@ export function LoginPage() {
       {/* Main */}
       <div className="flex-1 flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-sm animate-slide-up">
-
           {/* Header */}
           <div className="text-center mb-8">
             <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gold-500/10 border border-gold-500/20 mb-5 animate-pulse-gold">
@@ -76,9 +87,7 @@ export function LoginPage() {
             <h1 className="font-display text-3xl font-semibold text-[var(--text-primary)] mb-2">
               {t('auth.welcomeBack')}
             </h1>
-            <p className="text-sm text-[var(--text-secondary)]">
-              {t('auth.loginSubtitle')}
-            </p>
+            <p className="text-sm text-[var(--text-secondary)]">{t('auth.loginSubtitle')}</p>
           </div>
 
           {/* Card */}
@@ -98,7 +107,10 @@ export function LoginPage() {
                 icon={Mail}
                 placeholder={t('auth.emailPlaceholder')}
                 value={form.email}
-                onChange={e => { setForm(f => ({ ...f, email: e.target.value })); setErrors(v => ({ ...v, email: '' })) }}
+                onChange={(e) => {
+                  setForm((f) => ({ ...f, email: e.target.value }))
+                  setErrors((v) => ({ ...v, email: '' }))
+                }}
                 error={errors.email}
                 required
                 autoComplete="email"
@@ -111,7 +123,10 @@ export function LoginPage() {
                 icon={Lock}
                 placeholder={t('auth.passwordPlaceholder')}
                 value={form.password}
-                onChange={e => { setForm(f => ({ ...f, password: e.target.value })); setErrors(v => ({ ...v, password: '' })) }}
+                onChange={(e) => {
+                  setForm((f) => ({ ...f, password: e.target.value }))
+                  setErrors((v) => ({ ...v, password: '' }))
+                }}
                 error={errors.password}
                 required
                 autoComplete="current-password"
@@ -169,13 +184,23 @@ function ScalesLogo({ large = false }) {
   const size = large ? 28 : 20
   return (
     <svg width={size} height={size} viewBox="0 0 28 28" fill="none">
-      <path d="M14 3V25" stroke="#D99D18" strokeWidth="1.6" strokeLinecap="round"/>
-      <path d="M8 3H20" stroke="#D99D18" strokeWidth="1.6" strokeLinecap="round"/>
-      <path d="M14 3L5 11" stroke="#D99D18" strokeWidth="1.6" strokeLinecap="round"/>
-      <path d="M14 3L23 11" stroke="#D99D18" strokeWidth="1.6" strokeLinecap="round"/>
-      <path d="M3 14C3 14 4 18 8 18C12 18 13 14 13 14" stroke="#D99D18" strokeWidth="1.6" strokeLinecap="round"/>
-      <path d="M15 14C15 14 16 18 20 18C24 18 25 14 25 14" stroke="#D99D18" strokeWidth="1.6" strokeLinecap="round"/>
-      <path d="M10 25H18" stroke="#D99D18" strokeWidth="1.6" strokeLinecap="round"/>
+      <path d="M14 3V25" stroke="#D99D18" strokeWidth="1.6" strokeLinecap="round" />
+      <path d="M8 3H20" stroke="#D99D18" strokeWidth="1.6" strokeLinecap="round" />
+      <path d="M14 3L5 11" stroke="#D99D18" strokeWidth="1.6" strokeLinecap="round" />
+      <path d="M14 3L23 11" stroke="#D99D18" strokeWidth="1.6" strokeLinecap="round" />
+      <path
+        d="M3 14C3 14 4 18 8 18C12 18 13 14 13 14"
+        stroke="#D99D18"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+      />
+      <path
+        d="M15 14C15 14 16 18 20 18C24 18 25 14 25 14"
+        stroke="#D99D18"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+      />
+      <path d="M10 25H18" stroke="#D99D18" strokeWidth="1.6" strokeLinecap="round" />
     </svg>
   )
 }

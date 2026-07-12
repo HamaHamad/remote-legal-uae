@@ -5,10 +5,10 @@ import i18n, { isRTL } from '@/i18n'
 const AuthContext = createContext(null)
 
 export function AuthProvider({ children }) {
-  const [user,    setUser]    = useState(null)
+  const [user, setUser] = useState(null)
   const [profile, setProfile] = useState(null)
   const [loading, setLoading] = useState(true)
-  const [error,   setError]   = useState(null)
+  const [error, setError] = useState(null)
   const [configError, setConfigError] = useState(isMisconfigured)
 
   // ─── Apply language + RTL from user profile ───────────────────
@@ -27,42 +27,47 @@ export function AuthProvider({ children }) {
   }, [])
 
   // ─── Load user profile from DB ────────────────────────────────
-  const fetchProfile = useCallback(async (userId) => {
-    try {
-      const { data, error: dbErr } = await supabase
-        .from('users')
-        .select('*')
-        .eq('id', userId)
-        .single()
+  const fetchProfile = useCallback(
+    async (userId) => {
+      try {
+        const { data, error: dbErr } = await supabase
+          .from('users')
+          .select('*')
+          .eq('id', userId)
+          .single()
 
-      if (dbErr) throw dbErr
-      setProfile(data)
+        if (dbErr) throw dbErr
+        setProfile(data)
 
-      // Language priority:
-      // 1. localStorage (user's explicit choice in this browser)
-      // 2. DB value (synced across devices)
-      // 3. Fallback to 'en'
-      const storedLang  = localStorage.getItem('rlco-lang')
-      const supported   = ['en', 'ar', 'hi', 'ur', 'tl']
-      const langToUse   = (storedLang && supported.includes(storedLang))
-        ? storedLang
-        : (data?.language || 'en')
+        // Language priority:
+        // 1. localStorage (user's explicit choice in this browser)
+        // 2. DB value (synced across devices)
+        // 3. Fallback to 'en'
+        const storedLang = localStorage.getItem('rlco-lang')
+        const supported = ['en', 'ar', 'hi', 'ur', 'tl']
+        const langToUse =
+          storedLang && supported.includes(storedLang) ? storedLang : data?.language || 'en'
 
-      applyLanguage(langToUse)
+        applyLanguage(langToUse)
 
-      // Sync DB if localStorage differs from what DB has stored
-      if (storedLang && supported.includes(storedLang) && storedLang !== data?.language) {
-        supabase.from('users').update({ language: storedLang }).eq('id', userId)
-          .then(() => {})
-          .catch(() => {})
+        // Sync DB if localStorage differs from what DB has stored
+        if (storedLang && supported.includes(storedLang) && storedLang !== data?.language) {
+          supabase
+            .from('users')
+            .update({ language: storedLang })
+            .eq('id', userId)
+            .then(() => {})
+            .catch(() => {})
+        }
+
+        return data
+      } catch (err) {
+        console.error('[AuthContext] fetchProfile error:', err.message)
+        return null
       }
-
-      return data
-    } catch (err) {
-      console.error('[AuthContext] fetchProfile error:', err.message)
-      return null
-    }
-  }, [applyLanguage])
+    },
+    [applyLanguage],
+  )
 
   // ─── Init auth ────────────────────────────────────────────────
   useEffect(() => {
@@ -71,7 +76,7 @@ export function AuthProvider({ children }) {
       return
     }
 
-    let isMounted  = true
+    let isMounted = true
     let didResolve = false
 
     // Helper — called once when we know the auth state
@@ -90,31 +95,33 @@ export function AuthProvider({ children }) {
 
     // PRIMARY: onAuthStateChange fires almost immediately on page load
     // with INITIAL_SESSION event — use this as the main source of truth
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        if (!isMounted) return
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (!isMounted) return
 
-        if (event === 'INITIAL_SESSION') {
-          // This fires within ~100ms — resolves the loading state
-          resolve(session?.user || null)
-        } else if (event === 'SIGNED_IN' && session?.user) {
-          setUser(session.user)
-          fetchProfile(session.user.id)
-        } else if (event === 'SIGNED_OUT') {
-          setUser(null)
-          setProfile(null)
-        } else if (event === 'TOKEN_REFRESHED' && session?.user) {
-          setUser(session.user)
-        }
+      if (event === 'INITIAL_SESSION') {
+        // This fires within ~100ms — resolves the loading state
+        resolve(session?.user || null)
+      } else if (event === 'SIGNED_IN' && session?.user) {
+        setUser(session.user)
+        fetchProfile(session.user.id)
+      } else if (event === 'SIGNED_OUT') {
+        setUser(null)
+        setProfile(null)
+      } else if (event === 'TOKEN_REFRESHED' && session?.user) {
+        setUser(session.user)
       }
-    )
+    })
 
     // FALLBACK: if INITIAL_SESSION never fires (rare edge case),
     // try getSession() after 2s — then force-unblock after 6s
     const fallbackTimer = setTimeout(async () => {
       if (didResolve || !isMounted) return
       try {
-        const { data: { session } } = await supabase.auth.getSession()
+        const {
+          data: { session },
+        } = await supabase.auth.getSession()
         resolve(session?.user || null)
       } catch {
         resolve(null)
@@ -153,7 +160,7 @@ export function AuthProvider({ children }) {
         options: {
           data: {
             full_name: fullName,
-            language: currentLang,   // ← read by trigger to set user.language
+            language: currentLang, // ← read by trigger to set user.language
             // NOTE: no `role` here — trigger ignores it anyway
           },
         },
@@ -184,10 +191,12 @@ export function AuthProvider({ children }) {
   }, [])
 
   // ─── Sign Out ─────────────────────────────────────────────────
-  const signOut = useCallback(async () => {
+  // scope: 'local'  (default) — sign out only this session/device
+  // scope: 'global'            — sign out ALL sessions across all devices
+  const signOut = useCallback(async ({ scope = 'local' } = {}) => {
     setError(null)
     try {
-      await supabase.auth.signOut()
+      await supabase.auth.signOut({ scope })
     } catch (err) {
       console.error('[signOut]', err.message)
     }
@@ -196,25 +205,37 @@ export function AuthProvider({ children }) {
   }, [])
 
   // ─── Update Language Preference ───────────────────────────────
-  const updateLanguage = useCallback(async (lang) => {
-    applyLanguage(lang)
-    if (user) {
-      await supabase.from('users').update({ language: lang }).eq('id', user.id)
-      setProfile(prev => prev ? { ...prev, language: lang } : prev)
-    }
-  }, [user, applyLanguage])
+  const updateLanguage = useCallback(
+    async (lang) => {
+      applyLanguage(lang)
+      if (user) {
+        await supabase.from('users').update({ language: lang }).eq('id', user.id)
+        setProfile((prev) => (prev ? { ...prev, language: lang } : prev))
+      }
+    },
+    [user, applyLanguage],
+  )
 
-  const role      = profile?.role || null
-  const isAdmin   = role === 'admin'
+  const role = profile?.role || null
+  const isAdmin = role === 'admin'
   const isPartner = role === 'partner'
-  const isClient  = role === 'client'
+  const isClient = role === 'client'
 
   const value = {
-    user, profile, role,
-    isAdmin, isPartner, isClient,
-    loading, error, configError,
-    signUp, signIn, signOut,
-    updateLanguage, fetchProfile,
+    user,
+    profile,
+    role,
+    isAdmin,
+    isPartner,
+    isClient,
+    loading,
+    error,
+    configError,
+    signUp,
+    signIn,
+    signOut,
+    updateLanguage,
+    fetchProfile,
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
@@ -227,4 +248,3 @@ export function useAuth() {
 }
 
 export default AuthContext
-
