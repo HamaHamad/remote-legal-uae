@@ -128,7 +128,9 @@
     "noDescription": "Walang paglalarawan.",
     "createTitle": "Magbukas ng Bagong Kaso",
     "createSubtitle": "Sabihin sa amin ang iyong legal na bagay",
-    "viewCase": "Tingnan ang Kaso"
+    "viewCase": "Tingnan ang Kaso",
+    "aiAnalyzing": "Sinusuri",
+    "aiPending": "Nakabinbin"
   },
   "notifications": {
     "title": "Mga Abiso",
@@ -140,7 +142,10 @@
     "aiReady": "Handa na ang iyong AI ulat",
     "paymentSuccess": "Matagumpay ang bayad — na-unlock ang ulat",
     "taskCreated": "May bagong gawaing itinalaga sa iyo",
-    "taskDone": "Natapos na ang gawain"
+    "taskDone": "Natapos na ang gawain",
+    "empty": "Wala pang abiso",
+    "unread": "hindi pa nabasa",
+    "showing": "Ipinapakita ang pinakabagong {{count}}"
   },
   "analytics": {
     "title": "Analytics",
@@ -196,5 +201,10 @@
     "comingSoon": "Paparating Na",
     "beta": "Beta",
     "new": "Bago"
+  },
+  "roles": {
+    "admin": "Admin",
+    "partner": "Partner",
+    "client": "Kliente"
   }
 }

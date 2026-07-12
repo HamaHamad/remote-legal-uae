@@ -115,20 +115,22 @@
     "active": "Active",
     "resolved": "Resolved",
     "types": {
-      "banking":    "Banking & Finance",
-      "car":        "Car & Traffic",
+      "banking": "Banking & Finance",
+      "car": "Car & Traffic",
       "employment": "Employment",
-      "rental":     "Rental & Property",
-      "legal":      "General Legal",
-      "visa":       "Visa Application",
-      "business":   "Business Setup",
-      "dispute":    "Legal Dispute",
-      "contract":   "Contract Review",
-      "property":   "Property Matter",
-      "family":     "Family Law",
-      "criminal":   "Criminal Defense",
-      "other":      "Other"
-    }
+      "rental": "Rental & Property",
+      "legal": "General Legal",
+      "visa": "Visa Application",
+      "business": "Business Setup",
+      "dispute": "Legal Dispute",
+      "contract": "Contract Review",
+      "property": "Property Matter",
+      "family": "Family Law",
+      "criminal": "Criminal Defense",
+      "other": "Other"
+    },
+    "aiAnalyzing": "Analyzing",
+    "aiPending": "Pending"
   },
   "notifications": {
     "title": "Notifications",
@@ -140,7 +142,10 @@
     "aiReady": "Your AI report is ready",
     "paymentSuccess": "Payment successful — report unlocked",
     "taskCreated": "New task assigned to you",
-    "taskDone": "Task completed"
+    "taskDone": "Task completed",
+    "empty": "No notifications yet",
+    "unread": "unread",
+    "showing": "Showing {{count}} most recent"
   },
   "analytics": {
     "title": "Analytics",
@@ -196,5 +201,10 @@
     "comingSoon": "Coming Soon",
     "beta": "Beta",
     "new": "New"
+  },
+  "roles": {
+    "admin": "Admin",
+    "partner": "Partner",
+    "client": "Client"
   }
 }

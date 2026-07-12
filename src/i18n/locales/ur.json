@@ -128,7 +128,9 @@
     "noDescription": "کوئی تفصیل فراہم نہیں کی گئی۔",
     "createTitle": "نیا کیس کھولیں",
     "createSubtitle": "اپنے قانونی معاملے کے بارے میں بتائیں",
-    "viewCase": "کیس دیکھیں"
+    "viewCase": "کیس دیکھیں",
+    "aiAnalyzing": "تجزیہ کیا جا رہا ہے",
+    "aiPending": "زیر التواء"
   },
   "notifications": {
     "title": "اطلاعات",
@@ -140,7 +142,10 @@
     "aiReady": "آپ کی AI رپورٹ تیار ہے",
     "paymentSuccess": "ادائیگی کامیاب — رپورٹ کھل گئی",
     "taskCreated": "آپ کو ایک نئی ذمہ داری سونپی گئی",
-    "taskDone": "کام مکمل"
+    "taskDone": "کام مکمل",
+    "empty": "ابھی کونی اطلاعات نہیں",
+    "unread": "غیر پڑھا",
+    "showing": "تازہ ترین {{count}} دکھائے جا رہے ہیں"
   },
   "analytics": {
     "title": "تجزیات",
@@ -196,5 +201,10 @@
     "comingSoon": "جلد آ رہا ہے",
     "beta": "بیٹا",
     "new": "نیا"
+  },
+  "roles": {
+    "admin": "ایڈمن",
+    "partner": "پارٹنر",
+    "client": "کلاںٹ"
   }
 }

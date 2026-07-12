@@ -4,6 +4,50 @@
 import '@testing-library/jest-dom/vitest'
 import { afterEach, beforeAll, beforeEach, vi } from 'vitest'
 import { cleanup } from '@testing-library/react'
+import { readFileSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
+import { dirname, join } from 'node:path'
+
+// ─── Load the English locale for realistic test translations ──────
+const __dirname = dirname(fileURLToPath(import.meta.url))
+const enLocale = JSON.parse(readFileSync(join(__dirname, '../i18n/locales/en.json'), 'utf-8'))
+
+/**
+ * Resolve a dotted i18n key against the loaded locale object.
+ * Returns the key itself if not found (so tests can detect missing keys).
+ */
+function resolveKey(obj, key) {
+  return key.split('.').reduce((acc, part) => {
+    if (acc && typeof acc === 'object' && part in acc) return acc[part]
+    return undefined
+  }, obj)
+}
+
+/**
+ * Interpolate {{variable}} placeholders in a translation string.
+ */
+function interpolate(str, options = {}) {
+  if (typeof str !== 'string') return str
+  return str.replace(/\{\{(\w+)\}\}/g, (_, name) => options[name] ?? '')
+}
+
+// ─── Mock react-i18next ──────────────────────────────────────────
+// Returns the actual English translation for each key, falling back
+// to defaultValue (if provided) or the key itself. This lets tests
+// assert on real text like "Email is required" while staying fast.
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key, options) => {
+      const value = resolveKey(enLocale, key)
+      if (value !== undefined) return interpolate(value, options)
+      if (options && 'defaultValue' in options) return interpolate(options.defaultValue, options)
+      return key
+    },
+    i18n: { language: 'en', changeLanguage: vi.fn() },
+    ready: true,
+  }),
+  initReactI18next: { type: '3rdParty', init: () => {} },
+}))
 
 // Auto-cleanup RTL renders after each test
 afterEach(() => {
