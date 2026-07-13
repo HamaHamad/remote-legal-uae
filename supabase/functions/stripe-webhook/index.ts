@@ -10,6 +10,17 @@
 //   - Returns 200 even on internal errors to prevent Stripe retry
 //     storms (errors are logged server-side).
 //
+// Deduplication:
+//   - Stripe retries webhook events if we don't return a 200 within
+//     ~5 seconds, or if there's a network blip. Without dedup, a
+//     retried `checkout.session.completed` would unlock the case
+//     twice (the second unlock is harmless but wasteful) and create
+//     duplicate payment records.
+//   - We now check the `stripe_webhook_events` table BEFORE processing.
+//     If the event ID already exists, we skip and return 200.
+//     After processing, we insert the event ID so future retries are
+//     caught.
+//
 // Required Supabase secrets:
 //   STRIPE_SECRET_KEY         — Stripe secret key
 //   STRIPE_WEBHOOK_SECRET     — from Stripe Dashboard → Webhooks → Signing secret
@@ -23,6 +34,57 @@
 import { serve } from 'https://deno.land/std@0.177.0/http/server.ts'
 import Stripe from 'https://esm.sh/stripe@14.21.0?target=deno'
 import { createAdminClient } from '../_shared/auth.ts'
+
+/**
+ * Check if a Stripe event has already been processed.
+ * Returns the existing record if found, null otherwise.
+ */
+async function checkEventProcessed(
+  supabase: ReturnType<typeof createAdminClient>,
+  eventId: string,
+): Promise<{ result: string } | null> {
+  const { data, error } = await supabase
+    .from('stripe_webhook_events')
+    .select('result')
+    .eq('id', eventId)
+    .maybeSingle()
+
+  if (error) {
+    console.error('[stripe-webhook] Dedup check error:', error.message)
+    // On error, proceed with processing — better to risk a duplicate
+    // than to skip a legitimate payment.
+    return null
+  }
+  return data
+}
+
+/**
+ * Record a processed event in the dedup table.
+ * Uses ON CONFLICT DO NOTHING so concurrent retries don't fail.
+ */
+async function recordEventProcessed(
+  supabase: ReturnType<typeof createAdminClient>,
+  eventId: string,
+  eventType: string,
+  details: { case_id?: string; session_id?: string; result: string; error_message?: string },
+): Promise<void> {
+  const { error } = await supabase.from('stripe_webhook_events').upsert(
+    {
+      id: eventId,
+      type: eventType,
+      case_id: details.case_id || null,
+      session_id: details.session_id || null,
+      result: details.result,
+      error_message: details.error_message || null,
+    },
+    { onConflict: 'id', ignoreDuplicates: true },
+  )
+
+  if (error) {
+    // Non-fatal — log but don't fail the webhook
+    console.error('[stripe-webhook] Failed to record event:', error.message)
+  }
+}
 
 serve(async (req: Request) => {
   // ── 1. Only accept POST ───────────────────────────────────────
@@ -65,7 +127,27 @@ serve(async (req: Request) => {
   // ── 4. Init Supabase admin client ─────────────────────────────
   const supabase = createAdminClient()
 
-  // ── 5. Handle events ──────────────────────────────────────────
+  // ── 5. Deduplication check ────────────────────────────────────
+  // If we've already processed this event ID, skip and return 200.
+  // Stripe retries events for up to 3 days; without this check, a
+  // retry would re-run the unlock + payment update.
+  const existingEvent = await checkEventProcessed(supabase, event.id)
+  if (existingEvent) {
+    console.log(
+      `[stripe-webhook] Skipping duplicate event ${event.id} (type=${event.type}, previous result=${existingEvent.result})`,
+    )
+    return new Response(JSON.stringify({ received: true, duplicate: true }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    })
+  }
+
+  // ── 6. Handle events ──────────────────────────────────────────
+  let processingResult: 'processed' | 'error' = 'processed'
+  let errorMessage: string | undefined
+  let processedCaseId: string | undefined
+  let processedSessionId: string | undefined
+
   try {
     switch (event.type) {
       // ── Payment succeeded ──────────────────────────────────────
@@ -75,6 +157,8 @@ serve(async (req: Request) => {
         const caseId = session.metadata?.case_id
         const userId = session.metadata?.user_id
         const sessionId = session.id
+        processedSessionId = sessionId
+        processedCaseId = caseId
 
         if (!caseId || !userId) {
           console.error('[stripe-webhook] Missing metadata in session:', sessionId)
@@ -111,6 +195,8 @@ serve(async (req: Request) => {
 
           if (caseErr) {
             console.error('[stripe-webhook] Failed to unlock case:', caseErr.message)
+            processingResult = 'error'
+            errorMessage = `Unlock failed: ${caseErr.message}`
             // Still update payment — don't return error or Stripe will retry
           }
         }
@@ -132,7 +218,7 @@ serve(async (req: Request) => {
 
         if (payErr) {
           // Payment record might not exist if insert failed earlier — upsert it
-          await supabase.from('payments').upsert(
+          const { error: upsertErr } = await supabase.from('payments').upsert(
             {
               user_id: userId,
               case_id: caseId,
@@ -145,6 +231,11 @@ serve(async (req: Request) => {
             },
             { onConflict: 'stripe_session_id' },
           )
+          if (upsertErr) {
+            console.error('[stripe-webhook] Payment upsert failed:', upsertErr.message)
+            processingResult = 'error'
+            errorMessage = `Payment update failed: ${upsertErr.message}`
+          }
         }
 
         console.log(`[stripe-webhook] ✅ Case ${caseId} unlocked for user ${userId}`)
@@ -154,6 +245,7 @@ serve(async (req: Request) => {
       // ── Session expired without payment ───────────────────────
       case 'checkout.session.expired': {
         const session = event.data.object as Stripe.Checkout.Session
+        processedSessionId = session.id
         await supabase
           .from('payments')
           .update({ status: 'expired' })
@@ -177,6 +269,14 @@ serve(async (req: Request) => {
         console.log('[stripe-webhook] Unhandled event type:', event.type)
     }
 
+    // ── 7. Record the event as processed (for dedup) ─────────────
+    await recordEventProcessed(supabase, event.id, event.type, {
+      case_id: processedCaseId,
+      session_id: processedSessionId,
+      result: processingResult,
+      error_message: errorMessage,
+    })
+
     return new Response(JSON.stringify({ received: true }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
@@ -184,6 +284,16 @@ serve(async (req: Request) => {
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err)
     console.error('[stripe-webhook] Handler error:', message)
+
+    // Record the error so retries are still deduped (we don't want
+    // Stripe to keep retrying an event that always fails)
+    await recordEventProcessed(supabase, event.id, event.type, {
+      case_id: processedCaseId,
+      session_id: processedSessionId,
+      result: 'error',
+      error_message: message,
+    })
+
     // Return 200 anyway — if we return non-200 Stripe will keep retrying
     return new Response(JSON.stringify({ received: true }), {
       status: 200,
