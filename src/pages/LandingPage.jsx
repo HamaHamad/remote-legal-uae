@@ -798,16 +798,16 @@ export function LandingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#060c1a] text-[#e8e2d8] font-sans overflow-x-hidden">
+    <div className="min-h-screen bg-[#1F1D1A] text-[#E8E2D8] font-sans overflow-x-hidden">
       {/* ── NAVBAR ─────────────────────────────────────────────── */}
-      <nav className="fixed top-0 inset-x-0 z-50 bg-[#060c1a]/90 backdrop-blur-xl border-b border-white/8">
+      <nav className="fixed top-0 inset-x-0 z-50 bg-[#1F1D1A]/90 backdrop-blur-xl border-b border-white/8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
           {/* Logo */}
           <div className="flex items-center gap-2.5 shrink-0">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#c9992e] to-[#e8b84b] flex items-center justify-center text-[#060c1a] font-bold text-sm shadow-lg">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#F5F0E8] to-[#F5F0E8] flex items-center justify-center text-[#1F1D1A] font-bold text-sm shadow-lg">
               R
             </div>
-            <span className="font-semibold text-[#e8b84b] text-lg tracking-tight">
+            <span className="font-semibold text-[#F5F0E8] text-lg tracking-tight">
               {c.nav.brand}
             </span>
           </div>
@@ -818,14 +818,14 @@ export function LandingPage() {
             <div className="relative" ref={langRef}>
               <button
                 onClick={() => setLangOpen((v) => !v)}
-                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-white/10 text-[#e8e2d8]/60 hover:text-[#e8e2d8] hover:border-white/20 transition-all text-sm"
+                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-white/10 text-[#E8E2D8]/60 hover:text-[#E8E2D8] hover:border-white/20 transition-all text-sm"
               >
                 <span>{meta.flag}</span>
                 <span className="hidden sm:inline">{meta.label}</span>
                 <span className="text-xs">▾</span>
               </button>
               {langOpen && (
-                <div className="absolute top-full mt-2 end-0 w-44 bg-[#0c1829] border border-[#c9992e]/20 rounded-xl p-1.5 shadow-2xl z-50">
+                <div className="absolute top-full mt-2 end-0 w-44 bg-[#262420] border border-[#F5F0E8]/20 rounded-xl p-1.5 shadow-2xl z-50">
                   {Object.entries(LANG_META).map(([code, m]) => (
                     <button
                       key={code}
@@ -833,8 +833,8 @@ export function LandingPage() {
                       className={clsx(
                         'w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-all text-start',
                         lang === code
-                          ? 'bg-[#c9992e]/15 text-[#e8b84b]'
-                          : 'text-[#e8e2d8]/70 hover:bg-white/5 hover:text-[#e8e2d8]',
+                          ? 'bg-[#F5F0E8]/15 text-[#F5F0E8]'
+                          : 'text-[#E8E2D8]/70 hover:bg-white/5 hover:text-[#E8E2D8]',
                       )}
                     >
                       <span>{m.flag}</span>
@@ -857,14 +857,14 @@ export function LandingPage() {
 
             <button
               onClick={() => navigate('/login')}
-              className="hidden sm:block px-3 py-1.5 text-sm text-[#e8e2d8]/60 hover:text-[#e8e2d8] border border-white/10 hover:border-white/20 rounded-lg transition-all"
+              className="hidden sm:block px-3 py-1.5 text-sm text-[#E8E2D8]/60 hover:text-[#E8E2D8] border border-white/10 hover:border-white/20 rounded-lg transition-all"
             >
               {c.nav.login}
             </button>
 
             <button
               onClick={() => handleCTA()}
-              className="px-3 sm:px-4 py-1.5 text-sm font-semibold bg-gradient-to-r from-[#c9992e] to-[#e8b84b] text-[#060c1a] rounded-lg hover:shadow-lg hover:shadow-[#c9992e]/30 transition-all"
+              className="px-3 sm:px-4 py-1.5 text-sm font-semibold bg-gradient-to-r from-[#F5F0E8] to-[#F5F0E8] text-[#1F1D1A] rounded-lg hover:shadow-lg hover:shadow-[#F5F0E8]/30 transition-all"
             >
               {c.nav.start}
             </button>
@@ -876,15 +876,15 @@ export function LandingPage() {
       <section className="relative pt-24 pb-16 sm:pt-32 sm:pb-24 px-4 overflow-hidden">
         {/* Background glow */}
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#c9992e]/30 to-transparent" />
-          <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-[#c9992e]/5 rounded-full blur-3xl" />
+          <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#F5F0E8]/30 to-transparent" />
+          <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-[#F5F0E8]/5 rounded-full blur-3xl" />
           <div className="absolute top-20 right-0 w-[400px] h-[400px] bg-blue-500/3 rounded-full blur-3xl" />
           {/* Geometric grid */}
           <div
             className="absolute inset-0 opacity-[0.025]"
             style={{
               backgroundImage:
-                'linear-gradient(rgba(201,153,46,1) 1px, transparent 1px), linear-gradient(90deg, rgba(201,153,46,1) 1px, transparent 1px)',
+                'linear-gradient(rgba(245,240,232,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(245,240,232,0.5) 1px, transparent 1px)',
               backgroundSize: '50px 50px',
             }}
           />
@@ -892,16 +892,16 @@ export function LandingPage() {
 
         <div className="max-w-4xl mx-auto text-center relative z-10">
           {/* Trust badge */}
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#c9992e]/30 bg-[#c9992e]/8 text-[#e8b84b] text-xs font-semibold uppercase tracking-widest mb-6">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#e8b84b] animate-pulse" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#F5F0E8]/30 bg-[#F5F0E8]/8 text-[#F5F0E8] text-xs font-semibold uppercase tracking-widest mb-6">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#F5F0E8] animate-pulse" />
             {c.hero.badge}
           </div>
 
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold text-[#f5f0e8] leading-tight mb-6 tracking-tight">
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-display font-semibold text-[#F5F0E8] leading-tight mb-6 tracking-tight">
             {c.hero.headline}
           </h1>
 
-          <p className="text-base sm:text-xl text-[#e8e2d8]/60 mb-8 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-xl text-[#E8E2D8]/60 mb-8 max-w-2xl mx-auto leading-relaxed">
             {c.hero.sub}
           </p>
 
@@ -909,13 +909,13 @@ export function LandingPage() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-8">
             <button
               onClick={() => handleCTA()}
-              className="w-full sm:w-auto px-8 py-4 rounded-xl font-bold text-lg bg-gradient-to-r from-[#22c55e] to-[#16a34a] text-white shadow-lg shadow-green-500/25 hover:shadow-green-500/40 hover:-translate-y-0.5 transition-all"
+              className="w-full sm:w-auto px-8 py-4 rounded-xl font-bold text-lg bg-[#F5F0E8] text-[#1F1D1A] shadow-lg shadow-black/20 hover:-translate-y-0.5 transition-all"
             >
               {c.hero.cta1}
             </button>
             <button
               onClick={() => handleCTA('analyze')}
-              className="w-full sm:w-auto px-8 py-4 rounded-xl font-semibold text-base border border-white/15 text-[#e8e2d8]/80 hover:border-[#c9992e]/40 hover:text-[#e8e2d8] transition-all"
+              className="w-full sm:w-auto px-8 py-4 rounded-xl font-semibold text-base border border-white/15 text-[#E8E2D8]/80 hover:border-[#F5F0E8]/40 hover:text-[#E8E2D8] transition-all"
             >
               {c.hero.cta2}
             </button>
@@ -924,8 +924,8 @@ export function LandingPage() {
           {/* Micro-trust */}
           <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
             {c.hero.trust.map((t, i) => (
-              <div key={i} className="flex items-center gap-2 text-sm text-[#e8e2d8]/50">
-                <span className="text-[#22c55e] font-bold">✓</span>
+              <div key={i} className="flex items-center gap-2 text-sm text-[#E8E2D8]/50">
+                <span className="text-[#F5F0E8] font-bold">✓</span>
                 <span>{t}</span>
               </div>
             ))}
@@ -934,7 +934,7 @@ export function LandingPage() {
           {/* Hero disclaimer */}
           <div className="mt-8 inline-flex items-start gap-2 max-w-xl mx-auto p-3 rounded-xl bg-white/[0.02] border border-white/5">
             <span className="text-sm shrink-0 mt-0.5">⚖️</span>
-            <p className="text-[11px] text-[#e8e2d8]/40 text-center leading-relaxed">
+            <p className="text-[11px] text-[#E8E2D8]/40 text-center leading-relaxed">
               {c.hero.disclaimer}
             </p>
           </div>
@@ -942,9 +942,9 @@ export function LandingPage() {
       </section>
 
       {/* ── SITUATION SELECTOR ──────────────────────────────────── */}
-      <section className="py-12 px-4 bg-[#0c1829]">
+      <section className="py-12 px-4 bg-[#262420]">
         <div className="max-w-3xl mx-auto">
-          <p className="text-center text-lg font-semibold text-[#f5f0e8] mb-6">
+          <p className="text-center text-lg font-semibold text-[#F5F0E8] mb-6">
             {c.selector.title}
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -956,12 +956,12 @@ export function LandingPage() {
                   'group flex flex-col items-center gap-2 p-4 rounded-2xl border-2 text-center transition-all duration-200 hover:-translate-y-1',
                   selected === item.id
                     ? 'border-[#22c55e] bg-[#22c55e]/10 shadow-lg shadow-green-500/20'
-                    : 'border-white/10 bg-[#060c1a]/50 hover:border-[#c9992e]/40 hover:bg-[#c9992e]/5',
+                    : 'border-white/10 bg-[#1F1D1A]/50 hover:border-[#F5F0E8]/40 hover:bg-[#F5F0E8]/5',
                 )}
               >
                 <span className="text-3xl">{item.icon}</span>
-                <span className="font-semibold text-sm text-[#f5f0e8]">{item.label}</span>
-                <span className="text-xs text-[#e8e2d8]/40">{item.desc}</span>
+                <span className="font-semibold text-sm text-[#F5F0E8]">{item.label}</span>
+                <span className="text-xs text-[#E8E2D8]/40">{item.desc}</span>
               </button>
             ))}
           </div>
@@ -969,11 +969,11 @@ export function LandingPage() {
       </section>
 
       {/* ── SOCIAL PROOF STRIP ──────────────────────────────────── */}
-      <section className="py-6 px-4 border-y border-white/5 bg-[#060c1a]">
+      <section className="py-6 px-4 border-y border-white/5 bg-[#1F1D1A]">
         <div className="max-w-4xl mx-auto flex flex-wrap items-center justify-center gap-6 sm:gap-10">
           {c.proof.items.map((item, i) => (
-            <div key={i} className="flex items-center gap-2 text-sm text-[#e8e2d8]/60">
-              <span className="text-[#22c55e] font-bold text-lg">{item.icon}</span>
+            <div key={i} className="flex items-center gap-2 text-sm text-[#E8E2D8]/60">
+              <span className="text-[#F5F0E8] font-bold text-lg">{item.icon}</span>
               <span>{item.text}</span>
             </div>
           ))}
@@ -981,33 +981,33 @@ export function LandingPage() {
       </section>
 
       {/* ── AI PREVIEW (LOCKED) ──────────────────────────────────── */}
-      <section className="py-16 sm:py-24 px-4 bg-[#0c1829]">
+      <section className="py-16 sm:py-24 px-4 bg-[#262420]">
         <div className="max-w-2xl mx-auto">
-          <p className="text-[10px] font-bold tracking-widest uppercase text-[#c9992e]/70 text-center mb-2">
+          <p className="text-[10px] font-bold tracking-widest uppercase text-[#F5F0E8]/70 text-center mb-2">
             AI Analysis
           </p>
-          <h2 className="text-2xl sm:text-3xl font-bold text-[#f5f0e8] text-center mb-2">
+          <h2 className="text-2xl sm:text-3xl font-display font-semibold text-[#F5F0E8] text-center mb-2">
             {c.aiPreview.title}
           </h2>
-          <p className="text-center text-[#e8e2d8]/50 mb-8">{c.aiPreview.sub}</p>
+          <p className="text-center text-[#E8E2D8]/50 mb-8">{c.aiPreview.sub}</p>
 
           {/* Bullets (visible) */}
           <div className="flex flex-col gap-2 mb-6">
             {c.aiPreview.bullets.map((b, i) => (
               <div
                 key={i}
-                className="flex items-center gap-3 px-4 py-3 rounded-xl bg-[#060c1a]/80 border border-white/8"
+                className="flex items-center gap-3 px-4 py-3 rounded-xl bg-[#1F1D1A]/80 border border-white/8"
               >
-                <span className="w-5 h-5 rounded-full bg-[#c9992e]/15 border border-[#c9992e]/30 text-[#e8b84b] flex items-center justify-center text-xs font-bold shrink-0">
+                <span className="w-5 h-5 rounded-full bg-[#F5F0E8]/15 border border-[#F5F0E8]/30 text-[#F5F0E8] flex items-center justify-center text-xs font-bold shrink-0">
                   {i + 1}
                 </span>
-                <span className="text-sm text-[#e8e2d8]/70">{b}</span>
+                <span className="text-sm text-[#E8E2D8]/70">{b}</span>
               </div>
             ))}
           </div>
 
           {/* Locked blurred content */}
-          <div className="relative rounded-2xl overflow-hidden border border-[#c9992e]/20">
+          <div className="relative rounded-2xl overflow-hidden border border-[#F5F0E8]/20">
             {/* Blurred steps */}
             <div
               className={clsx('p-6 space-y-3', locked && 'blur-sm select-none pointer-events-none')}
@@ -1015,9 +1015,9 @@ export function LandingPage() {
               {c.aiPreview.blurItems.map((item, i) => (
                 <div
                   key={i}
-                  className="flex items-start gap-3 text-sm text-[#e8e2d8]/60 py-2 border-b border-white/5 last:border-0"
+                  className="flex items-start gap-3 text-sm text-[#E8E2D8]/60 py-2 border-b border-white/5 last:border-0"
                 >
-                  <span className="w-6 h-6 rounded-full bg-[#22c55e]/10 border border-[#22c55e]/20 text-[#22c55e] flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
+                  <span className="w-6 h-6 rounded-full bg-[#22c55e]/10 border border-[#22c55e]/20 text-[#F5F0E8] flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
                     {i + 1}
                   </span>
                   <span>{item}</span>
@@ -1027,15 +1027,15 @@ export function LandingPage() {
 
             {/* Overlay */}
             {locked && (
-              <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#060c1a]/75 backdrop-blur-md p-6 text-center">
-                <div className="w-12 h-12 rounded-full bg-[#c9992e]/10 border border-[#c9992e]/30 flex items-center justify-center mb-4">
+              <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#1F1D1A]/75 backdrop-blur-md p-6 text-center">
+                <div className="w-12 h-12 rounded-full bg-[#F5F0E8]/10 border border-[#F5F0E8]/30 flex items-center justify-center mb-4">
                   <LockIcon />
                 </div>
-                <p className="font-bold text-[#f5f0e8] text-lg mb-1">{c.aiPreview.lockTitle}</p>
-                <p className="text-sm text-[#e8e2d8]/50 mb-5 max-w-xs">{c.aiPreview.lockSub}</p>
+                <p className="font-bold text-[#F5F0E8] text-lg mb-1">{c.aiPreview.lockTitle}</p>
+                <p className="text-sm text-[#E8E2D8]/50 mb-5 max-w-xs">{c.aiPreview.lockSub}</p>
                 <button
                   onClick={() => handleCTA()}
-                  className="px-6 py-3 rounded-xl font-bold text-sm bg-gradient-to-r from-[#c9992e] to-[#e8b84b] text-[#060c1a] hover:shadow-lg hover:shadow-[#c9992e]/30 hover:-translate-y-0.5 transition-all"
+                  className="px-6 py-3 rounded-xl font-bold text-sm bg-gradient-to-r from-[#F5F0E8] to-[#F5F0E8] text-[#1F1D1A] hover:shadow-lg hover:shadow-[#F5F0E8]/30 hover:-translate-y-0.5 transition-all"
                 >
                   {c.aiPreview.lockCta}
                 </button>
@@ -1046,43 +1046,43 @@ export function LandingPage() {
       </section>
 
       {/* ── DOCUMENT AI ─────────────────────────────────────────── */}
-      <section className="py-16 sm:py-24 px-4 bg-[#060c1a]">
+      <section className="py-16 sm:py-24 px-4 bg-[#1F1D1A]">
         <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
-            <div className="inline-block px-3 py-1 rounded-full bg-[#c9992e]/10 border border-[#c9992e]/30 text-[#e8b84b] text-xs font-bold uppercase tracking-widest mb-4">
+            <div className="inline-block px-3 py-1 rounded-full bg-[#F5F0E8]/10 border border-[#F5F0E8]/30 text-[#F5F0E8] text-xs font-bold uppercase tracking-widest mb-4">
               {c.docAI.badge}
             </div>
-            <h2 className="text-2xl sm:text-3xl font-bold text-[#f5f0e8] mb-4 leading-snug">
+            <h2 className="text-2xl sm:text-3xl font-display font-semibold text-[#F5F0E8] mb-4 leading-snug">
               {c.docAI.title}
             </h2>
-            <p className="text-[#e8e2d8]/55 mb-6 leading-relaxed">{c.docAI.sub}</p>
+            <p className="text-[#E8E2D8]/55 mb-6 leading-relaxed">{c.docAI.sub}</p>
             <ul className="space-y-2 mb-8">
               {c.docAI.items.map((item, i) => (
-                <li key={i} className="flex items-center gap-2.5 text-sm text-[#e8e2d8]/65">
-                  <span className="text-[#c9992e]">→</span>
+                <li key={i} className="flex items-center gap-2.5 text-sm text-[#E8E2D8]/65">
+                  <span className="text-[#F5F0E8]">→</span>
                   <span>{item}</span>
                 </li>
               ))}
             </ul>
             <button
               onClick={() => handleCTA()}
-              className="w-full sm:w-auto px-6 py-3.5 rounded-xl font-bold text-sm bg-[#0c1829] border border-[#c9992e]/30 text-[#e8b84b] hover:bg-[#c9992e]/10 hover:border-[#c9992e]/50 transition-all"
+              className="w-full sm:w-auto px-6 py-3.5 rounded-xl font-bold text-sm bg-[#262420] border border-[#F5F0E8]/30 text-[#F5F0E8] hover:bg-[#F5F0E8]/10 hover:border-[#F5F0E8]/50 transition-all"
             >
               📄 {c.docAI.cta}
             </button>
           </div>
 
           {/* Doc card mockup */}
-          <div className="bg-[#0c1829] border border-[#c9992e]/15 rounded-2xl p-6 relative overflow-hidden">
-            <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#c9992e]/40 to-transparent" />
+          <div className="bg-[#262420] border border-[#F5F0E8]/15 rounded-2xl p-6 relative overflow-hidden">
+            <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#F5F0E8]/15 to-transparent" />
             <div className="flex items-center gap-3 mb-5 pb-4 border-b border-white/8">
-              <div className="w-9 h-9 rounded-lg bg-[#c9992e]/12 border border-[#c9992e]/20 flex items-center justify-center text-xl">
+              <div className="w-9 h-9 rounded-lg bg-[#F5F0E8]/12 border border-[#F5F0E8]/20 flex items-center justify-center text-xl">
                 📄
               </div>
               <div>
-                <p className="text-sm font-medium text-[#e8e2d8]">bank_statement_oct.pdf</p>
-                <p className="text-[11px] text-[#22c55e] flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#22c55e] animate-pulse" />
+                <p className="text-sm font-medium text-[#E8E2D8]">bank_statement_oct.pdf</p>
+                <p className="text-[11px] text-[#F5F0E8] flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#F5F0E8] animate-pulse" />
                   AI Analysis Complete
                 </p>
               </div>
@@ -1101,19 +1101,19 @@ export function LandingPage() {
                   i < 4 && 'border-b border-white/5',
                 )}
               >
-                <span className="text-[10px] font-bold uppercase tracking-widest text-[#e8e2d8]/35">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-[#E8E2D8]/35">
                   {row.label}
                 </span>
                 <span
                   className={clsx(
                     'text-end',
                     row.gold
-                      ? 'text-[#e8b84b] font-semibold text-sm'
+                      ? 'text-[#F5F0E8] font-semibold text-sm'
                       : row.red
                         ? 'text-red-400 text-xs font-bold bg-red-500/10 border border-red-500/20 px-2 py-0.5 rounded-full'
                         : row.small
-                          ? 'text-[11px] text-[#c9992e] max-w-[150px]'
-                          : 'text-sm text-[#e8e2d8]/75',
+                          ? 'text-[11px] text-[#F5F0E8] max-w-[150px]'
+                          : 'text-sm text-[#E8E2D8]/75',
                   )}
                 >
                   {row.value}
@@ -1125,54 +1125,54 @@ export function LandingPage() {
       </section>
 
       {/* ── HOW IT WORKS ────────────────────────────────────────── */}
-      <section className="py-16 sm:py-24 px-4 bg-[#0c1829]">
+      <section className="py-16 sm:py-24 px-4 bg-[#262420]">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl sm:text-3xl font-bold text-[#f5f0e8] text-center mb-2">
+          <h2 className="text-2xl sm:text-3xl font-display font-semibold text-[#F5F0E8] text-center mb-2">
             {c.how.title}
           </h2>
-          <p className="text-center text-[#e8e2d8]/50 mb-12 max-w-xl mx-auto">{c.how.subtitle}</p>
+          <p className="text-center text-[#E8E2D8]/50 mb-12 max-w-xl mx-auto">{c.how.subtitle}</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {c.how.steps.map((step, i) => (
               <div key={i} className="relative">
                 {/* Connector */}
                 {i < c.how.steps.length - 1 && (
-                  <div className="hidden lg:block absolute top-7 start-[calc(50%+28px)] end-[-calc(50%-28px)] h-px bg-gradient-to-r from-[#c9992e]/30 to-transparent" />
+                  <div className="hidden lg:block absolute top-7 start-[calc(50%+28px)] end-[-calc(50%-28px)] h-px bg-gradient-to-r from-[#F5F0E8]/30 to-transparent" />
                 )}
                 <div className="flex flex-col items-center text-center">
-                  <div className="w-14 h-14 rounded-full border-2 border-[#c9992e]/50 bg-[#060c1a] flex items-center justify-center mb-4 font-serif font-semibold text-xl text-[#e8b84b] shadow-[0_0_20px_rgba(201,153,46,0.15)]">
+                  <div className="w-14 h-14 rounded-full border-2 border-[#F5F0E8]/50 bg-[#1F1D1A] flex items-center justify-center mb-4 font-display font-semibold text-xl text-[#F5F0E8] shadow-[0_0_20px_rgba(245,240,232,0.08)]">
                     {step.num}
                   </div>
-                  <p className="font-semibold text-[#f5f0e8] mb-2">{step.title}</p>
-                  <p className="text-sm text-[#e8e2d8]/50 leading-relaxed">{step.desc}</p>
+                  <p className="font-semibold text-[#F5F0E8] mb-2">{step.title}</p>
+                  <p className="text-sm text-[#E8E2D8]/50 leading-relaxed">{step.desc}</p>
                 </div>
               </div>
             ))}
           </div>
           {/* Callout */}
-          <div className="mt-10 p-5 rounded-2xl bg-[#c9992e]/5 border border-[#c9992e]/15 text-center">
-            <p className="text-sm text-[#e8e2d8]/65">
-              <strong className="text-[#e8b84b]">{c.how.callout}</strong>
+          <div className="mt-10 p-5 rounded-2xl bg-[#F5F0E8]/5 border border-[#F5F0E8]/15 text-center">
+            <p className="text-sm text-[#E8E2D8]/65">
+              <strong className="text-[#F5F0E8]">{c.how.callout}</strong>
             </p>
           </div>
         </div>
       </section>
 
       {/* ── EXECUTION / TRUST ───────────────────────────────────── */}
-      <section className="py-16 sm:py-24 px-4 bg-[#060c1a]">
+      <section className="py-16 sm:py-24 px-4 bg-[#1F1D1A]">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold text-[#f5f0e8] mb-2">
+          <h2 className="text-2xl sm:text-3xl font-display font-semibold text-[#F5F0E8] mb-2">
             {c.execution.title}
           </h2>
-          <p className="text-[#e8e2d8]/50 mb-12">{c.execution.sub}</p>
+          <p className="text-[#E8E2D8]/50 mb-12">{c.execution.sub}</p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
             {c.execution.roles.map((role, i) => (
               <div
                 key={i}
-                className="bg-[#0c1829] border border-white/8 rounded-2xl p-6 hover:border-[#c9992e]/25 transition-all hover:-translate-y-1"
+                className="bg-[#262420] border border-white/8 rounded-2xl p-6 hover:border-[#F5F0E8]/25 transition-all hover:-translate-y-1"
               >
                 <div className="text-3xl mb-4">{role.icon}</div>
-                <p className="font-bold text-[#f5f0e8] mb-2">{role.title}</p>
-                <p className="text-sm text-[#e8e2d8]/50">{role.desc}</p>
+                <p className="font-bold text-[#F5F0E8] mb-2">{role.title}</p>
+                <p className="text-sm text-[#E8E2D8]/50">{role.desc}</p>
               </div>
             ))}
           </div>
@@ -1180,16 +1180,16 @@ export function LandingPage() {
       </section>
 
       {/* ── PRICING ─────────────────────────────────────────────── */}
-      <section className="py-16 sm:py-24 px-4 bg-[#0c1829]">
+      <section className="py-16 sm:py-24 px-4 bg-[#262420]">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <div className="inline-block px-3 py-1 rounded-full bg-[#c9992e]/10 border border-[#c9992e]/30 text-[#e8b84b] text-xs font-bold uppercase tracking-widest mb-4">
+            <div className="inline-block px-3 py-1 rounded-full bg-[#F5F0E8]/10 border border-[#F5F0E8]/30 text-[#F5F0E8] text-xs font-bold uppercase tracking-widest mb-4">
               {c.pricing.badge}
             </div>
-            <h2 className="text-3xl sm:text-4xl font-bold text-[#f5f0e8] mb-2">
+            <h2 className="text-3xl sm:text-4xl font-display font-semibold text-[#F5F0E8] mb-2">
               {c.pricing.title}
             </h2>
-            <p className="text-[#e8e2d8]/55 max-w-xl mx-auto">{c.pricing.subtitle}</p>
+            <p className="text-[#E8E2D8]/55 max-w-xl mx-auto">{c.pricing.subtitle}</p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -1199,34 +1199,36 @@ export function LandingPage() {
                 className={clsx(
                   'relative rounded-2xl p-5 border transition-all flex flex-col',
                   tier.highlighted
-                    ? 'bg-gradient-to-b from-[#c9992e]/8 to-transparent border-[#c9992e]/40 shadow-xl shadow-[#c9992e]/10'
-                    : 'bg-[#060c1a]/50 border-white/10 hover:border-[#c9992e]/30',
+                    ? 'bg-gradient-to-b from-[#F5F0E8]/8 to-transparent border-[#F5F0E8]/40 shadow-xl shadow-[#F5F0E8]/10'
+                    : 'bg-[#1F1D1A]/50 border-white/10 hover:border-[#F5F0E8]/30',
                 )}
               >
                 {tier.highlighted && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-gradient-to-r from-[#c9992e] to-[#e8b84b] text-[#060c1a] text-[10px] font-black uppercase tracking-wider">
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-gradient-to-r from-[#F5F0E8] to-[#F5F0E8] text-[#1F1D1A] text-[10px] font-black uppercase tracking-wider">
                     {c.pricing.popularLabel}
                   </div>
                 )}
-                <h3 className="text-sm font-semibold text-[#f5f0e8] mb-1">{tier.name}</h3>
-                <p className="text-xs text-[#e8e2d8]/45 mb-4 min-h-[2.5rem]">{tier.desc}</p>
+                <h3 className="text-sm font-semibold text-[#F5F0E8] mb-1">{tier.name}</h3>
+                <p className="text-xs text-[#E8E2D8]/45 mb-4 min-h-[2.5rem]">{tier.desc}</p>
                 <div className="mb-4">
                   {tier.price ? (
                     <>
-                      <p className="text-3xl font-bold text-[#e8b84b]">{tier.price}</p>
-                      <p className="text-[11px] text-[#e8e2d8]/40 mt-0.5">{tier.priceLabel}</p>
+                      <p className="text-3xl font-display font-semibold text-[#F5F0E8]">
+                        {tier.price}
+                      </p>
+                      <p className="text-[11px] text-[#E8E2D8]/40 mt-0.5">{tier.priceLabel}</p>
                     </>
                   ) : (
                     <>
-                      <p className="text-3xl font-bold text-[#e8e2d8]/80">Free</p>
-                      <p className="text-[11px] text-[#e8e2d8]/40 mt-0.5">{tier.priceLabel}</p>
+                      <p className="text-3xl font-bold text-[#E8E2D8]/80">Free</p>
+                      <p className="text-[11px] text-[#E8E2D8]/40 mt-0.5">{tier.priceLabel}</p>
                     </>
                   )}
                 </div>
                 <ul className="space-y-2 mb-5 flex-1">
                   {tier.features.map((f, i) => (
-                    <li key={i} className="flex items-start gap-2 text-xs text-[#e8e2d8]/60">
-                      <span className="text-[#22c55e] shrink-0 mt-0.5">✓</span>
+                    <li key={i} className="flex items-start gap-2 text-xs text-[#E8E2D8]/60">
+                      <span className="text-[#F5F0E8] shrink-0 mt-0.5">✓</span>
                       <span className="leading-relaxed">{f}</span>
                     </li>
                   ))}
@@ -1236,8 +1238,8 @@ export function LandingPage() {
                   className={clsx(
                     'w-full py-2.5 rounded-lg font-bold text-sm transition-all',
                     tier.highlighted
-                      ? 'bg-gradient-to-r from-[#c9992e] to-[#e8b84b] text-[#060c1a] hover:-translate-y-0.5 shadow-lg shadow-[#c9992e]/20'
-                      : 'border border-white/15 text-[#e8e2d8]/70 hover:border-[#c9992e]/40 hover:text-[#e8b84b]',
+                      ? 'bg-gradient-to-r from-[#F5F0E8] to-[#F5F0E8] text-[#1F1D1A] hover:-translate-y-0.5 shadow-lg shadow-[#F5F0E8]/20'
+                      : 'border border-white/15 text-[#E8E2D8]/70 hover:border-[#F5F0E8]/40 hover:text-[#F5F0E8]',
                   )}
                 >
                   {tier.cta}
@@ -1247,17 +1249,17 @@ export function LandingPage() {
           </div>
 
           {/* Monetization transparency */}
-          <div className="mt-8 max-w-3xl mx-auto p-5 rounded-2xl bg-[#060c1a]/50 border border-white/8">
-            <h4 className="text-sm font-semibold text-[#f5f0e8] mb-2 flex items-center gap-2">
-              <span className="text-[#c9992e]">🔒</span>
+          <div className="mt-8 max-w-3xl mx-auto p-5 rounded-2xl bg-[#1F1D1A]/50 border border-white/8">
+            <h4 className="text-sm font-semibold text-[#F5F0E8] mb-2 flex items-center gap-2">
+              <span className="text-[#F5F0E8]">🔒</span>
               {c.pricing.monetizationTitle}
             </h4>
-            <p className="text-xs text-[#e8e2d8]/55 leading-relaxed mb-3">
+            <p className="text-xs text-[#E8E2D8]/55 leading-relaxed mb-3">
               {c.pricing.monetizationText}
             </p>
-            <div className="flex items-start gap-2 p-3 rounded-lg bg-[#c9992e]/5 border border-[#c9992e]/10">
+            <div className="flex items-start gap-2 p-3 rounded-lg bg-[#F5F0E8]/5 border border-[#F5F0E8]/10">
               <span className="text-sm shrink-0 mt-0.5">⚠️</span>
-              <p className="text-[11px] text-[#e8e2d8]/50 leading-relaxed">
+              <p className="text-[11px] text-[#E8E2D8]/50 leading-relaxed">
                 {c.pricing.monetizationNote}
               </p>
             </div>
@@ -1265,7 +1267,7 @@ export function LandingPage() {
 
           {/* Pricing disclaimer */}
           <div className="mt-6 text-center">
-            <p className="text-[11px] text-[#e8e2d8]/35 max-w-xl mx-auto leading-relaxed">
+            <p className="text-[11px] text-[#E8E2D8]/35 max-w-xl mx-auto leading-relaxed">
               {c.pricing.disclaimer}
             </p>
           </div>
@@ -1273,50 +1275,52 @@ export function LandingPage() {
       </section>
 
       {/* ── WHATSAPP ────────────────────────────────────────────── */}
-      <section className="py-16 sm:py-24 px-4 bg-gradient-to-br from-[#060c1a] via-[#0c1f10] to-[#060c1a]">
+      <section className="py-16 sm:py-24 px-4 bg-gradient-to-br from-[#1F1D1A] via-[#262420] to-[#1F1D1A]">
         <div className="max-w-lg mx-auto text-center">
           <div className="w-16 h-16 rounded-2xl bg-[#25D366]/10 border border-[#25D366]/30 flex items-center justify-center mx-auto mb-5 text-[#25D366]">
             <WAIcon size={28} />
           </div>
-          <h2 className="text-2xl sm:text-3xl font-bold text-[#f5f0e8] mb-2">{c.whatsapp.title}</h2>
-          <p className="text-[#e8e2d8]/55 mb-6">{c.whatsapp.sub}</p>
+          <h2 className="text-2xl sm:text-3xl font-display font-semibold text-[#F5F0E8] mb-2">
+            {c.whatsapp.title}
+          </h2>
+          <p className="text-[#E8E2D8]/55 mb-6">{c.whatsapp.sub}</p>
           <a
             href={WA_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 px-8 py-4 rounded-xl font-bold text-base bg-[#25D366] text-white shadow-lg shadow-green-500/20 hover:shadow-green-500/35 hover:-translate-y-0.5 transition-all"
+            className="inline-flex items-center gap-3 px-8 py-4 rounded-xl font-bold text-base bg-[#25D366] text-[#1F1D1A] shadow-lg shadow-black/20 hover:shadow-green-500/35 hover:-translate-y-0.5 transition-all"
           >
             <WAIcon size={22} />
             {c.whatsapp.cta}
           </a>
-          <p className="text-xs text-[#e8e2d8]/35 mt-4">{c.whatsapp.note}</p>
+          <p className="text-xs text-[#E8E2D8]/35 mt-4">{c.whatsapp.note}</p>
         </div>
       </section>
 
       {/* ── FOR LAWYERS ─────────────────────────────────────────── */}
-      <section className="py-16 sm:py-24 px-4 bg-[#060c1a]">
+      <section className="py-16 sm:py-24 px-4 bg-[#1F1D1A]">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#c9992e]/10 border border-[#c9992e]/20 text-[#e8b84b] text-xs font-bold uppercase tracking-widest mb-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#F5F0E8]/10 border border-[#F5F0E8]/20 text-[#F5F0E8] text-xs font-bold uppercase tracking-widest mb-4">
               🏛️ {c.lawyers.badge}
             </div>
-            <h2 className="text-2xl sm:text-3xl font-bold text-[#f5f0e8] mb-2">
+            <h2 className="text-2xl sm:text-3xl font-display font-semibold text-[#F5F0E8] mb-2">
               {c.lawyers.title}
             </h2>
-            <p className="text-[#e8e2d8]/55 max-w-xl mx-auto">{c.lawyers.sub}</p>
+            <p className="text-[#E8E2D8]/55 max-w-xl mx-auto">{c.lawyers.sub}</p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
             {/* What we send */}
-            <div className="bg-[#0c1829] border border-white/8 rounded-2xl p-5">
-              <h3 className="text-sm font-semibold text-[#f5f0e8] mb-4 flex items-center gap-2">
-                <span className="text-[#22c55e]">✓</span>
+            <div className="bg-[#262420] border border-white/8 rounded-2xl p-5">
+              <h3 className="text-sm font-semibold text-[#F5F0E8] mb-4 flex items-center gap-2">
+                <span className="text-[#F5F0E8]">✓</span>
                 {c.lawyers.sendTitle}
               </h3>
               <ul className="space-y-3">
                 {c.lawyers.sendItems.map((item, i) => (
-                  <li key={i} className="flex items-start gap-2.5 text-sm text-[#e8e2d8]/65">
-                    <span className="text-[#22c55e] shrink-0 mt-0.5">✓</span>
+                  <li key={i} className="flex items-start gap-2.5 text-sm text-[#E8E2D8]/65">
+                    <span className="text-[#F5F0E8] shrink-0 mt-0.5">✓</span>
                     <span className="leading-relaxed">{item}</span>
                   </li>
                 ))}
@@ -1324,14 +1328,14 @@ export function LandingPage() {
             </div>
 
             {/* What we don't do */}
-            <div className="bg-[#0c1829] border border-white/8 rounded-2xl p-5">
-              <h3 className="text-sm font-semibold text-[#f5f0e8] mb-4 flex items-center gap-2">
+            <div className="bg-[#262420] border border-white/8 rounded-2xl p-5">
+              <h3 className="text-sm font-semibold text-[#F5F0E8] mb-4 flex items-center gap-2">
                 <span className="text-red-400">⚠</span>
                 {c.lawyers.dontTitle}
               </h3>
               <ul className="space-y-3">
                 {c.lawyers.dontItems.map((item, i) => (
-                  <li key={i} className="flex items-start gap-2.5 text-sm text-[#e8e2d8]/65">
+                  <li key={i} className="flex items-start gap-2.5 text-sm text-[#E8E2D8]/65">
                     <span className="text-red-400/70 shrink-0 mt-0.5 text-xs">✕</span>
                     <span className="leading-relaxed">{item}</span>
                   </li>
@@ -1341,14 +1345,14 @@ export function LandingPage() {
           </div>
 
           {/* Compliance note */}
-          <div className="p-5 rounded-2xl bg-[#c9992e]/5 border border-[#c9992e]/15 mb-6">
+          <div className="p-5 rounded-2xl bg-[#F5F0E8]/5 border border-[#F5F0E8]/15 mb-6">
             <div className="flex items-start gap-3">
               <span className="text-lg shrink-0">⚖️</span>
               <div>
-                <p className="text-sm font-semibold text-[#e8b84b] mb-1">
+                <p className="text-sm font-semibold text-[#F5F0E8] mb-1">
                   {c.lawyers.complianceLabel}
                 </p>
-                <p className="text-xs text-[#e8e2d8]/55 leading-relaxed">
+                <p className="text-xs text-[#E8E2D8]/55 leading-relaxed">
                   {c.lawyers.complianceText}
                 </p>
               </div>
@@ -1357,12 +1361,12 @@ export function LandingPage() {
 
           {/* Onboarding */}
           <div className="text-center">
-            <p className="text-sm text-[#e8e2d8]/55 mb-4 max-w-lg mx-auto">
+            <p className="text-sm text-[#E8E2D8]/55 mb-4 max-w-lg mx-auto">
               {c.lawyers.onboardingText}
             </p>
             <a
               href="mailto:partners@expatuae.kafeely.com"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm border border-[#c9992e]/40 text-[#e8b84b] hover:bg-[#c9992e]/8 transition-all"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm border border-[#F5F0E8]/40 text-[#F5F0E8] hover:bg-[#F5F0E8]/8 transition-all"
             >
               {c.lawyers.applyCta} →
             </a>
@@ -1371,27 +1375,29 @@ export function LandingPage() {
       </section>
 
       {/* ── FAQ ────────────────────────────────────────────────── */}
-      <section className="py-16 sm:py-24 px-4 bg-[#0c1829]">
+      <section className="py-16 sm:py-24 px-4 bg-[#262420]">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-12">
-            <p className="text-[10px] font-bold tracking-widest uppercase text-[#c9992e]/70 mb-2">
+            <p className="text-[10px] font-bold tracking-widest uppercase text-[#F5F0E8]/70 mb-2">
               {c.faq.badge}
             </p>
-            <h2 className="text-2xl sm:text-3xl font-bold text-[#f5f0e8]">{c.faq.title}</h2>
+            <h2 className="text-2xl sm:text-3xl font-display font-semibold text-[#F5F0E8]">
+              {c.faq.title}
+            </h2>
           </div>
           <div className="space-y-3">
             {c.faq.items.map((faq, i) => (
               <details
                 key={i}
-                className="group bg-[#060c1a]/50 border border-white/8 rounded-xl overflow-hidden"
+                className="group bg-[#1F1D1A]/50 border border-white/8 rounded-xl overflow-hidden"
               >
-                <summary className="flex items-center justify-between gap-3 p-4 cursor-pointer text-sm font-medium text-[#f5f0e8] hover:bg-white/[0.02] transition-colors list-none">
+                <summary className="flex items-center justify-between gap-3 p-4 cursor-pointer text-sm font-medium text-[#F5F0E8] hover:bg-white/[0.02] transition-colors list-none">
                   {faq.q}
-                  <span className="text-[#e8e2d8]/40 shrink-0 group-open:rotate-180 transition-transform">
+                  <span className="text-[#E8E2D8]/40 shrink-0 group-open:rotate-180 transition-transform">
                     ▾
                   </span>
                 </summary>
-                <div className="px-4 pb-4 text-sm text-[#e8e2d8]/55 leading-relaxed">{faq.a}</div>
+                <div className="px-4 pb-4 text-sm text-[#E8E2D8]/55 leading-relaxed">{faq.a}</div>
               </details>
             ))}
           </div>
@@ -1399,19 +1405,19 @@ export function LandingPage() {
       </section>
 
       {/* ── TRUST ───────────────────────────────────────────────── */}
-      <section className="py-12 px-4 bg-[#0c1829] border-t border-white/5">
+      <section className="py-12 px-4 bg-[#262420] border-t border-white/5">
         <div className="max-w-3xl mx-auto">
-          <p className="text-center text-sm font-semibold text-[#e8e2d8]/50 uppercase tracking-widest mb-6">
+          <p className="text-center text-sm font-semibold text-[#E8E2D8]/50 uppercase tracking-widest mb-6">
             {c.trust.title}
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {c.trust.items.map((item, i) => (
               <div
                 key={i}
-                className="flex flex-col items-center gap-2 p-4 rounded-xl bg-[#060c1a]/60 border border-white/5 text-center"
+                className="flex flex-col items-center gap-2 p-4 rounded-xl bg-[#1F1D1A]/60 border border-white/5 text-center"
               >
                 <span className="text-2xl">{item.icon}</span>
-                <span className="text-xs text-[#e8e2d8]/55 leading-tight">{item.text}</span>
+                <span className="text-xs text-[#E8E2D8]/55 leading-tight">{item.text}</span>
               </div>
             ))}
           </div>
@@ -1419,21 +1425,21 @@ export function LandingPage() {
       </section>
 
       {/* ── FOOTER ──────────────────────────────────────────────── */}
-      <footer className="py-10 px-4 bg-[#060c1a] border-t border-white/5">
+      <footer className="py-10 px-4 bg-[#1F1D1A] border-t border-white/5">
         <div className="max-w-4xl mx-auto">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 mb-6">
             <div className="flex items-center gap-2.5">
-              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#c9992e] to-[#e8b84b] flex items-center justify-center text-[#060c1a] font-bold text-xs">
+              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#F5F0E8] to-[#F5F0E8] flex items-center justify-center text-[#1F1D1A] font-bold text-xs">
                 R
               </div>
-              <span className="font-semibold text-[#e8b84b]">{c.nav.brand}</span>
+              <span className="font-semibold text-[#F5F0E8]">{c.nav.brand}</span>
             </div>
             <div className="flex gap-5">
               {c.footer.links.map((l, i) => (
                 <a
                   key={i}
                   href="#"
-                  className="text-sm text-[#e8e2d8]/35 hover:text-[#e8e2d8]/60 transition-colors"
+                  className="text-sm text-[#E8E2D8]/35 hover:text-[#E8E2D8]/60 transition-colors"
                 >
                   {l}
                 </a>
@@ -1441,11 +1447,11 @@ export function LandingPage() {
             </div>
           </div>
           {/* Disclaimer */}
-          <div className="flex items-start gap-3 p-4 rounded-xl bg-[#e8b84b]/5 border border-[#e8b84b]/15">
+          <div className="flex items-start gap-3 p-4 rounded-xl bg-[#F5F0E8]/5 border border-[#F5F0E8]/15">
             <span className="text-lg shrink-0">⚖️</span>
-            <p className="text-xs text-[#e8e2d8]/40 leading-relaxed">{c.footer.disclaimer}</p>
+            <p className="text-xs text-[#E8E2D8]/40 leading-relaxed">{c.footer.disclaimer}</p>
           </div>
-          <p className="text-center text-xs text-[#e8e2d8]/20 mt-6">
+          <p className="text-center text-xs text-[#E8E2D8]/20 mt-6">
             © 2026 ExpatUAE. All rights reserved.
           </p>
         </div>
@@ -1454,11 +1460,11 @@ export function LandingPage() {
       {/* ── STICKY BOTTOM BAR ───────────────────────────────────── */}
       <div
         className={clsx(
-          'fixed bottom-0 inset-x-0 z-40 bg-[#060c1a]/96 backdrop-blur-xl border-t border-white/10 px-4 py-3 flex items-center justify-between gap-3 transition-transform duration-500',
+          'fixed bottom-0 inset-x-0 z-40 bg-[#1F1D1A]/96 backdrop-blur-xl border-t border-white/10 px-4 py-3 flex items-center justify-between gap-3 transition-transform duration-500',
           scrolled ? 'translate-y-0' : 'translate-y-full',
         )}
       >
-        <p className="text-sm text-[#e8e2d8]/50 hidden sm:block">
+        <p className="text-sm text-[#E8E2D8]/50 hidden sm:block">
           Not sure where to start? Try the free assessment.
         </p>
         <div className="flex items-center gap-2 ms-auto">
@@ -1473,7 +1479,7 @@ export function LandingPage() {
           </a>
           <button
             onClick={() => handleCTA()}
-            className="px-5 py-2.5 rounded-lg font-bold text-sm bg-gradient-to-r from-[#22c55e] to-[#16a34a] text-white shadow-lg shadow-green-500/20 hover:-translate-y-0.5 transition-all"
+            className="px-5 py-2.5 rounded-lg font-bold text-sm bg-[#F5F0E8] text-[#1F1D1A] shadow-lg shadow-black/20 hover:-translate-y-0.5 transition-all"
           >
             {c.sticky}
           </button>
