@@ -18,6 +18,18 @@
     />
     <meta name="author" content="Remote Legal UAE" />
 
+    <!-- Prevent flash of wrong theme -->
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('rlco-theme');
+          if (theme === 'light') {
+            document.documentElement.classList.add('light');
+          }
+        } catch (e) {}
+      })();
+    </script>
+
     <!-- Canonical -->
     <link rel="canonical" href="https://remote-legal-uae.vercel.app/" />
 

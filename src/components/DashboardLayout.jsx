@@ -5,6 +5,7 @@ import { clsx } from 'clsx'
 import { Sidebar } from '@/components/Sidebar'
 import { LegalDisclaimer } from '@/components/LegalDisclaimer'
 import { NotificationBell } from '@/components/NotificationBell'
+import { ThemeToggle } from '@/components/ThemeToggle'
 
 export function DashboardLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -52,11 +53,15 @@ export function DashboardLayout() {
               </button>
               <span className="font-display text-lg font-semibold text-gold-400">Remote Legal</span>
             </div>
-            <NotificationBell />
+            <div className="flex items-center gap-2">
+              <ThemeToggle />
+              <NotificationBell />
+            </div>
           </header>
 
-          {/* Desktop top-right notification bell */}
-          <div className="hidden lg:flex absolute top-4 end-6 z-20">
+          {/* Desktop top-right notification bell + theme toggle */}
+          <div className="hidden lg:flex absolute top-4 end-6 z-20 items-center gap-2">
+            <ThemeToggle />
             <NotificationBell />
           </div>
 
