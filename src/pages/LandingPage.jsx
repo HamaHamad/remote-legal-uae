@@ -798,16 +798,139 @@ export function LandingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#1F1D1A] text-[#E8E2D8] font-sans overflow-x-hidden">
-      {/* ── NAVBAR ─────────────────────────────────────────────── */}
-      <nav className="fixed top-0 inset-x-0 z-50 bg-[#1F1D1A]/90 backdrop-blur-xl border-b border-white/8">
+    <div className="min-h-screen bg-hy-base text-hy-primary font-sans overflow-x-hidden">
+      {/* ── Harvey.ai inspired style (embedded) ── */}
+      <style>{`
+        :root {
+          --hy-base: #0d0b09;
+          --hy-elevated: #15130f;
+          --hy-card: #1a1714;
+          --hy-subtle: #26231d;
+          --hy-hover: #38352e;
+          --hy-primary: #f5f3ef;
+          --hy-secondary: #c9c6bb;
+          --hy-muted: #7d786b;
+          --hy-subtle-text: #979285;
+          --hy-border: #38352e;
+          --hy-border-strong: #4a463d;
+          --hy-accent: #c4903e;
+          --hy-accent-hover: #d4a05a;
+          --hy-accent-soft: rgba(196,144,62,0.10);
+          --hy-shadow: 0 8px 32px rgba(0,0,0,0.5);
+          --hy-shadow-lg: 0 20px 60px rgba(0,0,0,0.6);
+          --hy-radius: 10px;
+          --hy-radius-lg: 16px;
+          --hy-radius-full: 9999px;
+          --hy-font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+          --hy-font-display: 'Instrument Serif', 'Inter', serif;
+          --hy-transition: 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .bg-hy-base { background: var(--hy-base); }
+        .bg-hy-elevated { background: var(--hy-elevated); }
+        .bg-hy-card { background: var(--hy-card); }
+        .bg-hy-subtle { background: var(--hy-subtle); }
+        .bg-hy-accent { background: var(--hy-accent); }
+        .bg-hy-accent-soft { background: var(--hy-accent-soft); }
+        .text-hy-primary { color: var(--hy-primary); }
+        .text-hy-secondary { color: var(--hy-secondary); }
+        .text-hy-muted { color: var(--hy-muted); }
+        .text-hy-subtle { color: var(--hy-subtle-text); }
+        .text-hy-accent { color: var(--hy-accent); }
+        .border-hy-border { border-color: var(--hy-border); }
+        .border-hy-border-strong { border-color: var(--hy-border-strong); }
+        .border-hy-accent { border-color: var(--hy-accent); }
+        .shadow-hy { box-shadow: var(--hy-shadow); }
+        .shadow-hy-lg { box-shadow: var(--hy-shadow-lg); }
+        .font-body { font-family: var(--hy-font-body); }
+        .font-display { font-family: var(--hy-font-display); }
+
+        /* subtle grain */
+        .grain {
+          position: fixed;
+          inset: 0;
+          pointer-events: none;
+          z-index: 9999;
+          opacity: 0.025;
+          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+          background-repeat: repeat;
+          background-size: 256px 256px;
+        }
+
+        .glow-orb {
+          position: absolute;
+          border-radius: 50%;
+          filter: blur(120px);
+          pointer-events: none;
+          opacity: 0.12;
+        }
+        .glow-orb--a {
+          width: 600px;
+          height: 600px;
+          top: -20%;
+          right: -10%;
+          background: radial-gradient(circle, var(--hy-accent) 0%, transparent 70%);
+        }
+        .glow-orb--b {
+          width: 400px;
+          height: 400px;
+          bottom: -20%;
+          left: -10%;
+          background: radial-gradient(circle, rgba(196,144,62,0.15) 0%, transparent 70%);
+        }
+
+        .eyebrow {
+          display: inline-flex;
+          align-items: center;
+          gap: 10px;
+          font-size: 11px;
+          font-weight: 600;
+          letter-spacing: 0.10em;
+          text-transform: uppercase;
+          color: var(--hy-accent);
+        }
+        .eyebrow::before {
+          content: '';
+          display: inline-block;
+          width: 24px;
+          height: 1.5px;
+          background: var(--hy-accent);
+          border-radius: 2px;
+        }
+
+        /* Floating WhatsApp pulse */
+        @keyframes float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-6px); }
+        }
+        .whatsapp-float {
+          animation: float 3s ease-in-out infinite;
+        }
+
+        /* Smooth transitions */
+        .transition-hy {
+          transition: var(--hy-transition);
+        }
+        .hover-lift:hover {
+          transform: translateY(-2px);
+        }
+        .hover-glow:hover {
+          box-shadow: 0 0 30px rgba(196,144,62,0.12);
+        }
+      `}</style>
+
+      {/* ── Grain overlay ── */}
+      <div className="grain" aria-hidden="true" />
+
+      {/* ─── NAVBAR ─────────────────────────────────────────────── */}
+      <nav className="fixed top-0 inset-x-0 z-50 bg-hy-base/90 backdrop-blur-xl border-b border-hy-border">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
           {/* Logo */}
           <div className="flex items-center gap-2.5 shrink-0">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#F5F0E8] to-[#F5F0E8] flex items-center justify-center text-[#1F1D1A] font-bold text-sm shadow-lg">
+            <div className="w-8 h-8 rounded-lg bg-hy-accent flex items-center justify-center text-hy-base font-bold text-sm shadow-lg">
               R
             </div>
-            <span className="font-semibold text-[#F5F0E8] text-lg tracking-tight">
+            <span className="font-semibold text-hy-primary text-lg tracking-tight font-display">
               {c.nav.brand}
             </span>
           </div>
@@ -818,14 +941,14 @@ export function LandingPage() {
             <div className="relative" ref={langRef}>
               <button
                 onClick={() => setLangOpen((v) => !v)}
-                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-white/10 text-[#E8E2D8]/60 hover:text-[#E8E2D8] hover:border-white/20 transition-all text-sm"
+                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-hy-border text-hy-muted hover:text-hy-primary hover:border-hy-border-strong transition-all text-sm"
               >
                 <span>{meta.flag}</span>
                 <span className="hidden sm:inline">{meta.label}</span>
                 <span className="text-xs">▾</span>
               </button>
               {langOpen && (
-                <div className="absolute top-full mt-2 end-0 w-44 bg-[#262420] border border-[#F5F0E8]/20 rounded-xl p-1.5 shadow-2xl z-50">
+                <div className="absolute top-full mt-2 end-0 w-44 bg-hy-elevated border border-hy-border rounded-xl p-1.5 shadow-hy z-50">
                   {Object.entries(LANG_META).map(([code, m]) => (
                     <button
                       key={code}
@@ -833,8 +956,8 @@ export function LandingPage() {
                       className={clsx(
                         'w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-all text-start',
                         lang === code
-                          ? 'bg-[#F5F0E8]/15 text-[#F5F0E8]'
-                          : 'text-[#E8E2D8]/70 hover:bg-white/5 hover:text-[#E8E2D8]',
+                          ? 'bg-hy-accent-soft text-hy-primary'
+                          : 'text-hy-muted hover:bg-white/5 hover:text-hy-primary',
                       )}
                     >
                       <span>{m.flag}</span>
@@ -857,14 +980,14 @@ export function LandingPage() {
 
             <button
               onClick={() => navigate('/login')}
-              className="hidden sm:block px-3 py-1.5 text-sm text-[#E8E2D8]/60 hover:text-[#E8E2D8] border border-white/10 hover:border-white/20 rounded-lg transition-all"
+              className="hidden sm:block px-3 py-1.5 text-sm text-hy-muted hover:text-hy-primary border border-hy-border hover:border-hy-border-strong rounded-lg transition-all"
             >
               {c.nav.login}
             </button>
 
             <button
               onClick={() => handleCTA()}
-              className="px-3 sm:px-4 py-1.5 text-sm font-semibold bg-gradient-to-r from-[#F5F0E8] to-[#F5F0E8] text-[#1F1D1A] rounded-lg hover:shadow-lg hover:shadow-[#F5F0E8]/30 transition-all"
+              className="px-3 sm:px-4 py-1.5 text-sm font-semibold bg-hy-accent text-hy-base rounded-lg hover:bg-hy-accent-hover hover:shadow-lg transition-all"
             >
               {c.nav.start}
             </button>
@@ -872,14 +995,13 @@ export function LandingPage() {
         </div>
       </nav>
 
-      {/* ── HERO ───────────────────────────────────────────────── */}
+      {/* ─── HERO ───────────────────────────────────────────────── */}
       <section className="relative pt-24 pb-16 sm:pt-32 sm:pb-24 px-4 overflow-hidden">
-        {/* Background glow */}
+        {/* Glow orbs */}
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#F5F0E8]/30 to-transparent" />
-          <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-[#F5F0E8]/5 rounded-full blur-3xl" />
-          <div className="absolute top-20 right-0 w-[400px] h-[400px] bg-blue-500/3 rounded-full blur-3xl" />
-          {/* Geometric grid */}
+          <div className="glow-orb glow-orb--a" />
+          <div className="glow-orb glow-orb--b" />
+          <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-hy-accent/30 to-transparent" />
           <div
             className="absolute inset-0 opacity-[0.025]"
             style={{
@@ -892,59 +1014,59 @@ export function LandingPage() {
 
         <div className="max-w-4xl mx-auto text-center relative z-10">
           {/* Trust badge */}
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#F5F0E8]/30 bg-[#F5F0E8]/8 text-[#F5F0E8] text-xs font-semibold uppercase tracking-widest mb-6">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#F5F0E8] animate-pulse" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-hy-accent/30 bg-hy-accent-soft text-hy-accent text-xs font-semibold uppercase tracking-widest mb-6">
+            <span className="w-1.5 h-1.5 rounded-full bg-hy-accent animate-pulse" />
             {c.hero.badge}
           </div>
 
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-display font-semibold text-[#F5F0E8] leading-tight mb-6 tracking-tight">
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-display font-semibold text-hy-primary leading-tight mb-6 tracking-tight">
             {c.hero.headline}
           </h1>
 
-          <p className="text-base sm:text-xl text-[#E8E2D8]/60 mb-8 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-xl text-hy-secondary max-w-2xl mx-auto leading-relaxed">
             {c.hero.sub}
           </p>
 
           {/* CTAs */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-8">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-8">
             <button
               onClick={() => handleCTA()}
-              className="w-full sm:w-auto px-8 py-4 rounded-xl font-bold text-lg bg-[#F5F0E8] text-[#1F1D1A] shadow-lg shadow-black/20 hover:-translate-y-0.5 transition-all"
+              className="w-full sm:w-auto px-8 py-4 rounded-xl font-bold text-lg bg-hy-accent text-hy-base shadow-lg shadow-black/20 hover:bg-hy-accent-hover hover:-translate-y-0.5 transition-all"
             >
               {c.hero.cta1}
             </button>
             <button
               onClick={() => handleCTA('analyze')}
-              className="w-full sm:w-auto px-8 py-4 rounded-xl font-semibold text-base border border-white/15 text-[#E8E2D8]/80 hover:border-[#F5F0E8]/40 hover:text-[#E8E2D8] transition-all"
+              className="w-full sm:w-auto px-8 py-4 rounded-xl font-semibold text-base border border-hy-border text-hy-secondary hover:border-hy-accent hover:text-hy-primary transition-all"
             >
               {c.hero.cta2}
             </button>
           </div>
 
           {/* Micro-trust */}
-          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
+          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 mt-8">
             {c.hero.trust.map((t, i) => (
-              <div key={i} className="flex items-center gap-2 text-sm text-[#E8E2D8]/50">
-                <span className="text-[#F5F0E8] font-bold">✓</span>
+              <div key={i} className="flex items-center gap-2 text-sm text-hy-muted">
+                <span className="text-hy-accent font-bold">✓</span>
                 <span>{t}</span>
               </div>
             ))}
           </div>
 
           {/* Hero disclaimer */}
-          <div className="mt-8 inline-flex items-start gap-2 max-w-xl mx-auto p-3 rounded-xl bg-white/[0.02] border border-white/5">
+          <div className="mt-8 inline-flex items-start gap-2 max-w-xl mx-auto p-3 rounded-xl bg-white/[0.02] border border-hy-border">
             <span className="text-sm shrink-0 mt-0.5">⚖️</span>
-            <p className="text-[11px] text-[#E8E2D8]/40 text-center leading-relaxed">
+            <p className="text-[11px] text-hy-subtle-text text-center leading-relaxed">
               {c.hero.disclaimer}
             </p>
           </div>
         </div>
       </section>
 
-      {/* ── SITUATION SELECTOR ──────────────────────────────────── */}
-      <section className="py-12 px-4 bg-[#262420]">
+      {/* ─── SITUATION SELECTOR ──────────────────────────────────── */}
+      <section className="py-12 px-4 bg-hy-subtle">
         <div className="max-w-3xl mx-auto">
-          <p className="text-center text-lg font-semibold text-[#F5F0E8] mb-6">
+          <p className="text-center text-lg font-semibold text-hy-primary mb-6">
             {c.selector.title}
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -955,59 +1077,59 @@ export function LandingPage() {
                 className={clsx(
                   'group flex flex-col items-center gap-2 p-4 rounded-2xl border-2 text-center transition-all duration-200 hover:-translate-y-1',
                   selected === item.id
-                    ? 'border-[#22c55e] bg-[#22c55e]/10 shadow-lg shadow-green-500/20'
-                    : 'border-white/10 bg-[#1F1D1A]/50 hover:border-[#F5F0E8]/40 hover:bg-[#F5F0E8]/5',
+                    ? 'border-hy-accent bg-hy-accent-soft shadow-lg shadow-hy-accent/20'
+                    : 'border-hy-border bg-hy-base/50 hover:border-hy-accent/50 hover:bg-hy-accent-soft/20',
                 )}
               >
                 <span className="text-3xl">{item.icon}</span>
-                <span className="font-semibold text-sm text-[#F5F0E8]">{item.label}</span>
-                <span className="text-xs text-[#E8E2D8]/40">{item.desc}</span>
+                <span className="font-semibold text-sm text-hy-primary">{item.label}</span>
+                <span className="text-xs text-hy-muted">{item.desc}</span>
               </button>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── SOCIAL PROOF STRIP ──────────────────────────────────── */}
-      <section className="py-6 px-4 border-y border-white/5 bg-[#1F1D1A]">
+      {/* ─── SOCIAL PROOF STRIP ──────────────────────────────────── */}
+      <section className="py-6 px-4 border-y border-hy-border bg-hy-base">
         <div className="max-w-4xl mx-auto flex flex-wrap items-center justify-center gap-6 sm:gap-10">
           {c.proof.items.map((item, i) => (
-            <div key={i} className="flex items-center gap-2 text-sm text-[#E8E2D8]/60">
-              <span className="text-[#F5F0E8] font-bold text-lg">{item.icon}</span>
+            <div key={i} className="flex items-center gap-2 text-sm text-hy-muted">
+              <span className="text-hy-accent font-bold text-lg">{item.icon}</span>
               <span>{item.text}</span>
             </div>
           ))}
         </div>
       </section>
 
-      {/* ── AI PREVIEW (LOCKED) ──────────────────────────────────── */}
-      <section className="py-16 sm:py-24 px-4 bg-[#262420]">
+      {/* ─── AI PREVIEW (LOCKED) ──────────────────────────────────── */}
+      <section className="py-16 sm:py-24 px-4 bg-hy-subtle">
         <div className="max-w-2xl mx-auto">
-          <p className="text-[10px] font-bold tracking-widest uppercase text-[#F5F0E8]/70 text-center mb-2">
+          <p className="text-[10px] font-bold tracking-widest uppercase text-hy-muted text-center mb-2">
             AI Analysis
           </p>
-          <h2 className="text-2xl sm:text-3xl font-display font-semibold text-[#F5F0E8] text-center mb-2">
+          <h2 className="text-2xl sm:text-3xl font-display font-semibold text-hy-primary text-center mb-2">
             {c.aiPreview.title}
           </h2>
-          <p className="text-center text-[#E8E2D8]/50 mb-8">{c.aiPreview.sub}</p>
+          <p className="text-center text-hy-muted mb-8">{c.aiPreview.sub}</p>
 
           {/* Bullets (visible) */}
           <div className="flex flex-col gap-2 mb-6">
             {c.aiPreview.bullets.map((b, i) => (
               <div
                 key={i}
-                className="flex items-center gap-3 px-4 py-3 rounded-xl bg-[#1F1D1A]/80 border border-white/8"
+                className="flex items-center gap-3 px-4 py-3 rounded-xl bg-hy-base/80 border border-hy-border"
               >
-                <span className="w-5 h-5 rounded-full bg-[#F5F0E8]/15 border border-[#F5F0E8]/30 text-[#F5F0E8] flex items-center justify-center text-xs font-bold shrink-0">
+                <span className="w-5 h-5 rounded-full bg-hy-accent-soft border border-hy-accent/30 text-hy-accent flex items-center justify-center text-xs font-bold shrink-0">
                   {i + 1}
                 </span>
-                <span className="text-sm text-[#E8E2D8]/70">{b}</span>
+                <span className="text-sm text-hy-secondary">{b}</span>
               </div>
             ))}
           </div>
 
           {/* Locked blurred content */}
-          <div className="relative rounded-2xl overflow-hidden border border-[#F5F0E8]/20">
+          <div className="relative rounded-2xl overflow-hidden border border-hy-accent/20">
             {/* Blurred steps */}
             <div
               className={clsx('p-6 space-y-3', locked && 'blur-sm select-none pointer-events-none')}
@@ -1015,9 +1137,9 @@ export function LandingPage() {
               {c.aiPreview.blurItems.map((item, i) => (
                 <div
                   key={i}
-                  className="flex items-start gap-3 text-sm text-[#E8E2D8]/60 py-2 border-b border-white/5 last:border-0"
+                  className="flex items-start gap-3 text-sm text-hy-muted py-2 border-b border-hy-border last:border-0"
                 >
-                  <span className="w-6 h-6 rounded-full bg-[#22c55e]/10 border border-[#22c55e]/20 text-[#F5F0E8] flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
+                  <span className="w-6 h-6 rounded-full bg-hy-accent-soft border border-hy-accent/20 text-hy-accent flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
                     {i + 1}
                   </span>
                   <span>{item}</span>
@@ -1027,15 +1149,15 @@ export function LandingPage() {
 
             {/* Overlay */}
             {locked && (
-              <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#1F1D1A]/75 backdrop-blur-md p-6 text-center">
-                <div className="w-12 h-12 rounded-full bg-[#F5F0E8]/10 border border-[#F5F0E8]/30 flex items-center justify-center mb-4">
+              <div className="absolute inset-0 flex flex-col items-center justify-center bg-hy-base/75 backdrop-blur-md p-6 text-center">
+                <div className="w-12 h-12 rounded-full bg-hy-accent-soft border border-hy-accent/30 flex items-center justify-center mb-4">
                   <LockIcon />
                 </div>
-                <p className="font-bold text-[#F5F0E8] text-lg mb-1">{c.aiPreview.lockTitle}</p>
-                <p className="text-sm text-[#E8E2D8]/50 mb-5 max-w-xs">{c.aiPreview.lockSub}</p>
+                <p className="font-bold text-hy-primary text-lg mb-1">{c.aiPreview.lockTitle}</p>
+                <p className="text-sm text-hy-muted mb-5 max-w-xs">{c.aiPreview.lockSub}</p>
                 <button
                   onClick={() => handleCTA()}
-                  className="px-6 py-3 rounded-xl font-bold text-sm bg-gradient-to-r from-[#F5F0E8] to-[#F5F0E8] text-[#1F1D1A] hover:shadow-lg hover:shadow-[#F5F0E8]/30 hover:-translate-y-0.5 transition-all"
+                  className="px-6 py-3 rounded-xl font-bold text-sm bg-hy-accent text-hy-base hover:bg-hy-accent-hover hover:-translate-y-0.5 transition-all"
                 >
                   {c.aiPreview.lockCta}
                 </button>
@@ -1045,44 +1167,44 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* ── DOCUMENT AI ─────────────────────────────────────────── */}
-      <section className="py-16 sm:py-24 px-4 bg-[#1F1D1A]">
+      {/* ─── DOCUMENT AI ─────────────────────────────────────────── */}
+      <section className="py-16 sm:py-24 px-4 bg-hy-base">
         <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
-            <div className="inline-block px-3 py-1 rounded-full bg-[#F5F0E8]/10 border border-[#F5F0E8]/30 text-[#F5F0E8] text-xs font-bold uppercase tracking-widest mb-4">
+            <div className="inline-block px-3 py-1 rounded-full bg-hy-accent-soft border border-hy-accent/30 text-hy-accent text-xs font-bold uppercase tracking-widest mb-4">
               {c.docAI.badge}
             </div>
-            <h2 className="text-2xl sm:text-3xl font-display font-semibold text-[#F5F0E8] mb-4 leading-snug">
+            <h2 className="text-2xl sm:text-3xl font-display font-semibold text-hy-primary mb-4 leading-snug">
               {c.docAI.title}
             </h2>
-            <p className="text-[#E8E2D8]/55 mb-6 leading-relaxed">{c.docAI.sub}</p>
+            <p className="text-hy-muted mb-6 leading-relaxed">{c.docAI.sub}</p>
             <ul className="space-y-2 mb-8">
               {c.docAI.items.map((item, i) => (
-                <li key={i} className="flex items-center gap-2.5 text-sm text-[#E8E2D8]/65">
-                  <span className="text-[#F5F0E8]">→</span>
+                <li key={i} className="flex items-center gap-2.5 text-sm text-hy-secondary">
+                  <span className="text-hy-accent">→</span>
                   <span>{item}</span>
                 </li>
               ))}
             </ul>
             <button
               onClick={() => handleCTA()}
-              className="w-full sm:w-auto px-6 py-3.5 rounded-xl font-bold text-sm bg-[#262420] border border-[#F5F0E8]/30 text-[#F5F0E8] hover:bg-[#F5F0E8]/10 hover:border-[#F5F0E8]/50 transition-all"
+              className="w-full sm:w-auto px-6 py-3.5 rounded-xl font-bold text-sm bg-hy-subtle border border-hy-border-strong text-hy-primary hover:bg-hy-hover hover:border-hy-accent/50 transition-all"
             >
               📄 {c.docAI.cta}
             </button>
           </div>
 
           {/* Doc card mockup */}
-          <div className="bg-[#262420] border border-[#F5F0E8]/15 rounded-2xl p-6 relative overflow-hidden">
-            <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#F5F0E8]/15 to-transparent" />
-            <div className="flex items-center gap-3 mb-5 pb-4 border-b border-white/8">
-              <div className="w-9 h-9 rounded-lg bg-[#F5F0E8]/12 border border-[#F5F0E8]/20 flex items-center justify-center text-xl">
+          <div className="bg-hy-card border border-hy-border rounded-2xl p-6 relative overflow-hidden shadow-hy">
+            <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-hy-accent/20 to-transparent" />
+            <div className="flex items-center gap-3 mb-5 pb-4 border-b border-hy-border">
+              <div className="w-9 h-9 rounded-lg bg-hy-accent-soft border border-hy-accent/20 flex items-center justify-center text-xl">
                 📄
               </div>
               <div>
-                <p className="text-sm font-medium text-[#E8E2D8]">bank_statement_oct.pdf</p>
-                <p className="text-[11px] text-[#F5F0E8] flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#F5F0E8] animate-pulse" />
+                <p className="text-sm font-medium text-hy-primary">bank_statement_oct.pdf</p>
+                <p className="text-[11px] text-hy-accent flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-hy-accent animate-pulse" />
                   AI Analysis Complete
                 </p>
               </div>
@@ -1098,22 +1220,22 @@ export function LandingPage() {
                 key={i}
                 className={clsx(
                   'flex justify-between items-start gap-3 py-2.5',
-                  i < 4 && 'border-b border-white/5',
+                  i < 4 && 'border-b border-hy-border',
                 )}
               >
-                <span className="text-[10px] font-bold uppercase tracking-widest text-[#E8E2D8]/35">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-hy-muted">
                   {row.label}
                 </span>
                 <span
                   className={clsx(
                     'text-end',
                     row.gold
-                      ? 'text-[#F5F0E8] font-semibold text-sm'
+                      ? 'text-hy-primary font-semibold text-sm'
                       : row.red
                         ? 'text-red-400 text-xs font-bold bg-red-500/10 border border-red-500/20 px-2 py-0.5 rounded-full'
                         : row.small
-                          ? 'text-[11px] text-[#F5F0E8] max-w-[150px]'
-                          : 'text-sm text-[#E8E2D8]/75',
+                          ? 'text-[11px] text-hy-primary max-w-[150px]'
+                          : 'text-sm text-hy-secondary',
                   )}
                 >
                   {row.value}
@@ -1124,72 +1246,70 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* ── HOW IT WORKS ────────────────────────────────────────── */}
-      <section className="py-16 sm:py-24 px-4 bg-[#262420]">
+      {/* ─── HOW IT WORKS ────────────────────────────────────────── */}
+      <section className="py-16 sm:py-24 px-4 bg-hy-subtle">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl sm:text-3xl font-display font-semibold text-[#F5F0E8] text-center mb-2">
+          <h2 className="text-2xl sm:text-3xl font-display font-semibold text-hy-primary text-center mb-2">
             {c.how.title}
           </h2>
-          <p className="text-center text-[#E8E2D8]/50 mb-12 max-w-xl mx-auto">{c.how.subtitle}</p>
+          <p className="text-center text-hy-muted mb-12 max-w-xl mx-auto">{c.how.subtitle}</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {c.how.steps.map((step, i) => (
               <div key={i} className="relative">
-                {/* Connector */}
                 {i < c.how.steps.length - 1 && (
-                  <div className="hidden lg:block absolute top-7 start-[calc(50%+28px)] end-[-calc(50%-28px)] h-px bg-gradient-to-r from-[#F5F0E8]/30 to-transparent" />
+                  <div className="hidden lg:block absolute top-7 start-[calc(50%+28px)] end-[-calc(50%-28px)] h-px bg-gradient-to-r from-hy-accent/30 to-transparent" />
                 )}
                 <div className="flex flex-col items-center text-center">
-                  <div className="w-14 h-14 rounded-full border-2 border-[#F5F0E8]/50 bg-[#1F1D1A] flex items-center justify-center mb-4 font-display font-semibold text-xl text-[#F5F0E8] shadow-[0_0_20px_rgba(245,240,232,0.08)]">
+                  <div className="w-14 h-14 rounded-full border-2 border-hy-accent/50 bg-hy-base flex items-center justify-center mb-4 font-display font-semibold text-xl text-hy-primary shadow-[0_0_20px_rgba(196,144,62,0.08)]">
                     {step.num}
                   </div>
-                  <p className="font-semibold text-[#F5F0E8] mb-2">{step.title}</p>
-                  <p className="text-sm text-[#E8E2D8]/50 leading-relaxed">{step.desc}</p>
+                  <p className="font-semibold text-hy-primary mb-2">{step.title}</p>
+                  <p className="text-sm text-hy-muted leading-relaxed">{step.desc}</p>
                 </div>
               </div>
             ))}
           </div>
-          {/* Callout */}
-          <div className="mt-10 p-5 rounded-2xl bg-[#F5F0E8]/5 border border-[#F5F0E8]/15 text-center">
-            <p className="text-sm text-[#E8E2D8]/65">
-              <strong className="text-[#F5F0E8]">{c.how.callout}</strong>
+          <div className="mt-10 p-5 rounded-2xl bg-hy-accent-soft border border-hy-accent/20 text-center">
+            <p className="text-sm text-hy-secondary">
+              <strong className="text-hy-primary">{c.how.callout}</strong>
             </p>
           </div>
         </div>
       </section>
 
-      {/* ── EXECUTION / TRUST ───────────────────────────────────── */}
-      <section className="py-16 sm:py-24 px-4 bg-[#1F1D1A]">
+      {/* ─── EXECUTION / TRUST ───────────────────────────────────── */}
+      <section className="py-16 sm:py-24 px-4 bg-hy-base">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-2xl sm:text-3xl font-display font-semibold text-[#F5F0E8] mb-2">
+          <h2 className="text-2xl sm:text-3xl font-display font-semibold text-hy-primary mb-2">
             {c.execution.title}
           </h2>
-          <p className="text-[#E8E2D8]/50 mb-12">{c.execution.sub}</p>
+          <p className="text-hy-muted mb-12">{c.execution.sub}</p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
             {c.execution.roles.map((role, i) => (
               <div
                 key={i}
-                className="bg-[#262420] border border-white/8 rounded-2xl p-6 hover:border-[#F5F0E8]/25 transition-all hover:-translate-y-1"
+                className="bg-hy-card border border-hy-border rounded-2xl p-6 hover:border-hy-accent/30 transition-all hover:-translate-y-1 shadow-hy"
               >
                 <div className="text-3xl mb-4">{role.icon}</div>
-                <p className="font-bold text-[#F5F0E8] mb-2">{role.title}</p>
-                <p className="text-sm text-[#E8E2D8]/50">{role.desc}</p>
+                <p className="font-bold text-hy-primary mb-2">{role.title}</p>
+                <p className="text-sm text-hy-muted">{role.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── PRICING ─────────────────────────────────────────────── */}
-      <section className="py-16 sm:py-24 px-4 bg-[#262420]">
+      {/* ─── PRICING ─────────────────────────────────────────────── */}
+      <section className="py-16 sm:py-24 px-4 bg-hy-subtle">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <div className="inline-block px-3 py-1 rounded-full bg-[#F5F0E8]/10 border border-[#F5F0E8]/30 text-[#F5F0E8] text-xs font-bold uppercase tracking-widest mb-4">
+            <div className="inline-block px-3 py-1 rounded-full bg-hy-accent-soft border border-hy-accent/30 text-hy-accent text-xs font-bold uppercase tracking-widest mb-4">
               {c.pricing.badge}
             </div>
-            <h2 className="text-3xl sm:text-4xl font-display font-semibold text-[#F5F0E8] mb-2">
+            <h2 className="text-3xl sm:text-4xl font-display font-semibold text-hy-primary mb-2">
               {c.pricing.title}
             </h2>
-            <p className="text-[#E8E2D8]/55 max-w-xl mx-auto">{c.pricing.subtitle}</p>
+            <p className="text-hy-muted max-w-xl mx-auto">{c.pricing.subtitle}</p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -1199,36 +1319,36 @@ export function LandingPage() {
                 className={clsx(
                   'relative rounded-2xl p-5 border transition-all flex flex-col',
                   tier.highlighted
-                    ? 'bg-gradient-to-b from-[#F5F0E8]/8 to-transparent border-[#F5F0E8]/40 shadow-xl shadow-[#F5F0E8]/10'
-                    : 'bg-[#1F1D1A]/50 border-white/10 hover:border-[#F5F0E8]/30',
+                    ? 'bg-gradient-to-b from-hy-accent/10 to-transparent border-hy-accent/40 shadow-hy shadow-hy-accent/10'
+                    : 'bg-hy-card/50 border-hy-border hover:border-hy-accent/30',
                 )}
               >
                 {tier.highlighted && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-gradient-to-r from-[#F5F0E8] to-[#F5F0E8] text-[#1F1D1A] text-[10px] font-black uppercase tracking-wider">
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-hy-accent text-hy-base text-[10px] font-black uppercase tracking-wider">
                     {c.pricing.popularLabel}
                   </div>
                 )}
-                <h3 className="text-sm font-semibold text-[#F5F0E8] mb-1">{tier.name}</h3>
-                <p className="text-xs text-[#E8E2D8]/45 mb-4 min-h-[2.5rem]">{tier.desc}</p>
+                <h3 className="text-sm font-semibold text-hy-primary mb-1">{tier.name}</h3>
+                <p className="text-xs text-hy-muted mb-4 min-h-[2.5rem]">{tier.desc}</p>
                 <div className="mb-4">
                   {tier.price ? (
                     <>
-                      <p className="text-3xl font-display font-semibold text-[#F5F0E8]">
+                      <p className="text-3xl font-display font-semibold text-hy-primary">
                         {tier.price}
                       </p>
-                      <p className="text-[11px] text-[#E8E2D8]/40 mt-0.5">{tier.priceLabel}</p>
+                      <p className="text-[11px] text-hy-muted mt-0.5">{tier.priceLabel}</p>
                     </>
                   ) : (
                     <>
-                      <p className="text-3xl font-bold text-[#E8E2D8]/80">Free</p>
-                      <p className="text-[11px] text-[#E8E2D8]/40 mt-0.5">{tier.priceLabel}</p>
+                      <p className="text-3xl font-bold text-hy-secondary">Free</p>
+                      <p className="text-[11px] text-hy-muted mt-0.5">{tier.priceLabel}</p>
                     </>
                   )}
                 </div>
                 <ul className="space-y-2 mb-5 flex-1">
                   {tier.features.map((f, i) => (
-                    <li key={i} className="flex items-start gap-2 text-xs text-[#E8E2D8]/60">
-                      <span className="text-[#F5F0E8] shrink-0 mt-0.5">✓</span>
+                    <li key={i} className="flex items-start gap-2 text-xs text-hy-muted">
+                      <span className="text-hy-accent shrink-0 mt-0.5">✓</span>
                       <span className="leading-relaxed">{f}</span>
                     </li>
                   ))}
@@ -1238,8 +1358,8 @@ export function LandingPage() {
                   className={clsx(
                     'w-full py-2.5 rounded-lg font-bold text-sm transition-all',
                     tier.highlighted
-                      ? 'bg-gradient-to-r from-[#F5F0E8] to-[#F5F0E8] text-[#1F1D1A] hover:-translate-y-0.5 shadow-lg shadow-[#F5F0E8]/20'
-                      : 'border border-white/15 text-[#E8E2D8]/70 hover:border-[#F5F0E8]/40 hover:text-[#F5F0E8]',
+                      ? 'bg-hy-accent text-hy-base hover:bg-hy-accent-hover hover:-translate-y-0.5 shadow-lg shadow-hy-accent/20'
+                      : 'border border-hy-border text-hy-secondary hover:border-hy-accent hover:text-hy-primary',
                   )}
                 >
                   {tier.cta}
@@ -1249,17 +1369,17 @@ export function LandingPage() {
           </div>
 
           {/* Monetization transparency */}
-          <div className="mt-8 max-w-3xl mx-auto p-5 rounded-2xl bg-[#1F1D1A]/50 border border-white/8">
-            <h4 className="text-sm font-semibold text-[#F5F0E8] mb-2 flex items-center gap-2">
-              <span className="text-[#F5F0E8]">🔒</span>
+          <div className="mt-8 max-w-3xl mx-auto p-5 rounded-2xl bg-hy-base/50 border border-hy-border">
+            <h4 className="text-sm font-semibold text-hy-primary mb-2 flex items-center gap-2">
+              <span className="text-hy-accent">🔒</span>
               {c.pricing.monetizationTitle}
             </h4>
-            <p className="text-xs text-[#E8E2D8]/55 leading-relaxed mb-3">
+            <p className="text-xs text-hy-muted leading-relaxed mb-3">
               {c.pricing.monetizationText}
             </p>
-            <div className="flex items-start gap-2 p-3 rounded-lg bg-[#F5F0E8]/5 border border-[#F5F0E8]/10">
+            <div className="flex items-start gap-2 p-3 rounded-lg bg-hy-accent-soft border border-hy-accent/10">
               <span className="text-sm shrink-0 mt-0.5">⚠️</span>
-              <p className="text-[11px] text-[#E8E2D8]/50 leading-relaxed">
+              <p className="text-[11px] text-hy-muted leading-relaxed">
                 {c.pricing.monetizationNote}
               </p>
             </div>
@@ -1267,60 +1387,60 @@ export function LandingPage() {
 
           {/* Pricing disclaimer */}
           <div className="mt-6 text-center">
-            <p className="text-[11px] text-[#E8E2D8]/35 max-w-xl mx-auto leading-relaxed">
+            <p className="text-[11px] text-hy-subtle-text max-w-xl mx-auto leading-relaxed">
               {c.pricing.disclaimer}
             </p>
           </div>
         </div>
       </section>
 
-      {/* ── WHATSAPP ────────────────────────────────────────────── */}
-      <section className="py-16 sm:py-24 px-4 bg-gradient-to-br from-[#1F1D1A] via-[#262420] to-[#1F1D1A]">
+      {/* ─── WHATSAPP ────────────────────────────────────────────── */}
+      <section className="py-16 sm:py-24 px-4 bg-gradient-to-br from-hy-base via-hy-subtle to-hy-base">
         <div className="max-w-lg mx-auto text-center">
           <div className="w-16 h-16 rounded-2xl bg-[#25D366]/10 border border-[#25D366]/30 flex items-center justify-center mx-auto mb-5 text-[#25D366]">
             <WAIcon size={28} />
           </div>
-          <h2 className="text-2xl sm:text-3xl font-display font-semibold text-[#F5F0E8] mb-2">
+          <h2 className="text-2xl sm:text-3xl font-display font-semibold text-hy-primary mb-2">
             {c.whatsapp.title}
           </h2>
-          <p className="text-[#E8E2D8]/55 mb-6">{c.whatsapp.sub}</p>
+          <p className="text-hy-muted mb-6">{c.whatsapp.sub}</p>
           <a
             href={WA_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 px-8 py-4 rounded-xl font-bold text-base bg-[#25D366] text-[#1F1D1A] shadow-lg shadow-black/20 hover:shadow-green-500/35 hover:-translate-y-0.5 transition-all"
+            className="inline-flex items-center gap-3 px-8 py-4 rounded-xl font-bold text-base bg-[#25D366] text-hy-base shadow-lg shadow-black/20 hover:shadow-green-500/35 hover:-translate-y-0.5 transition-all"
           >
             <WAIcon size={22} />
             {c.whatsapp.cta}
           </a>
-          <p className="text-xs text-[#E8E2D8]/35 mt-4">{c.whatsapp.note}</p>
+          <p className="text-xs text-hy-muted mt-4">{c.whatsapp.note}</p>
         </div>
       </section>
 
-      {/* ── FOR LAWYERS ─────────────────────────────────────────── */}
-      <section className="py-16 sm:py-24 px-4 bg-[#1F1D1A]">
+      {/* ─── FOR LAWYERS ─────────────────────────────────────────── */}
+      <section className="py-16 sm:py-24 px-4 bg-hy-base">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#F5F0E8]/10 border border-[#F5F0E8]/20 text-[#F5F0E8] text-xs font-bold uppercase tracking-widest mb-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-hy-accent-soft border border-hy-accent/20 text-hy-accent text-xs font-bold uppercase tracking-widest mb-4">
               🏛️ {c.lawyers.badge}
             </div>
-            <h2 className="text-2xl sm:text-3xl font-display font-semibold text-[#F5F0E8] mb-2">
+            <h2 className="text-2xl sm:text-3xl font-display font-semibold text-hy-primary mb-2">
               {c.lawyers.title}
             </h2>
-            <p className="text-[#E8E2D8]/55 max-w-xl mx-auto">{c.lawyers.sub}</p>
+            <p className="text-hy-muted max-w-xl mx-auto">{c.lawyers.sub}</p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
             {/* What we send */}
-            <div className="bg-[#262420] border border-white/8 rounded-2xl p-5">
-              <h3 className="text-sm font-semibold text-[#F5F0E8] mb-4 flex items-center gap-2">
-                <span className="text-[#F5F0E8]">✓</span>
+            <div className="bg-hy-card border border-hy-border rounded-2xl p-5 shadow-hy">
+              <h3 className="text-sm font-semibold text-hy-primary mb-4 flex items-center gap-2">
+                <span className="text-hy-accent">✓</span>
                 {c.lawyers.sendTitle}
               </h3>
               <ul className="space-y-3">
                 {c.lawyers.sendItems.map((item, i) => (
-                  <li key={i} className="flex items-start gap-2.5 text-sm text-[#E8E2D8]/65">
-                    <span className="text-[#F5F0E8] shrink-0 mt-0.5">✓</span>
+                  <li key={i} className="flex items-start gap-2.5 text-sm text-hy-muted">
+                    <span className="text-hy-accent shrink-0 mt-0.5">✓</span>
                     <span className="leading-relaxed">{item}</span>
                   </li>
                 ))}
@@ -1328,14 +1448,14 @@ export function LandingPage() {
             </div>
 
             {/* What we don't do */}
-            <div className="bg-[#262420] border border-white/8 rounded-2xl p-5">
-              <h3 className="text-sm font-semibold text-[#F5F0E8] mb-4 flex items-center gap-2">
+            <div className="bg-hy-card border border-hy-border rounded-2xl p-5 shadow-hy">
+              <h3 className="text-sm font-semibold text-hy-primary mb-4 flex items-center gap-2">
                 <span className="text-red-400">⚠</span>
                 {c.lawyers.dontTitle}
               </h3>
               <ul className="space-y-3">
                 {c.lawyers.dontItems.map((item, i) => (
-                  <li key={i} className="flex items-start gap-2.5 text-sm text-[#E8E2D8]/65">
+                  <li key={i} className="flex items-start gap-2.5 text-sm text-hy-muted">
                     <span className="text-red-400/70 shrink-0 mt-0.5 text-xs">✕</span>
                     <span className="leading-relaxed">{item}</span>
                   </li>
@@ -1345,14 +1465,14 @@ export function LandingPage() {
           </div>
 
           {/* Compliance note */}
-          <div className="p-5 rounded-2xl bg-[#F5F0E8]/5 border border-[#F5F0E8]/15 mb-6">
+          <div className="p-5 rounded-2xl bg-hy-accent-soft border border-hy-accent/20 mb-6">
             <div className="flex items-start gap-3">
               <span className="text-lg shrink-0">⚖️</span>
               <div>
-                <p className="text-sm font-semibold text-[#F5F0E8] mb-1">
+                <p className="text-sm font-semibold text-hy-primary mb-1">
                   {c.lawyers.complianceLabel}
                 </p>
-                <p className="text-xs text-[#E8E2D8]/55 leading-relaxed">
+                <p className="text-xs text-hy-muted leading-relaxed">
                   {c.lawyers.complianceText}
                 </p>
               </div>
@@ -1361,12 +1481,12 @@ export function LandingPage() {
 
           {/* Onboarding */}
           <div className="text-center">
-            <p className="text-sm text-[#E8E2D8]/55 mb-4 max-w-lg mx-auto">
+            <p className="text-sm text-hy-muted mb-4 max-w-lg mx-auto">
               {c.lawyers.onboardingText}
             </p>
             <a
               href="mailto:partners@expatuae.kafeely.com"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm border border-[#F5F0E8]/40 text-[#F5F0E8] hover:bg-[#F5F0E8]/8 transition-all"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm border border-hy-accent/40 text-hy-accent hover:bg-hy-accent-soft transition-all"
             >
               {c.lawyers.applyCta} →
             </a>
@@ -1374,14 +1494,14 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* ── FAQ ────────────────────────────────────────────────── */}
-      <section className="py-16 sm:py-24 px-4 bg-[#262420]">
+      {/* ─── FAQ ────────────────────────────────────────────────── */}
+      <section className="py-16 sm:py-24 px-4 bg-hy-subtle">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-12">
-            <p className="text-[10px] font-bold tracking-widest uppercase text-[#F5F0E8]/70 mb-2">
+            <p className="text-[10px] font-bold tracking-widest uppercase text-hy-muted mb-2">
               {c.faq.badge}
             </p>
-            <h2 className="text-2xl sm:text-3xl font-display font-semibold text-[#F5F0E8]">
+            <h2 className="text-2xl sm:text-3xl font-display font-semibold text-hy-primary">
               {c.faq.title}
             </h2>
           </div>
@@ -1389,57 +1509,57 @@ export function LandingPage() {
             {c.faq.items.map((faq, i) => (
               <details
                 key={i}
-                className="group bg-[#1F1D1A]/50 border border-white/8 rounded-xl overflow-hidden"
+                className="group bg-hy-base/50 border border-hy-border rounded-xl overflow-hidden"
               >
-                <summary className="flex items-center justify-between gap-3 p-4 cursor-pointer text-sm font-medium text-[#F5F0E8] hover:bg-white/[0.02] transition-colors list-none">
+                <summary className="flex items-center justify-between gap-3 p-4 cursor-pointer text-sm font-medium text-hy-primary hover:bg-white/[0.02] transition-colors list-none">
                   {faq.q}
-                  <span className="text-[#E8E2D8]/40 shrink-0 group-open:rotate-180 transition-transform">
+                  <span className="text-hy-muted shrink-0 group-open:rotate-180 transition-transform">
                     ▾
                   </span>
                 </summary>
-                <div className="px-4 pb-4 text-sm text-[#E8E2D8]/55 leading-relaxed">{faq.a}</div>
+                <div className="px-4 pb-4 text-sm text-hy-muted leading-relaxed">{faq.a}</div>
               </details>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── TRUST ───────────────────────────────────────────────── */}
-      <section className="py-12 px-4 bg-[#262420] border-t border-white/5">
+      {/* ─── TRUST ───────────────────────────────────────────────── */}
+      <section className="py-12 px-4 bg-hy-subtle border-t border-hy-border">
         <div className="max-w-3xl mx-auto">
-          <p className="text-center text-sm font-semibold text-[#E8E2D8]/50 uppercase tracking-widest mb-6">
+          <p className="text-center text-sm font-semibold text-hy-muted uppercase tracking-widest mb-6">
             {c.trust.title}
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {c.trust.items.map((item, i) => (
               <div
                 key={i}
-                className="flex flex-col items-center gap-2 p-4 rounded-xl bg-[#1F1D1A]/60 border border-white/5 text-center"
+                className="flex flex-col items-center gap-2 p-4 rounded-xl bg-hy-base/60 border border-hy-border text-center"
               >
                 <span className="text-2xl">{item.icon}</span>
-                <span className="text-xs text-[#E8E2D8]/55 leading-tight">{item.text}</span>
+                <span className="text-xs text-hy-muted leading-tight">{item.text}</span>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── FOOTER ──────────────────────────────────────────────── */}
-      <footer className="py-10 px-4 bg-[#1F1D1A] border-t border-white/5">
+      {/* ─── FOOTER ──────────────────────────────────────────────── */}
+      <footer className="py-10 px-4 bg-hy-base border-t border-hy-border">
         <div className="max-w-4xl mx-auto">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 mb-6">
             <div className="flex items-center gap-2.5">
-              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#F5F0E8] to-[#F5F0E8] flex items-center justify-center text-[#1F1D1A] font-bold text-xs">
+              <div className="w-7 h-7 rounded-lg bg-hy-accent flex items-center justify-center text-hy-base font-bold text-xs">
                 R
               </div>
-              <span className="font-semibold text-[#F5F0E8]">{c.nav.brand}</span>
+              <span className="font-semibold text-hy-primary font-display">{c.nav.brand}</span>
             </div>
             <div className="flex gap-5">
               {c.footer.links.map((l, i) => (
                 <a
                   key={i}
                   href="#"
-                  className="text-sm text-[#E8E2D8]/35 hover:text-[#E8E2D8]/60 transition-colors"
+                  className="text-sm text-hy-muted hover:text-hy-secondary transition-colors"
                 >
                   {l}
                 </a>
@@ -1447,24 +1567,24 @@ export function LandingPage() {
             </div>
           </div>
           {/* Disclaimer */}
-          <div className="flex items-start gap-3 p-4 rounded-xl bg-[#F5F0E8]/5 border border-[#F5F0E8]/15">
+          <div className="flex items-start gap-3 p-4 rounded-xl bg-hy-accent-soft border border-hy-accent/15">
             <span className="text-lg shrink-0">⚖️</span>
-            <p className="text-xs text-[#E8E2D8]/40 leading-relaxed">{c.footer.disclaimer}</p>
+            <p className="text-xs text-hy-muted leading-relaxed">{c.footer.disclaimer}</p>
           </div>
-          <p className="text-center text-xs text-[#E8E2D8]/20 mt-6">
+          <p className="text-center text-xs text-hy-subtle-text mt-6">
             © 2026 ExpatUAE. All rights reserved.
           </p>
         </div>
       </footer>
 
-      {/* ── STICKY BOTTOM BAR ───────────────────────────────────── */}
+      {/* ─── STICKY BOTTOM BAR ───────────────────────────────────── */}
       <div
         className={clsx(
-          'fixed bottom-0 inset-x-0 z-40 bg-[#1F1D1A]/96 backdrop-blur-xl border-t border-white/10 px-4 py-3 flex items-center justify-between gap-3 transition-transform duration-500',
+          'fixed bottom-0 inset-x-0 z-40 bg-hy-base/96 backdrop-blur-xl border-t border-hy-border px-4 py-3 flex items-center justify-between gap-3 transition-transform duration-500',
           scrolled ? 'translate-y-0' : 'translate-y-full',
         )}
       >
-        <p className="text-sm text-[#E8E2D8]/50 hidden sm:block">
+        <p className="text-sm text-hy-muted hidden sm:block">
           Not sure where to start? Try the free assessment.
         </p>
         <div className="flex items-center gap-2 ms-auto">
@@ -1479,35 +1599,27 @@ export function LandingPage() {
           </a>
           <button
             onClick={() => handleCTA()}
-            className="px-5 py-2.5 rounded-lg font-bold text-sm bg-[#F5F0E8] text-[#1F1D1A] shadow-lg shadow-black/20 hover:-translate-y-0.5 transition-all"
+            className="px-5 py-2.5 rounded-lg font-bold text-sm bg-hy-accent text-hy-base shadow-lg shadow-black/20 hover:bg-hy-accent-hover hover:-translate-y-0.5 transition-all"
           >
             {c.sticky}
           </button>
         </div>
       </div>
 
-      {/* ── FLOATING WHATSAPP ───────────────────────────────────── */}
+      {/* ─── FLOATING WHATSAPP ───────────────────────────────────── */}
       <a
         href={WA_URL}
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Chat on WhatsApp"
         className={clsx(
-          'fixed z-50 w-14 h-14 rounded-full bg-[#25D366] flex items-center justify-center text-white shadow-2xl shadow-green-500/30 hover:scale-110 transition-all',
+          'fixed z-50 w-14 h-14 rounded-full bg-[#25D366] flex items-center justify-center text-white shadow-2xl shadow-green-500/30 hover:scale-110 transition-all whatsapp-float',
           scrolled ? 'bottom-20' : 'bottom-6',
           isRTL ? 'left-4 sm:left-6' : 'right-4 sm:right-6',
         )}
-        style={{ animation: 'float 3s ease-in-out infinite' }}
       >
         <WAIcon size={26} />
       </a>
-
-      <style>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0); }
-          50%       { transform: translateY(-6px); }
-        }
-      `}</style>
     </div>
   )
 }
