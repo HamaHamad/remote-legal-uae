@@ -17,9 +17,9 @@ export function LegalDisclaimer({ variant = 'banner' }) {
   // Inline variant (always visible, no dismiss)
   if (variant === 'inline') {
     return (
-      <div className="flex items-start gap-3 p-3.5 rounded-xl bg-amber-500/6 border border-amber-500/20">
-        <Scale size={15} className="text-amber-400 shrink-0 mt-0.5" />
-        <p className="text-xs text-amber-400/90 leading-relaxed">
+      <div className="flex items-start gap-3 p-3.5 rounded-xl bg-amber-500/6 border border-[var(--status-pending)]/20">
+        <Scale size={15} className="text-[var(--status-pending)] shrink-0 mt-0.5" />
+        <p className="text-xs text-[var(--status-pending)]/90 leading-relaxed">
           <strong className="font-semibold">Legal Disclaimer:</strong> This platform provides
           AI-assisted case organisation and coordination only. It does <strong>not</strong> provide
           legal advice, legal representation, or guaranteed outcomes. Always consult a qualified UAE
@@ -35,13 +35,13 @@ export function LegalDisclaimer({ variant = 'banner' }) {
   return (
     <div
       className={clsx(
-        'w-full bg-amber-500/8 border-b border-amber-500/20',
+        'w-full bg-amber-500/8 border-b border-[var(--status-pending)]/20',
         'px-4 py-2.5 flex items-center justify-between gap-3',
       )}
     >
       <div className="flex items-center gap-2.5 min-w-0">
-        <Scale size={13} className="text-amber-400 shrink-0" />
-        <p className="text-[11px] text-amber-400/90 leading-relaxed">
+        <Scale size={13} className="text-[var(--status-pending)] shrink-0" />
+        <p className="text-[11px] text-[var(--status-pending)]/90 leading-relaxed">
           <strong className="font-semibold">Disclaimer:</strong> This platform provides AI-assisted
           case organisation only and does <strong>not</strong> constitute legal advice. Consult a
           licensed UAE attorney for legal representation.
@@ -49,7 +49,7 @@ export function LegalDisclaimer({ variant = 'banner' }) {
       </div>
       <button
         onClick={dismiss}
-        className="shrink-0 w-6 h-6 rounded-md flex items-center justify-center text-amber-400/60 hover:text-amber-400 hover:bg-amber-500/10 transition-all"
+        className="shrink-0 w-6 h-6 rounded-md flex items-center justify-center text-[var(--status-pending)]/60 hover:text-[var(--status-pending)] hover:bg-[var(--status-pending)]/10 transition-all"
         aria-label="Dismiss disclaimer"
       >
         <X size={12} />

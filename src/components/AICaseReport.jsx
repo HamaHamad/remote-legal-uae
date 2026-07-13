@@ -27,17 +27,20 @@ const RISK_CONFIG = {
   low: {
     labelKey: 'aiReport.riskLow',
     icon: ShieldCheck,
-    className: 'bg-green-500/10  text-green-400  border-green-500/20',
+    className:
+      'bg-[var(--status-active)]/10  text-[var(--status-active)]  border-[var(--status-active)]/20',
   },
   medium: {
     labelKey: 'aiReport.riskMedium',
     icon: ShieldQuestion,
-    className: 'bg-amber-500/10  text-amber-400  border-amber-500/20',
+    className:
+      'bg-[var(--status-pending)]/10  text-[var(--status-pending)]  border-[var(--status-pending)]/20',
   },
   high: {
     labelKey: 'aiReport.riskHigh',
     icon: ShieldAlert,
-    className: 'bg-red-500/10    text-red-400    border-red-500/20',
+    className:
+      'bg-[var(--status-error)]/10    text-[var(--status-error)]    border-[var(--status-error)]/20',
   },
 }
 
@@ -105,7 +108,7 @@ function PaymentModal({ caseId, onClose }) {
           </div>
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-white/8 transition-all"
+            className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--text-primary)]/8 transition-all"
           >
             <X size={16} />
           </button>
@@ -139,7 +142,7 @@ function PaymentModal({ caseId, onClose }) {
                 <span className="text-xs text-[var(--text-muted)]">{t('case.id')}</span>
               </div>
             </div>
-            <div className="flex items-center gap-1 text-[11px] text-[var(--text-muted)] bg-white/5 rounded-lg px-2.5 py-1.5">
+            <div className="flex items-center gap-1 text-[11px] text-[var(--text-muted)] bg-[var(--text-primary)]/5 rounded-lg px-2.5 py-1.5">
               <Star size={10} className="text-gold-400 fill-gold-400" />
               {t('aiReport.generated')}
             </div>
@@ -147,7 +150,7 @@ function PaymentModal({ caseId, onClose }) {
 
           {/* Error */}
           {error && (
-            <div className="flex items-start gap-2 p-3 rounded-xl bg-red-500/8 border border-red-500/20 text-red-400 text-xs animate-fade-in">
+            <div className="flex items-start gap-2 p-3 rounded-xl bg-[var(--status-error)]/8 border border-[var(--status-error)]/20 text-[var(--status-error)] text-xs animate-fade-in">
               <AlertTriangle size={13} className="shrink-0 mt-0.5" />
               <span>{error}</span>
             </div>
@@ -221,7 +224,8 @@ function StepTimeline({ steps }) {
               <div
                 className={clsx(
                   'w-7 h-7 rounded-full border-2 flex items-center justify-center shrink-0 z-10 transition-all duration-300',
-                  isDone && 'bg-green-500/15 border-green-500/40 text-green-400',
+                  isDone &&
+                    'bg-[var(--status-active)]/15 border-[var(--status-active)]/40 text-[var(--status-active)]',
                   isCurrent &&
                     'bg-gold-500/15  border-gold-500/50  text-gold-400 ring-4 ring-gold-500/10',
                   !isDone &&
@@ -261,7 +265,7 @@ function StepTimeline({ steps }) {
                     'inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-bold me-2 align-middle',
                     isCurrent
                       ? 'bg-gold-500/20 text-gold-400'
-                      : 'bg-white/5 text-[var(--text-muted)]',
+                      : 'bg-[var(--text-primary)]/5 text-[var(--text-muted)]',
                   )}
                 >
                   {i + 1}
@@ -306,18 +310,18 @@ function AISkeleton() {
   return (
     <div className="space-y-4 animate-pulse">
       <div className="flex gap-2">
-        <div className="h-6 bg-white/5 rounded-full w-24" />
-        <div className="h-6 bg-white/5 rounded-full w-32" />
+        <div className="h-6 bg-[var(--text-primary)]/5 rounded-full w-24" />
+        <div className="h-6 bg-[var(--text-primary)]/5 rounded-full w-32" />
       </div>
       <div className="space-y-2">
-        <div className="h-3 bg-white/5 rounded w-full" />
-        <div className="h-3 bg-white/5 rounded w-5/6" />
-        <div className="h-3 bg-white/5 rounded w-4/6" />
+        <div className="h-3 bg-[var(--text-primary)]/5 rounded w-full" />
+        <div className="h-3 bg-[var(--text-primary)]/5 rounded w-5/6" />
+        <div className="h-3 bg-[var(--text-primary)]/5 rounded w-4/6" />
       </div>
       {[1, 2, 3, 4].map((i) => (
         <div key={i} className="flex gap-3">
-          <div className="w-7 h-7 rounded-full bg-white/5 shrink-0" />
-          <div className="flex-1 h-3 bg-white/5 rounded mt-2" />
+          <div className="w-7 h-7 rounded-full bg-[var(--text-primary)]/5 shrink-0" />
+          <div className="flex-1 h-3 bg-[var(--text-primary)]/5 rounded mt-2" />
         </div>
       ))}
     </div>
@@ -336,7 +340,7 @@ export function AICaseReport({ caseData, steps }) {
   if (aiStatus === 'idle') {
     return (
       <div className="glass-panel rounded-2xl p-6 text-center">
-        <div className="w-12 h-12 rounded-xl bg-white/5 border border-[var(--border)] flex items-center justify-center mx-auto mb-3">
+        <div className="w-12 h-12 rounded-xl bg-[var(--text-primary)]/5 border border-[var(--border)] flex items-center justify-center mx-auto mb-3">
           <Brain size={22} className="text-[var(--text-muted)]" />
         </div>
         <p className="text-sm font-medium text-[var(--text-primary)] mb-1">
@@ -369,8 +373,8 @@ export function AICaseReport({ caseData, steps }) {
   if (aiStatus === 'failed') {
     return (
       <div className="glass-panel rounded-2xl p-5 flex items-start gap-3">
-        <div className="w-9 h-9 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center shrink-0">
-          <AlertTriangle size={16} className="text-red-400" />
+        <div className="w-9 h-9 rounded-xl bg-[var(--status-error)]/10 border border-[var(--status-error)]/20 flex items-center justify-center shrink-0">
+          <AlertTriangle size={16} className="text-[var(--status-error)]" />
         </div>
         <div>
           <p className="text-sm font-semibold text-[var(--text-primary)] mb-1">
@@ -409,7 +413,7 @@ export function AICaseReport({ caseData, steps }) {
                   <Lock size={9} /> {t('aiReport.locked')}
                 </span>
               ) : (
-                <span className="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-green-500/10 text-green-400 border border-green-500/20">
+                <span className="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-[var(--status-active)]/10 text-[var(--status-active)] border border-[var(--status-active)]/20">
                   <Unlock size={9} /> {t('aiReport.generated')}
                 </span>
               )}

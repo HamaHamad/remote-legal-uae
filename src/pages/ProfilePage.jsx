@@ -51,7 +51,7 @@ function PasswordInput({ label, value, onChange, placeholder, error }) {
           {show ? <EyeOff size={14} /> : <Eye size={14} />}
         </button>
       </div>
-      {error && <p className="text-xs text-red-400 mt-1">{error}</p>}
+      {error && <p className="text-xs text-[var(--status-error)] mt-1">{error}</p>}
     </div>
   )
 }
@@ -63,8 +63,8 @@ function Toast({ message, type = 'success' }) {
       className={clsx(
         'flex items-center gap-2.5 px-4 py-3 rounded-xl text-sm font-medium animate-fade-in',
         type === 'success'
-          ? 'bg-green-500/10 border border-green-500/25 text-green-400'
-          : 'bg-red-500/10 border border-red-500/25 text-red-400',
+          ? 'bg-[var(--status-active)]/10 border border-green-500/25 text-[var(--status-active)]'
+          : 'bg-[var(--status-error)]/10 border border-[var(--status-error)]/25 text-[var(--status-error)]',
       )}
     >
       {type === 'success' ? <CheckCircle size={15} /> : <AlertCircle size={15} />}
@@ -204,8 +204,9 @@ export function ProfilePage() {
     {
       admin: 'bg-gold-500/10   text-gold-400   border-gold-500/25',
       partner: 'bg-purple-500/10 text-purple-400 border-purple-500/25',
-      client: 'bg-blue-500/10   text-blue-400   border-blue-500/25',
-    }[profile?.role || 'client'] || 'bg-white/5 text-[var(--text-muted)] border-white/10'
+      client: 'bg-[var(--status-resolved)]/10   text-[var(--status-resolved)]   border-blue-500/25',
+    }[profile?.role || 'client'] ||
+    'bg-[var(--text-primary)]/5 text-[var(--text-muted)] border-[var(--border)]'
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
@@ -344,7 +345,7 @@ export function ProfilePage() {
                     return (
                       <div
                         key={i}
-                        className={`h-1 flex-1 rounded-full transition-all ${i < score ? colors[score - 1] : 'bg-white/10'}`}
+                        className={`h-1 flex-1 rounded-full transition-all ${i < score ? colors[score - 1] : 'bg-[var(--text-primary)]/10'}`}
                       />
                     )
                   })}

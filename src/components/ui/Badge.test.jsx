@@ -57,7 +57,7 @@ describe('Badge', () => {
   it('applies the default variant', () => {
     const { container } = render(<Badge>Default</Badge>)
     const badge = container.firstChild
-    expect(badge).toHaveClass('bg-white/8')
+    expect(badge).toHaveClass('bg-[var(--text-primary)]/8')
   })
 
   it('applies the gold variant', () => {
@@ -70,7 +70,7 @@ describe('Badge', () => {
   it('applies the red variant', () => {
     const { container } = render(<Badge variant="red">Error</Badge>)
     const badge = container.firstChild
-    expect(badge).toHaveClass('bg-red-500/10')
-    expect(badge).toHaveClass('text-red-400')
+    expect(badge).toHaveClass('bg-[var(--status-error)]/10')
+    expect(badge).toHaveClass('text-[var(--status-error)]')
   })
 })

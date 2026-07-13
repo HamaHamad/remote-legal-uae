@@ -27,19 +27,30 @@ import { RiskBadge } from '@/components/AICaseReport'
 import Button from '@/components/ui/Button'
 
 const TYPE_META = {
-  banking: { icon: BriefcaseIcon, color: 'text-blue-400', bg: 'bg-blue-500/10' },
+  banking: {
+    icon: BriefcaseIcon,
+    color: 'text-[var(--status-resolved)]',
+    bg: 'bg-[var(--status-resolved)]/10',
+  },
   car: { icon: Car, color: 'text-orange-400', bg: 'bg-orange-500/10' },
-  employment: { icon: Users, color: 'text-green-400', bg: 'bg-green-500/10' },
+  employment: {
+    icon: Users,
+    color: 'text-[var(--status-active)]',
+    bg: 'bg-[var(--status-active)]/10',
+  },
   rental: { icon: Home, color: 'text-purple-400', bg: 'bg-purple-500/10' },
   legal: { icon: Scale, color: 'text-gold-400', bg: 'bg-gold-500/10' },
   other: { icon: HelpCircle, color: 'text-gray-400', bg: 'bg-gray-500/10' },
 }
 
 const STATUS_COLORS = {
-  pending: 'text-amber-400  bg-amber-500/10  border-amber-500/20',
-  in_progress: 'text-blue-400   bg-blue-500/10   border-blue-500/20',
-  done: 'text-green-400  bg-green-500/10  border-green-500/20',
-  rejected: 'text-red-400    bg-red-500/10    border-red-500/20',
+  pending:
+    'text-[var(--status-pending)]  bg-[var(--status-pending)]/10  border-[var(--status-pending)]/20',
+  in_progress:
+    'text-[var(--status-resolved)]   bg-[var(--status-resolved)]/10   border-[var(--status-resolved)]/20',
+  done: 'text-[var(--status-active)]  bg-[var(--status-active)]/10  border-[var(--status-active)]/20',
+  rejected:
+    'text-[var(--status-error)]    bg-[var(--status-error)]/10    border-[var(--status-error)]/20',
 }
 
 function formatDate(iso) {
@@ -87,7 +98,7 @@ export function PartnerDashboard() {
       </div>
 
       {error && (
-        <div className="flex items-center gap-2 p-3 rounded-xl bg-red-500/8 border border-red-500/20 text-red-400 text-sm">
+        <div className="flex items-center gap-2 p-3 rounded-xl bg-[var(--status-error)]/8 border border-[var(--status-error)]/20 text-[var(--status-error)] text-sm">
           <AlertCircle size={14} /> {error}
         </div>
       )}
@@ -128,7 +139,7 @@ export function PartnerDashboard() {
             <h2 className="font-display text-xl font-semibold text-[var(--text-primary)]">
               Pending Tasks
               {pendingTasks.length > 0 && (
-                <span className="ms-2 text-sm font-normal text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded-full">
+                <span className="ms-2 text-sm font-normal text-[var(--status-pending)] bg-[var(--status-pending)]/10 border border-[var(--status-pending)]/20 px-2 py-0.5 rounded-full">
                   {pendingTasks.length}
                 </span>
               )}
@@ -144,7 +155,7 @@ export function PartnerDashboard() {
             <TaskSkeleton />
           ) : pendingTasks.length === 0 ? (
             <div className="glass-panel rounded-xl p-8 text-center">
-              <CheckCircle size={28} className="text-green-400 mx-auto mb-3" />
+              <CheckCircle size={28} className="text-[var(--status-active)] mx-auto mb-3" />
               <p className="text-sm text-[var(--text-secondary)]">All caught up!</p>
               <p className="text-xs text-[var(--text-muted)] mt-1">No pending tasks</p>
             </div>
@@ -232,7 +243,7 @@ function TaskCard({ task }) {
 
   return (
     <Link to="/partner/tasks">
-      <div className="glass-panel rounded-xl p-4 hover:border-white/10 hover:bg-[var(--bg-elevated)] transition-all cursor-pointer group">
+      <div className="glass-panel rounded-xl p-4 hover:border-[var(--border)] hover:bg-[var(--bg-elevated)] transition-all cursor-pointer group">
         <div className="flex items-start justify-between gap-3 mb-2">
           <p className="text-sm font-semibold text-[var(--text-primary)] line-clamp-1">
             {task.title}
@@ -270,7 +281,7 @@ function PartnerCaseCard({ caseItem, t }) {
 
   return (
     <Link to="/partner/cases">
-      <div className="glass-panel rounded-xl p-4 hover:border-white/10 hover:bg-[var(--bg-elevated)] transition-all cursor-pointer group flex items-center gap-4">
+      <div className="glass-panel rounded-xl p-4 hover:border-[var(--border)] hover:bg-[var(--bg-elevated)] transition-all cursor-pointer group flex items-center gap-4">
         <div
           className={clsx(
             'w-10 h-10 rounded-xl flex items-center justify-center shrink-0',
@@ -303,8 +314,8 @@ function TaskSkeleton() {
     <div className="space-y-2">
       {[1, 2, 3].map((i) => (
         <div key={i} className="glass-panel rounded-xl p-4 animate-pulse">
-          <div className="h-3.5 bg-white/5 rounded w-2/3 mb-2" />
-          <div className="h-2.5 bg-white/5 rounded w-1/2" />
+          <div className="h-3.5 bg-[var(--text-primary)]/5 rounded w-2/3 mb-2" />
+          <div className="h-2.5 bg-[var(--text-primary)]/5 rounded w-1/2" />
         </div>
       ))}
     </div>
@@ -316,10 +327,10 @@ function CaseSkeleton() {
     <div className="space-y-3">
       {[1, 2, 3].map((i) => (
         <div key={i} className="glass-panel rounded-xl p-4 animate-pulse flex items-center gap-4">
-          <div className="w-10 h-10 rounded-xl bg-white/5 shrink-0" />
+          <div className="w-10 h-10 rounded-xl bg-[var(--text-primary)]/5 shrink-0" />
           <div className="flex-1 space-y-2">
-            <div className="h-3.5 bg-white/5 rounded w-1/3" />
-            <div className="h-2.5 bg-white/5 rounded w-1/2" />
+            <div className="h-3.5 bg-[var(--text-primary)]/5 rounded w-1/3" />
+            <div className="h-2.5 bg-[var(--text-primary)]/5 rounded w-1/2" />
           </div>
         </div>
       ))}

@@ -83,7 +83,7 @@ export function LanguageSwitcher({ compact = false }) {
                     'transition-all duration-150',
                     isActive
                       ? 'bg-gold-500/10 text-gold-400'
-                      : 'text-[var(--text-secondary)] hover:bg-white/5 hover:text-[var(--text-primary)]',
+                      : 'text-[var(--text-secondary)] hover:bg-[var(--text-primary)]/5 hover:text-[var(--text-primary)]',
                   )}
                 >
                   <span className="text-base leading-none w-6 text-center">{lang.flag}</span>

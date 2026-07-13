@@ -8,18 +8,18 @@ const variants = {
     transition-all duration-200
   `,
   secondary: `
-    bg-transparent hover:bg-white/5 text-text-primary
-    border border-white/10 hover:border-white/20
+    bg-transparent hover:bg-[var(--text-primary)]/5 text-text-primary
+    border border-[var(--border)] hover:border-[var(--border)]
     transition-all duration-200
   `,
   ghost: `
-    bg-transparent hover:bg-white/5 text-text-secondary hover:text-text-primary
+    bg-transparent hover:bg-[var(--text-primary)]/5 text-text-secondary hover:text-text-primary
     border border-transparent
     transition-all duration-200
   `,
   danger: `
-    bg-red-500/10 hover:bg-red-500/20 text-red-400
-    border border-red-500/20 hover:border-red-500/40
+    bg-[var(--status-error)]/10 hover:bg-red-500/20 text-[var(--status-error)]
+    border border-[var(--status-error)]/20 hover:border-[var(--status-error)]/40
     transition-all duration-200
   `,
   outline: `

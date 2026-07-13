@@ -2,8 +2,8 @@ export function LoadingScreen({ configError = false }) {
   if (configError) {
     return (
       <div className="min-h-screen auth-bg flex items-center justify-center px-4">
-        <div className="glass-panel rounded-2xl p-8 max-w-md w-full text-center border border-red-500/20">
-          <div className="w-14 h-14 rounded-2xl bg-red-500/10 border border-red-500/20 flex items-center justify-center mx-auto mb-5">
+        <div className="glass-panel rounded-2xl p-8 max-w-md w-full text-center border border-[var(--status-error)]/20">
+          <div className="w-14 h-14 rounded-2xl bg-[var(--status-error)]/10 border border-[var(--status-error)]/20 flex items-center justify-center mx-auto mb-5">
             <span className="text-2xl">⚠️</span>
           </div>
           <h2 className="font-display text-2xl font-semibold text-[var(--text-primary)] mb-3">
@@ -19,7 +19,7 @@ export function LoadingScreen({ configError = false }) {
             {['VITE_SUPABASE_URL', 'VITE_SUPABASE_ANON_KEY'].map((v) => (
               <div key={v} className="flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-red-400 shrink-0" />
-                <code className="text-xs text-red-400 font-mono">{v}</code>
+                <code className="text-xs text-[var(--status-error)] font-mono">{v}</code>
               </div>
             ))}
           </div>

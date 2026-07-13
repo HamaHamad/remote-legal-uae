@@ -121,12 +121,12 @@ export function PaymentSuccessPage() {
               className={clsx(
                 'w-20 h-20 rounded-full flex items-center justify-center border-2 transition-all duration-500',
                 stage === 2
-                  ? 'bg-green-500/10 border-green-500/40'
+                  ? 'bg-[var(--status-active)]/10 border-[var(--status-active)]/40'
                   : 'bg-gold-500/10  border-gold-500/30',
               )}
             >
               {stage === 2 ? (
-                <CheckCircle2 size={38} className="text-green-400" />
+                <CheckCircle2 size={38} className="text-[var(--status-active)]" />
               ) : (
                 <Loader2 size={32} className="text-gold-400 animate-spin" />
               )}
@@ -140,7 +140,7 @@ export function PaymentSuccessPage() {
           <h1
             className={clsx(
               'font-display text-2xl font-semibold mb-2 transition-colors duration-300',
-              stage === 2 ? 'text-green-400' : 'text-[var(--text-primary)]',
+              stage === 2 ? 'text-[var(--status-active)]' : 'text-[var(--text-primary)]',
             )}
           >
             {stage === 2 ? 'Payment Successful!' : 'Processing Payment…'}
@@ -161,10 +161,10 @@ export function PaymentSuccessPage() {
                   className={clsx(
                     'w-6 h-6 rounded-full flex items-center justify-center shrink-0 transition-all duration-300',
                     i < stage
-                      ? 'bg-green-500/15 border border-green-500/30 text-green-400'
+                      ? 'bg-[var(--status-active)]/15 border border-[var(--status-active)]/30 text-[var(--status-active)]'
                       : i === stage
                         ? 'bg-gold-500/15  border border-gold-500/30  text-gold-400'
-                        : 'bg-white/5      border border-[var(--border)] text-[var(--text-muted)]',
+                        : 'bg-[var(--text-primary)]/5      border border-[var(--border)] text-[var(--text-muted)]',
                   )}
                 >
                   {i < stage ? (

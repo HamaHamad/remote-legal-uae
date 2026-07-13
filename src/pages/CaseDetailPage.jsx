@@ -33,9 +33,17 @@ import Button from '@/components/ui/Button'
 
 // ─── Type config ──────────────────────────────────────────────────
 const TYPE_META = {
-  banking: { icon: Briefcase, color: 'text-blue-400', bg: 'bg-blue-500/10' },
+  banking: {
+    icon: Briefcase,
+    color: 'text-[var(--status-resolved)]',
+    bg: 'bg-[var(--status-resolved)]/10',
+  },
   car: { icon: Car, color: 'text-orange-400', bg: 'bg-orange-500/10' },
-  employment: { icon: Users, color: 'text-green-400', bg: 'bg-green-500/10' },
+  employment: {
+    icon: Users,
+    color: 'text-[var(--status-active)]',
+    bg: 'bg-[var(--status-active)]/10',
+  },
   rental: { icon: Home, color: 'text-purple-400', bg: 'bg-purple-500/10' },
   legal: { icon: Scale, color: 'text-gold-400', bg: 'bg-gold-500/10' },
   other: { icon: HelpCircle, color: 'text-gray-400', bg: 'bg-gray-500/10' },
@@ -63,20 +71,20 @@ function PageSkeleton() {
   return (
     <div className="max-w-4xl mx-auto space-y-6 animate-pulse">
       <div className="flex items-center gap-4">
-        <div className="w-12 h-12 rounded-xl bg-white/5" />
+        <div className="w-12 h-12 rounded-xl bg-[var(--text-primary)]/5" />
         <div className="space-y-2">
-          <div className="h-5 bg-white/5 rounded w-40" />
-          <div className="h-3.5 bg-white/5 rounded w-24" />
+          <div className="h-5 bg-[var(--text-primary)]/5 rounded w-40" />
+          <div className="h-3.5 bg-[var(--text-primary)]/5 rounded w-24" />
         </div>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-4">
-          <div className="h-32 bg-white/5 rounded-2xl" />
-          <div className="h-64 bg-white/5 rounded-2xl" />
+          <div className="h-32 bg-[var(--text-primary)]/5 rounded-2xl" />
+          <div className="h-64 bg-[var(--text-primary)]/5 rounded-2xl" />
         </div>
         <div className="space-y-4">
-          <div className="h-48 bg-white/5 rounded-2xl" />
-          <div className="h-32 bg-white/5 rounded-2xl" />
+          <div className="h-48 bg-[var(--text-primary)]/5 rounded-2xl" />
+          <div className="h-32 bg-[var(--text-primary)]/5 rounded-2xl" />
         </div>
       </div>
     </div>
@@ -89,15 +97,15 @@ function DocItem({ doc, onDownload, downloading }) {
   const isImg = doc.mime_type?.startsWith('image/')
 
   return (
-    <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border)] hover:border-white/10 transition-all group">
+    <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border)] hover:border-[var(--border)] transition-all group">
       <div
         className={clsx(
           'w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold shrink-0',
           isPDF
-            ? 'bg-red-500/15 text-red-400'
+            ? 'bg-[var(--status-error)]/15 text-[var(--status-error)]'
             : isImg
-              ? 'bg-blue-500/15 text-blue-400'
-              : 'bg-white/8 text-[var(--text-muted)]',
+              ? 'bg-blue-500/15 text-[var(--status-resolved)]'
+              : 'bg-[var(--text-primary)]/8 text-[var(--text-muted)]',
         )}
       >
         {isPDF ? 'PDF' : isImg ? 'IMG' : 'DOC'}
@@ -241,7 +249,7 @@ export function CaseDetailPage() {
     return (
       <div className="max-w-4xl mx-auto">
         <div className="glass-panel rounded-2xl p-8 flex flex-col items-center text-center">
-          <AlertCircle size={32} className="text-red-400 mb-4" />
+          <AlertCircle size={32} className="text-[var(--status-error)] mb-4" />
           <p className="text-sm font-medium text-[var(--text-primary)] mb-1">Could not load case</p>
           <p className="text-xs text-[var(--text-muted)] mb-5">{error}</p>
           <Button variant="secondary" onClick={() => navigate(-1)} icon={ArrowLeft}>
@@ -363,7 +371,7 @@ export function CaseDetailPage() {
                           'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all border',
                           selectedDocId === doc.id
                             ? 'bg-gold-500/15 text-gold-400 border-gold-500/30'
-                            : 'bg-[var(--bg-elevated)] text-[var(--text-secondary)] border-[var(--border)] hover:border-white/15',
+                            : 'bg-[var(--bg-elevated)] text-[var(--text-secondary)] border-[var(--border)] hover:border-[var(--border)]',
                         )}
                       >
                         <FileText size={11} />

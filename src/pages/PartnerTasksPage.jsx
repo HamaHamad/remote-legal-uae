@@ -17,13 +17,26 @@ import { usePartner } from '@/hooks/usePartner'
 import Button from '@/components/ui/Button'
 
 const STATUS_CONFIG = {
-  pending: { label: 'Pending', className: 'text-amber-400  bg-amber-500/10  border-amber-500/20' },
+  pending: {
+    label: 'Pending',
+    className:
+      'text-[var(--status-pending)]  bg-[var(--status-pending)]/10  border-[var(--status-pending)]/20',
+  },
   in_progress: {
     label: 'In Progress',
-    className: 'text-blue-400   bg-blue-500/10   border-blue-500/20',
+    className:
+      'text-[var(--status-resolved)]   bg-[var(--status-resolved)]/10   border-[var(--status-resolved)]/20',
   },
-  done: { label: 'Done', className: 'text-green-400  bg-green-500/10  border-green-500/20' },
-  rejected: { label: 'Rejected', className: 'text-red-400    bg-red-500/10    border-red-500/20' },
+  done: {
+    label: 'Done',
+    className:
+      'text-[var(--status-active)]  bg-[var(--status-active)]/10  border-[var(--status-active)]/20',
+  },
+  rejected: {
+    label: 'Rejected',
+    className:
+      'text-[var(--status-error)]    bg-[var(--status-error)]/10    border-[var(--status-error)]/20',
+  },
 }
 
 function formatDate(iso) {
@@ -138,7 +151,7 @@ function TaskCard({ task, onStatusChange, onUploadProof, updating }) {
   const nextOptions = NEXT_STATUSES[task.status] || []
 
   return (
-    <div className="glass-panel rounded-2xl p-5 hover:border-white/10 transition-all">
+    <div className="glass-panel rounded-2xl p-5 hover:border-[var(--border)] transition-all">
       {/* Header */}
       <div className="flex items-start justify-between gap-3 mb-3">
         <div className="flex-1 min-w-0">
@@ -178,7 +191,7 @@ function TaskCard({ task, onStatusChange, onUploadProof, updating }) {
             <span
               className={clsx(
                 new Date(task.due_date) < new Date() && task.status !== 'done'
-                  ? 'text-red-400'
+                  ? 'text-[var(--status-error)]'
                   : 'text-[var(--text-secondary)]',
               )}
             >
@@ -187,7 +200,7 @@ function TaskCard({ task, onStatusChange, onUploadProof, updating }) {
           </span>
         )}
         {task.completed_at && (
-          <span className="flex items-center gap-1 text-green-400">
+          <span className="flex items-center gap-1 text-[var(--status-active)]">
             <Check size={11} />
             Completed {formatDate(task.completed_at)}
           </span>
@@ -196,16 +209,16 @@ function TaskCard({ task, onStatusChange, onUploadProof, updating }) {
 
       {/* Proof */}
       {task.proof_url && (
-        <div className="flex items-center gap-2 p-2.5 rounded-lg bg-green-500/8 border border-green-500/20 mb-4">
-          <FileCheck size={13} className="text-green-400 shrink-0" />
-          <p className="text-xs text-green-400 flex-1 truncate">
+        <div className="flex items-center gap-2 p-2.5 rounded-lg bg-green-500/8 border border-[var(--status-active)]/20 mb-4">
+          <FileCheck size={13} className="text-[var(--status-active)] shrink-0" />
+          <p className="text-xs text-[var(--status-active)] flex-1 truncate">
             {task.proof_file || 'Proof uploaded'}
           </p>
           <a
             href={task.proof_url}
             target="_blank"
             rel="noreferrer"
-            className="text-[10px] text-green-400 hover:text-green-300 flex items-center gap-0.5"
+            className="text-[10px] text-[var(--status-active)] hover:text-green-300 flex items-center gap-0.5"
             onClick={(e) => e.stopPropagation()}
           >
             View <ExternalLink size={10} />
@@ -221,7 +234,7 @@ function TaskCard({ task, onStatusChange, onUploadProof, updating }) {
             <button
               onClick={() => setShowMenu((v) => !v)}
               disabled={isUpdating}
-              className="flex items-center gap-1.5 text-xs px-3 py-2 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-white/15 transition-all disabled:opacity-50"
+              className="flex items-center gap-1.5 text-xs px-3 py-2 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--border)] transition-all disabled:opacity-50"
             >
               {isUpdating ? (
                 <span className="w-3 h-3 border border-[var(--text-muted)]/30 border-t-[var(--text-muted)] rounded-full animate-spin" />
@@ -241,7 +254,7 @@ function TaskCard({ task, onStatusChange, onUploadProof, updating }) {
                       onStatusChange(task.id, s)
                     }}
                     className={clsx(
-                      'w-full text-start px-3 py-2 text-xs font-medium capitalize transition-all hover:bg-white/5',
+                      'w-full text-start px-3 py-2 text-xs font-medium capitalize transition-all hover:bg-[var(--text-primary)]/5',
                       STATUS_CONFIG[s]?.className || 'text-[var(--text-secondary)]',
                     )}
                   >
@@ -327,7 +340,7 @@ export function PartnerTasksPage() {
         </div>
 
         {successMsg && (
-          <div className="flex items-center gap-2 p-3 rounded-xl bg-green-500/8 border border-green-500/20 text-green-400 text-sm animate-fade-in">
+          <div className="flex items-center gap-2 p-3 rounded-xl bg-green-500/8 border border-[var(--status-active)]/20 text-[var(--status-active)] text-sm animate-fade-in">
             <CheckCircle size={14} /> {successMsg}
           </div>
         )}
@@ -347,7 +360,7 @@ export function PartnerTasksPage() {
                 'px-3 py-2 rounded-lg text-xs font-medium transition-all',
                 filter === opt.key
                   ? 'bg-gold-500/15 text-gold-400 border border-gold-500/30'
-                  : 'bg-[var(--bg-elevated)] text-[var(--text-secondary)] border border-[var(--border)] hover:border-white/15',
+                  : 'bg-[var(--bg-elevated)] text-[var(--text-secondary)] border border-[var(--border)] hover:border-[var(--border)]',
               )}
             >
               {opt.label}

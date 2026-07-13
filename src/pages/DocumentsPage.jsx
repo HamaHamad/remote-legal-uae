@@ -46,9 +46,17 @@ function formatDate(iso) {
 }
 
 const TYPE_META = {
-  banking: { icon: Briefcase, color: 'text-blue-400', bg: 'bg-blue-500/10' },
+  banking: {
+    icon: Briefcase,
+    color: 'text-[var(--status-resolved)]',
+    bg: 'bg-[var(--status-resolved)]/10',
+  },
   car: { icon: Car, color: 'text-orange-400', bg: 'bg-orange-500/10' },
-  employment: { icon: Users, color: 'text-green-400', bg: 'bg-green-500/10' },
+  employment: {
+    icon: Users,
+    color: 'text-[var(--status-active)]',
+    bg: 'bg-[var(--status-active)]/10',
+  },
   rental: { icon: Home, color: 'text-purple-400', bg: 'bg-purple-500/10' },
   legal: { icon: Scale, color: 'text-gold-400', bg: 'bg-gold-500/10' },
   other: { icon: HelpCircle, color: 'text-gray-400', bg: 'bg-gray-500/10' },
@@ -62,13 +70,13 @@ function FileChip({ mimeType, fileName }) {
 
   if (isPDF)
     return (
-      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-red-500/15 text-red-400">
+      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-[var(--status-error)]/15 text-[var(--status-error)]">
         PDF
       </span>
     )
   if (isImage)
     return (
-      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-blue-500/15 text-blue-400">
+      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-blue-500/15 text-[var(--status-resolved)]">
         IMG
       </span>
     )
@@ -79,7 +87,7 @@ function FileChip({ mimeType, fileName }) {
       </span>
     )
   return (
-    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-white/8 text-[var(--text-muted)]">
+    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-[var(--text-primary)]/8 text-[var(--text-muted)]">
       FILE
     </span>
   )
@@ -89,8 +97,8 @@ function FileChip({ mimeType, fileName }) {
 function FileBigIcon({ mimeType, fileName }) {
   const isPDF = mimeType === 'application/pdf' || fileName?.endsWith('.pdf')
   const isImage = mimeType?.startsWith('image/')
-  if (isPDF) return <FileText size={20} className="text-red-400" />
-  if (isImage) return <Image size={20} className="text-blue-400" />
+  if (isPDF) return <FileText size={20} className="text-[var(--status-error)]" />
+  if (isImage) return <Image size={20} className="text-[var(--status-resolved)]" />
   return <File size={20} className="text-[var(--text-muted)]" />
 }
 
@@ -126,13 +134,13 @@ function Skeleton() {
           key={i}
           className="flex items-center gap-4 px-4 py-3.5 rounded-xl bg-[var(--bg-card)] border border-[var(--border)] animate-pulse"
         >
-          <div className="w-10 h-10 rounded-xl bg-white/5 shrink-0" />
+          <div className="w-10 h-10 rounded-xl bg-[var(--text-primary)]/5 shrink-0" />
           <div className="flex-1 space-y-2">
-            <div className="h-3.5 bg-white/5 rounded w-2/5" />
-            <div className="h-2.5 bg-white/5 rounded w-1/3" />
+            <div className="h-3.5 bg-[var(--text-primary)]/5 rounded w-2/5" />
+            <div className="h-2.5 bg-[var(--text-primary)]/5 rounded w-1/3" />
           </div>
-          <div className="h-5 bg-white/5 rounded w-12" />
-          <div className="h-4 bg-white/5 rounded w-20 hidden sm:block" />
+          <div className="h-5 bg-[var(--text-primary)]/5 rounded w-12" />
+          <div className="h-4 bg-[var(--text-primary)]/5 rounded w-20 hidden sm:block" />
         </div>
       ))}
     </div>
@@ -149,8 +157,8 @@ function DeleteConfirm({ doc, onConfirm, onCancel, deleting }) {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-start gap-3 mb-4">
-          <div className="w-9 h-9 rounded-lg bg-red-500/10 border border-red-500/20 flex items-center justify-center shrink-0">
-            <AlertCircle size={18} className="text-red-400" />
+          <div className="w-9 h-9 rounded-lg bg-[var(--status-error)]/10 border border-[var(--status-error)]/20 flex items-center justify-center shrink-0">
+            <AlertCircle size={18} className="text-[var(--status-error)]" />
           </div>
           <div>
             <h3 className="font-semibold text-[var(--text-primary)] text-sm mb-1">
@@ -358,7 +366,7 @@ export function DocumentsPage() {
 
         {/* Error */}
         {error && (
-          <div className="flex items-center gap-2.5 p-4 rounded-xl bg-red-500/8 border border-red-500/20 text-red-400 text-sm animate-fade-in">
+          <div className="flex items-center gap-2.5 p-4 rounded-xl bg-[var(--status-error)]/8 border border-[var(--status-error)]/20 text-[var(--status-error)] text-sm animate-fade-in">
             <AlertCircle size={16} className="shrink-0" />
             <span>{error}</span>
           </div>
@@ -470,7 +478,7 @@ function DocumentRow({
   return (
     <div
       className={clsx(
-        'group grid grid-cols-[2.5rem_1fr_auto_auto] sm:grid-cols-[2.5rem_1fr_6rem_8rem_7rem_auto] items-center gap-4 px-4 py-3.5 bg-[var(--bg-card)] border border-[var(--border)] hover:border-white/10 hover:bg-[var(--bg-elevated)] transition-all duration-200',
+        'group grid grid-cols-[2.5rem_1fr_auto_auto] sm:grid-cols-[2.5rem_1fr_6rem_8rem_7rem_auto] items-center gap-4 px-4 py-3.5 bg-[var(--bg-card)] border border-[var(--border)] hover:border-[var(--border)] hover:bg-[var(--bg-elevated)] transition-all duration-200',
         isExpanded ? 'rounded-t-xl' : 'rounded-xl',
       )}
     >
@@ -505,7 +513,7 @@ function DocumentRow({
 
       {/* Case ID — desktop */}
       <div className="hidden sm:block shrink-0">
-        <span className="text-xs font-mono text-[var(--text-muted)] bg-white/4 px-1.5 py-0.5 rounded">
+        <span className="text-xs font-mono text-[var(--text-muted)] bg-[var(--text-primary)]/4 px-1.5 py-0.5 rounded">
           #{shortCaseId}
         </span>
         {parentCase && (
@@ -534,7 +542,7 @@ function DocumentRow({
               ? isExpanded
                 ? 'bg-gold-500/20 text-gold-400 border border-gold-500/40'
                 : 'bg-gold-500/10 text-gold-400 border border-gold-500/20 hover:bg-gold-500/20'
-              : 'bg-white/5 text-[var(--text-muted)] border border-[var(--border)] hover:bg-white/10 hover:text-[var(--text-primary)]',
+              : 'bg-[var(--text-primary)]/5 text-[var(--text-muted)] border border-[var(--border)] hover:bg-[var(--text-primary)]/10 hover:text-[var(--text-primary)]',
             'opacity-0 group-hover:opacity-100',
             (hasAnalysis || isAnalysing) && 'opacity-100',
           )}
@@ -554,7 +562,7 @@ function DocumentRow({
           onClick={onDownload}
           disabled={isDownloading}
           title="Download"
-          className="w-7 h-7 rounded-lg flex items-center justify-center text-[var(--text-muted)] hover:text-blue-400 hover:bg-blue-500/10 transition-all disabled:opacity-50"
+          className="w-7 h-7 rounded-lg flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--status-resolved)] hover:bg-[var(--status-resolved)]/10 transition-all disabled:opacity-50"
         >
           {isDownloading ? (
             <span className="w-3 h-3 border-2 border-blue-400/30 border-t-blue-400 rounded-full animate-spin" />
@@ -566,7 +574,7 @@ function DocumentRow({
           type="button"
           onClick={onDelete}
           title="Delete"
-          className="w-7 h-7 rounded-lg flex items-center justify-center text-[var(--text-muted)] hover:text-red-400 hover:bg-red-500/10 transition-all opacity-0 group-hover:opacity-100"
+          className="w-7 h-7 rounded-lg flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--status-error)] hover:bg-[var(--status-error)]/10 transition-all opacity-0 group-hover:opacity-100"
         >
           <Trash2 size={13} />
         </button>

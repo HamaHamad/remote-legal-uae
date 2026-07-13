@@ -47,7 +47,7 @@ export function DashboardLayout() {
               <button
                 type="button"
                 onClick={() => setSidebarOpen(true)}
-                className="p-2 rounded-lg text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-white/5 transition-colors"
+                className="p-2 rounded-lg text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--text-primary)]/5 transition-colors"
               >
                 {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
               </button>

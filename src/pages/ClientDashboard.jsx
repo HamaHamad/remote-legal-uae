@@ -27,18 +27,30 @@ import { AutoCaseBuilder } from '@/components/AutoCaseBuilder'
 import { clsx } from 'clsx'
 
 const TYPE_META = {
-  banking: { icon: Briefcase, color: 'text-blue-400', bg: 'bg-blue-500/10' },
+  banking: {
+    icon: Briefcase,
+    color: 'text-[var(--status-resolved)]',
+    bg: 'bg-[var(--status-resolved)]/10',
+  },
   car: { icon: Car, color: 'text-orange-400', bg: 'bg-orange-500/10' },
-  employment: { icon: Users, color: 'text-green-400', bg: 'bg-green-500/10' },
+  employment: {
+    icon: Users,
+    color: 'text-[var(--status-active)]',
+    bg: 'bg-[var(--status-active)]/10',
+  },
   rental: { icon: Home, color: 'text-purple-400', bg: 'bg-purple-500/10' },
   legal: { icon: Scale, color: 'text-gold-400', bg: 'bg-gold-500/10' },
   visa: { icon: FileText, color: 'text-cyan-400', bg: 'bg-cyan-500/10' },
-  business: { icon: Briefcase, color: 'text-blue-400', bg: 'bg-blue-500/10' },
-  dispute: { icon: Scale, color: 'text-red-400', bg: 'bg-red-500/10' },
+  business: {
+    icon: Briefcase,
+    color: 'text-[var(--status-resolved)]',
+    bg: 'bg-[var(--status-resolved)]/10',
+  },
+  dispute: { icon: Scale, color: 'text-[var(--status-error)]', bg: 'bg-[var(--status-error)]/10' },
   contract: { icon: FileText, color: 'text-yellow-400', bg: 'bg-yellow-500/10' },
   property: { icon: Home, color: 'text-purple-400', bg: 'bg-purple-500/10' },
   family: { icon: Users, color: 'text-pink-400', bg: 'bg-pink-500/10' },
-  criminal: { icon: Scale, color: 'text-red-400', bg: 'bg-red-500/10' },
+  criminal: { icon: Scale, color: 'text-[var(--status-error)]', bg: 'bg-[var(--status-error)]/10' },
   other: { icon: HelpCircle, color: 'text-gray-400', bg: 'bg-gray-500/10' },
 }
 
@@ -70,7 +82,7 @@ function EmptyState({ t, onOpen }) {
         ].map((item) => (
           <div
             key={item.label}
-            className="flex flex-col items-center gap-2 p-4 rounded-xl bg-white/2 border border-white/5 text-center"
+            className="flex flex-col items-center gap-2 p-4 rounded-xl bg-white/2 border border-[var(--border)] text-center"
           >
             <item.icon size={20} className="text-gold-500/50" />
             <p className="text-xs font-semibold text-[var(--text-secondary)]">{item.label}</p>
@@ -98,7 +110,7 @@ function CaseCard({ caseItem, t }) {
       type="button"
       onClick={() => navigate(`/dashboard/cases/${caseItem.id}`)}
       aria-label={`View case ${label}: ${caseItem.status}`}
-      className="group flex flex-col sm:flex-row sm:items-center gap-4 px-4 py-4 rounded-xl bg-[var(--bg-card)] border border-[var(--border)] hover:border-white/10 hover:bg-[var(--bg-elevated)] transition-all duration-200 cursor-pointer text-start w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400/50"
+      className="group flex flex-col sm:flex-row sm:items-center gap-4 px-4 py-4 rounded-xl bg-[var(--bg-card)] border border-[var(--border)] hover:border-[var(--border)] hover:bg-[var(--bg-elevated)] transition-all duration-200 cursor-pointer text-start w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400/50"
     >
       <div
         className={clsx('w-10 h-10 rounded-xl flex items-center justify-center shrink-0', meta.bg)}
@@ -108,7 +120,7 @@ function CaseCard({ caseItem, t }) {
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 flex-wrap">
           <p className="text-sm font-semibold text-[var(--text-primary)]">{label}</p>
-          <span className="text-[10px] font-mono text-[var(--text-muted)] bg-white/4 px-1.5 py-0.5 rounded">
+          <span className="text-[10px] font-mono text-[var(--text-muted)] bg-[var(--text-primary)]/4 px-1.5 py-0.5 rounded">
             #{caseItem.id.slice(0, 8).toUpperCase()}
           </span>
         </div>
@@ -145,14 +157,14 @@ function CaseSkeleton() {
           key={i}
           className="flex items-center gap-4 px-4 py-4 rounded-xl bg-[var(--bg-card)] border border-[var(--border)] animate-pulse"
         >
-          <div className="w-10 h-10 rounded-xl bg-white/5 shrink-0" />
+          <div className="w-10 h-10 rounded-xl bg-[var(--text-primary)]/5 shrink-0" />
           <div className="flex-1 space-y-2">
-            <div className="h-3.5 bg-white/5 rounded w-1/3" />
-            <div className="h-2.5 bg-white/5 rounded w-2/3" />
+            <div className="h-3.5 bg-[var(--text-primary)]/5 rounded w-1/3" />
+            <div className="h-2.5 bg-[var(--text-primary)]/5 rounded w-2/3" />
           </div>
           <div className="flex flex-col items-end gap-1.5">
-            <div className="h-5 bg-white/5 rounded-full w-16" />
-            <div className="h-3 bg-white/5 rounded w-20" />
+            <div className="h-5 bg-[var(--text-primary)]/5 rounded-full w-16" />
+            <div className="h-3 bg-[var(--text-primary)]/5 rounded w-20" />
           </div>
         </div>
       ))}
@@ -307,7 +319,7 @@ export function ClientDashboard() {
               <p className="text-sm font-semibold text-[var(--text-primary)]">Auto Case Builder</p>
               <button
                 onClick={() => setShowAutoBuilder(false)}
-                className="w-7 h-7 rounded-lg flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-white/8 transition-all text-sm"
+                className="w-7 h-7 rounded-lg flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--text-primary)]/8 transition-all text-sm"
               >
                 ✕
               </button>
@@ -342,13 +354,15 @@ function QuickAction({ icon: Icon, label, desc, gold, disabled, onClick }) {
           ? 'opacity-40 cursor-not-allowed border-[var(--border)] bg-[var(--bg-card)]'
           : gold
             ? 'cursor-pointer border-gold-500/30 bg-gold-500/5 hover:bg-gold-500/10 hover:border-gold-500/50 hover:shadow-gold-sm'
-            : 'cursor-pointer border-[var(--border)] bg-[var(--bg-card)] hover:bg-[var(--bg-elevated)] hover:border-white/12',
+            : 'cursor-pointer border-[var(--border)] bg-[var(--bg-card)] hover:bg-[var(--bg-elevated)] hover:border-[var(--border)]',
       )}
     >
       <div
         className={clsx(
           'w-9 h-9 rounded-lg flex items-center justify-center shrink-0',
-          gold ? 'bg-gold-500/15 text-gold-400' : 'bg-white/5 text-[var(--text-muted)]',
+          gold
+            ? 'bg-gold-500/15 text-gold-400'
+            : 'bg-[var(--text-primary)]/5 text-[var(--text-muted)]',
         )}
       >
         <Icon size={18} />

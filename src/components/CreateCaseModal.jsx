@@ -68,7 +68,7 @@ const CASE_TYPES = [
 const COLOR_MAP = {
   blue: {
     card: 'border-blue-500/40 bg-blue-500/8',
-    icon: 'bg-blue-500/15 text-blue-400',
+    icon: 'bg-blue-500/15 text-[var(--status-resolved)]',
     ring: 'ring-blue-500/40',
   },
   orange: {
@@ -77,8 +77,8 @@ const COLOR_MAP = {
     ring: 'ring-orange-500/40',
   },
   green: {
-    card: 'border-green-500/40 bg-green-500/8',
-    icon: 'bg-green-500/15 text-green-400',
+    card: 'border-[var(--status-active)]/40 bg-green-500/8',
+    icon: 'bg-[var(--status-active)]/15 text-[var(--status-active)]',
     ring: 'ring-green-500/40',
   },
   purple: {
@@ -110,9 +110,9 @@ function FileIcon({ mimeType, className }) {
     <div
       className={clsx(
         'flex items-center justify-center rounded-lg text-xs font-bold',
-        isPDF && 'bg-red-500/15 text-red-400',
-        isImage && 'bg-blue-500/15 text-blue-400',
-        !isPDF && !isImage && 'bg-white/8 text-[var(--text-muted)]',
+        isPDF && 'bg-[var(--status-error)]/15 text-[var(--status-error)]',
+        isImage && 'bg-blue-500/15 text-[var(--status-resolved)]',
+        !isPDF && !isImage && 'bg-[var(--text-primary)]/8 text-[var(--text-muted)]',
         className,
       )}
     >
@@ -149,7 +149,7 @@ function StepType({ selected, onSelect }) {
                 'transition-all duration-200 group',
                 isActive
                   ? `${colors.card} ring-1 ${colors.ring}`
-                  : 'border-[var(--border)] bg-[var(--bg-card)] hover:border-white/15 hover:bg-[var(--bg-elevated)]',
+                  : 'border-[var(--border)] bg-[var(--bg-card)] hover:border-[var(--border)] hover:bg-[var(--bg-elevated)]',
               )}
             >
               {/* Check indicator */}
@@ -167,7 +167,7 @@ function StepType({ selected, onSelect }) {
               <div
                 className={clsx(
                   'w-9 h-9 rounded-lg flex items-center justify-center shrink-0 mt-0.5',
-                  isActive ? colors.icon : 'bg-white/5 text-[var(--text-muted)]',
+                  isActive ? colors.icon : 'bg-[var(--text-primary)]/5 text-[var(--text-muted)]',
                 )}
               >
                 <ct.icon size={18} />
@@ -249,7 +249,7 @@ function StepDescription({ value, onChange, caseType }) {
         </div>
 
         {value.trim().length > 0 && value.trim().length < 30 && (
-          <div className="flex items-center gap-2 text-xs text-amber-400/80 bg-amber-400/8 border border-amber-400/20 rounded-lg px-3 py-2">
+          <div className="flex items-center gap-2 text-xs text-[var(--status-pending)]/80 bg-amber-400/8 border border-amber-400/20 rounded-lg px-3 py-2">
             <AlertCircle size={13} />
             Please provide more detail to help us understand your case.
           </div>
@@ -334,7 +334,9 @@ function StepDocuments({ files, onFilesChange }) {
         <div
           className={clsx(
             'w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-200',
-            dragging ? 'bg-gold-500/20 text-gold-400' : 'bg-white/5 text-[var(--text-muted)]',
+            dragging
+              ? 'bg-gold-500/20 text-gold-400'
+              : 'bg-[var(--text-primary)]/5 text-[var(--text-muted)]',
           )}
         >
           <Upload size={22} />
@@ -354,7 +356,10 @@ function StepDocuments({ files, onFilesChange }) {
 
         <div className="flex items-center gap-3 text-[10px] text-[var(--text-muted)] uppercase tracking-widest mt-1">
           {['PDF', 'JPG', 'PNG', 'DOCX'].map((ext) => (
-            <span key={ext} className="px-2 py-0.5 rounded bg-white/4 border border-white/6">
+            <span
+              key={ext}
+              className="px-2 py-0.5 rounded bg-[var(--text-primary)]/4 border border-white/6"
+            >
               {ext}
             </span>
           ))}
@@ -385,7 +390,7 @@ function StepDocuments({ files, onFilesChange }) {
                   e.stopPropagation()
                   removeFile(file.name)
                 }}
-                className="w-6 h-6 rounded-md flex items-center justify-center text-[var(--text-muted)] hover:text-red-400 hover:bg-red-500/10 transition-all opacity-0 group-hover:opacity-100"
+                className="w-6 h-6 rounded-md flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--status-error)] hover:bg-[var(--status-error)]/10 transition-all opacity-0 group-hover:opacity-100"
               >
                 <Trash2 size={13} />
               </button>
@@ -411,7 +416,7 @@ function UploadProgress({ progress }) {
               {pct === -1 ? '✗ Failed' : pct === 100 ? '✓ Done' : `${pct}%`}
             </p>
           </div>
-          <div className="h-1.5 rounded-full bg-white/8 overflow-hidden">
+          <div className="h-1.5 rounded-full bg-[var(--text-primary)]/8 overflow-hidden">
             <div
               className={clsx(
                 'h-full rounded-full transition-all duration-500',
@@ -436,10 +441,10 @@ function StepIndicator({ currentStep, total }) {
             className={clsx(
               'w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold transition-all duration-300',
               i < currentStep
-                ? 'bg-green-500/20 text-green-400 border border-green-500/30'
+                ? 'bg-green-500/20 text-[var(--status-active)] border border-[var(--status-active)]/30'
                 : i === currentStep
                   ? 'bg-gold-500/20 text-gold-400 border border-gold-500/40 ring-2 ring-gold-500/20'
-                  : 'bg-white/5 text-[var(--text-muted)] border border-[var(--border)]',
+                  : 'bg-[var(--text-primary)]/5 text-[var(--text-muted)] border border-[var(--border)]',
             )}
           >
             {i < currentStep ? <Check size={12} strokeWidth={3} /> : i + 1}
@@ -475,8 +480,8 @@ function SuccessScreen({ caseType, docCount, aiLabel, createdCase, onClose }) {
     <div className="flex flex-col items-center justify-center py-8 px-4 text-center animate-slide-up">
       {/* Animated check circle */}
       <div className="relative mb-6">
-        <div className="w-20 h-20 rounded-full flex items-center justify-center bg-green-500/10 border-2 border-green-500/30">
-          <Check size={36} className="text-green-400" strokeWidth={2.5} />
+        <div className="w-20 h-20 rounded-full flex items-center justify-center bg-[var(--status-active)]/10 border-2 border-[var(--status-active)]/30">
+          <Check size={36} className="text-[var(--status-active)]" strokeWidth={2.5} />
         </div>
         <div className="absolute -inset-2 rounded-full border border-green-500/10 animate-ping" />
       </div>
@@ -521,10 +526,10 @@ function SuccessScreen({ caseType, docCount, aiLabel, createdCase, onClose }) {
               className={clsx(
                 'w-5 h-5 rounded-full flex items-center justify-center shrink-0 text-xs',
                 s.done
-                  ? 'bg-green-500/15 border border-green-500/30 text-green-400'
+                  ? 'bg-[var(--status-active)]/15 border border-[var(--status-active)]/30 text-[var(--status-active)]'
                   : s.active
                     ? 'bg-gold-500/15  border border-gold-500/30  text-gold-400'
-                    : 'bg-white/5      border border-[var(--border)] text-[var(--text-muted)]',
+                    : 'bg-[var(--text-primary)]/5      border border-[var(--border)] text-[var(--text-muted)]',
               )}
             >
               {s.done ? (
@@ -692,7 +697,7 @@ export function CreateCaseModal({ onClose, onCreated }) {
             <button
               type="button"
               onClick={onClose}
-              className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-white/8 transition-all"
+              className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--text-primary)]/8 transition-all"
             >
               <X size={16} />
             </button>
@@ -726,7 +731,7 @@ export function CreateCaseModal({ onClose, onCreated }) {
 
               {/* Error */}
               {submitError && (
-                <div className="mt-4 flex items-start gap-2.5 p-3 rounded-xl bg-red-500/8 border border-red-500/20 text-red-400 text-xs">
+                <div className="mt-4 flex items-start gap-2.5 p-3 rounded-xl bg-[var(--status-error)]/8 border border-[var(--status-error)]/20 text-[var(--status-error)] text-xs">
                   <AlertCircle size={14} className="shrink-0 mt-0.5" />
                   <span>{submitError}</span>
                 </div>

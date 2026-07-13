@@ -27,10 +27,11 @@ function formatDate(dateStr) {
 function MetricCard({ label, value, sub, icon: Icon, color = 'gold', trend }) {
   const colorMap = {
     gold: 'bg-gold-500/10   border-gold-500/20   text-gold-400',
-    blue: 'bg-blue-500/10   border-blue-500/20   text-blue-400',
-    green: 'bg-green-500/10  border-green-500/20  text-green-400',
+    blue: 'bg-[var(--status-resolved)]/10   border-[var(--status-resolved)]/20   text-[var(--status-resolved)]',
+    green:
+      'bg-[var(--status-active)]/10  border-[var(--status-active)]/20  text-[var(--status-active)]',
     purple: 'bg-purple-500/10 border-purple-500/20 text-purple-400',
-    red: 'bg-red-500/10    border-red-500/20    text-red-400',
+    red: 'bg-[var(--status-error)]/10    border-[var(--status-error)]/20    text-[var(--status-error)]',
   }
   return (
     <div className="glass-panel rounded-xl p-5 flex items-start justify-between">
@@ -44,7 +45,7 @@ function MetricCard({ label, value, sub, icon: Icon, color = 'gold', trend }) {
           <p
             className={clsx(
               'text-xs mt-1 flex items-center gap-1',
-              trend >= 0 ? 'text-green-400' : 'text-red-400',
+              trend >= 0 ? 'text-[var(--status-active)]' : 'text-[var(--status-error)]',
             )}
           >
             {trend >= 0 ? <ArrowUp size={10} /> : <ArrowDown size={10} />}
@@ -133,7 +134,7 @@ function TypeBreakdown({ cases }) {
               {count} ({Math.round((count / total) * 100)}%)
             </span>
           </div>
-          <div className="h-1.5 rounded-full bg-white/5 overflow-hidden">
+          <div className="h-1.5 rounded-full bg-[var(--text-primary)]/5 overflow-hidden">
             <div
               className={clsx(
                 'h-full rounded-full transition-all duration-700',
@@ -160,9 +161,24 @@ function RiskPie({ cases }) {
   return (
     <div className="space-y-3">
       {[
-        { key: 'high', label: 'High Risk', color: 'bg-red-500', text: 'text-red-400' },
-        { key: 'medium', label: 'Medium Risk', color: 'bg-amber-500', text: 'text-amber-400' },
-        { key: 'low', label: 'Low Risk', color: 'bg-green-500', text: 'text-green-400' },
+        {
+          key: 'high',
+          label: 'High Risk',
+          color: 'bg-red-500',
+          text: 'text-[var(--status-error)]',
+        },
+        {
+          key: 'medium',
+          label: 'Medium Risk',
+          color: 'bg-amber-500',
+          text: 'text-[var(--status-pending)]',
+        },
+        {
+          key: 'low',
+          label: 'Low Risk',
+          color: 'bg-green-500',
+          text: 'text-[var(--status-active)]',
+        },
       ].map(({ key, label, color, text }) => (
         <div key={key}>
           <div className="flex justify-between mb-1">
@@ -171,7 +187,7 @@ function RiskPie({ cases }) {
               {counts[key]} ({Math.round((counts[key] / total) * 100)}%)
             </span>
           </div>
-          <div className="h-1.5 rounded-full bg-white/5 overflow-hidden">
+          <div className="h-1.5 rounded-full bg-[var(--text-primary)]/5 overflow-hidden">
             <div
               className={clsx('h-full rounded-full opacity-70', color)}
               style={{ width: `${(counts[key] / total) * 100}%` }}
@@ -258,7 +274,7 @@ export function AnalyticsPage() {
       </div>
 
       {error && (
-        <div className="flex items-center gap-2 p-3 rounded-xl bg-amber-500/8 border border-amber-500/20 text-amber-400 text-sm">
+        <div className="flex items-center gap-2 p-3 rounded-xl bg-amber-500/8 border border-[var(--status-pending)]/20 text-[var(--status-pending)] text-sm">
           <AlertTriangle size={14} />
           {error.includes('42P01')
             ? 'Run migration_phase6.sql first to enable analytics views'
@@ -352,7 +368,11 @@ export function AnalyticsPage() {
             </h3>
             <div className="space-y-3">
               {[
-                { label: 'Clients', value: s.total_clients || 0, color: 'text-blue-400' },
+                {
+                  label: 'Clients',
+                  value: s.total_clients || 0,
+                  color: 'text-[var(--status-resolved)]',
+                },
                 { label: 'Partners', value: s.total_partners || 0, color: 'text-purple-400' },
                 { label: 'Total', value: s.total_users || 0, color: 'text-gold-400' },
               ].map((item) => (
@@ -378,7 +398,11 @@ export function AnalyticsPage() {
                   value: s.total_tasks || 0,
                   color: 'text-[var(--text-primary)]',
                 },
-                { label: 'Completed', value: s.completed_tasks || 0, color: 'text-green-400' },
+                {
+                  label: 'Completed',
+                  value: s.completed_tasks || 0,
+                  color: 'text-[var(--status-active)]',
+                },
                 {
                   label: 'Completion %',
                   value:

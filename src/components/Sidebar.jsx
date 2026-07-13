@@ -83,7 +83,7 @@ export function Sidebar({ onClose }) {
       {/* User Profile Card */}
       {profile && (
         <div className="px-4 py-3 border-b border-[var(--border)]">
-          <div className="flex items-center gap-3 px-2 py-2 rounded-lg bg-white/3">
+          <div className="flex items-center gap-3 px-2 py-2 rounded-lg bg-[var(--text-primary)]/3">
             <div className="w-8 h-8 rounded-full bg-gold-500/20 border border-gold-500/30 flex items-center justify-center text-gold-400 text-sm font-semibold shrink-0">
               {profile.email?.[0]?.toUpperCase() || '?'}
             </div>
@@ -124,7 +124,7 @@ export function Sidebar({ onClose }) {
         <button
           type="button"
           onClick={handleSignOut}
-          className="sidebar-nav-item w-full text-red-400/80 hover:text-red-400 hover:bg-red-500/8"
+          className="sidebar-nav-item w-full text-[var(--status-error)]/80 hover:text-[var(--status-error)] hover:bg-[var(--status-error)]/8"
         >
           <LogOut size={16} />
           <span>{t('nav.logout')}</span>

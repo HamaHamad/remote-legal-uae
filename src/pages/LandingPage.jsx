@@ -1419,7 +1419,7 @@ export function LandingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-hy-base text-hy-primary font-sans overflow-x-hidden">
+    <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)] font-sans overflow-x-hidden">
       {/* ── Harvey.ai inspired style (embedded) ── */}
       <style>{`
         :root {
@@ -1439,32 +1439,32 @@ export function LandingPage() {
           --hy-accent-soft: rgba(196,144,62,0.10);
           --hy-shadow: 0 8px 32px rgba(0,0,0,0.5);
           --hy-shadow-lg: 0 20px 60px rgba(0,0,0,0.6);
-          --hy-radius: 10px;
-          --hy-radius-lg: 16px;
-          --hy-radius-full: 9999px;
-          --hy-font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-          --hy-font-display: 'Instrument Serif', 'Inter', serif;
-          --hy-transition: 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+          --rounded-lg: 10px;
+          --rounded-lg-lg: 16px;
+          --rounded-lg-full: 9999px;
+          --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+          --font-display: 'Instrument Serif', 'Inter', serif;
+          --transition-all: 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
-        .bg-hy-base { background: var(--hy-base); }
-        .bg-hy-elevated { background: var(--hy-elevated); }
-        .bg-hy-card { background: var(--hy-card); }
-        .bg-hy-subtle { background: var(--hy-subtle); }
-        .bg-hy-accent { background: var(--hy-accent); }
-        .bg-hy-accent-soft { background: var(--hy-accent-soft); }
-        .text-hy-primary { color: var(--hy-primary); }
-        .text-hy-secondary { color: var(--hy-secondary); }
-        .text-hy-muted { color: var(--hy-muted); }
+        .bg-[var(--bg-primary)] { background: var(--hy-base); }
+        .bg-[var(--bg-elevated)] { background: var(--hy-elevated); }
+        .bg-[var(--bg-card)] { background: var(--hy-card); }
+        .bg-[var(--bg-elevated)] { background: var(--hy-subtle); }
+        .bg-[var(--accent)] { background: var(--hy-accent); }
+        .bg-[var(--accent)]-soft { background: var(--hy-accent-soft); }
+        .text-[var(--text-primary)] { color: var(--hy-primary); }
+        .text-[var(--text-secondary)] { color: var(--hy-secondary); }
+        .text-[var(--text-muted)] { color: var(--hy-muted); }
         .text-hy-subtle { color: var(--hy-subtle-text); }
-        .text-hy-accent { color: var(--hy-accent); }
-        .border-hy-border { border-color: var(--hy-border); }
-        .border-hy-border-strong { border-color: var(--hy-border-strong); }
-        .border-hy-accent { border-color: var(--hy-accent); }
+        .text-[var(--accent)] { color: var(--hy-accent); }
+        .border-[var(--border)] { border-color: var(--hy-border); }
+        .border-[var(--border)]-strong { border-color: var(--hy-border-strong); }
+        .border-[var(--accent)] { border-color: var(--hy-accent); }
         .shadow-hy { box-shadow: var(--hy-shadow); }
-        .shadow-hy-lg { box-shadow: var(--hy-shadow-lg); }
-        .font-body { font-family: var(--hy-font-body); }
-        .font-display { font-family: var(--hy-font-display); }
+        .shadow-lg { box-shadow: var(--hy-shadow-lg); }
+        .font-body { font-family: var(--font-body); }
+        .font-display { font-family: var(--font-display); }
 
         /* subtle grain */
         .grain {
@@ -1530,7 +1530,7 @@ export function LandingPage() {
 
         /* Smooth transitions */
         .transition-hy {
-          transition: var(--hy-transition);
+          transition: var(--transition-all);
         }
         .hover-lift:hover {
           transform: translateY(-2px);
@@ -1544,14 +1544,14 @@ export function LandingPage() {
       <div className="grain" aria-hidden="true" />
 
       {/* ─── NAVBAR ─────────────────────────────────────────────── */}
-      <nav className="fixed top-0 inset-x-0 z-50 bg-hy-base/90 backdrop-blur-xl border-b border-hy-border">
+      <nav className="fixed top-0 inset-x-0 z-50 bg-[var(--bg-primary)]/90 backdrop-blur-xl border-b border-[var(--border)]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
           {/* Logo */}
           <div className="flex items-center gap-2.5 shrink-0">
-            <div className="w-8 h-8 rounded-lg bg-hy-accent flex items-center justify-center text-hy-base font-bold text-sm shadow-lg">
+            <div className="w-8 h-8 rounded-lg bg-[var(--accent)] flex items-center justify-center text-hy-base font-bold text-sm shadow-lg">
               R
             </div>
-            <span className="font-semibold text-hy-primary text-lg tracking-tight font-display">
+            <span className="font-semibold text-[var(--text-primary)] text-lg tracking-tight font-display">
               {c.nav.brand}
             </span>
           </div>
@@ -1564,14 +1564,14 @@ export function LandingPage() {
             <div className="relative" ref={langRef}>
               <button
                 onClick={() => setLangOpen((v) => !v)}
-                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-hy-border text-hy-muted hover:text-hy-primary hover:border-hy-border-strong transition-all text-sm"
+                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:border-[var(--border)]-strong transition-all text-sm"
               >
                 <span>{meta.flag}</span>
                 <span className="hidden sm:inline">{meta.label}</span>
                 <span className="text-xs">▾</span>
               </button>
               {langOpen && (
-                <div className="absolute top-full mt-2 end-0 w-44 bg-hy-elevated border border-hy-border rounded-xl p-1.5 shadow-hy z-50">
+                <div className="absolute top-full mt-2 end-0 w-44 bg-[var(--bg-elevated)] border border-[var(--border)] rounded-xl p-1.5 shadow-hy z-50">
                   {Object.entries(LANG_META).map(([code, m]) => (
                     <button
                       key={code}
@@ -1579,8 +1579,8 @@ export function LandingPage() {
                       className={clsx(
                         'w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-all text-start',
                         lang === code
-                          ? 'bg-hy-accent-soft text-hy-primary'
-                          : 'text-hy-muted hover:bg-white/5 hover:text-hy-primary',
+                          ? 'bg-[var(--accent)]-soft text-[var(--text-primary)]'
+                          : 'text-[var(--text-muted)] hover:bg-[var(--text-primary)]/5 hover:text-[var(--text-primary)]',
                       )}
                     >
                       <span>{m.flag}</span>
@@ -1603,14 +1603,14 @@ export function LandingPage() {
 
             <button
               onClick={() => navigate('/login')}
-              className="hidden sm:block px-3 py-1.5 text-sm text-hy-muted hover:text-hy-primary border border-hy-border hover:border-hy-border-strong rounded-lg transition-all"
+              className="hidden sm:block px-3 py-1.5 text-sm text-[var(--text-muted)] hover:text-[var(--text-primary)] border border-[var(--border)] hover:border-[var(--border)]-strong rounded-lg transition-all"
             >
               {c.nav.login}
             </button>
 
             <button
               onClick={() => handleCTA()}
-              className="px-3 sm:px-4 py-1.5 text-sm font-semibold bg-hy-accent text-hy-base rounded-lg hover:bg-hy-accent-hover hover:shadow-lg transition-all"
+              className="px-3 sm:px-4 py-1.5 text-sm font-semibold bg-[var(--accent)] text-hy-base rounded-lg hover:bg-[var(--accent)]-hover hover:shadow-lg transition-all"
             >
               {c.nav.start}
             </button>
@@ -1637,16 +1637,16 @@ export function LandingPage() {
 
         <div className="max-w-4xl mx-auto text-center relative z-10">
           {/* Trust badge */}
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-hy-accent/30 bg-hy-accent-soft text-hy-accent text-xs font-semibold uppercase tracking-widest mb-6">
-            <span className="w-1.5 h-1.5 rounded-full bg-hy-accent animate-pulse" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[var(--accent)]/30 bg-[var(--accent)]-soft text-[var(--accent)] text-xs font-semibold uppercase tracking-widest mb-6">
+            <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] animate-pulse" />
             {c.hero.badge}
           </div>
 
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-display font-semibold text-hy-primary leading-tight mb-6 tracking-tight">
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-display font-semibold text-[var(--text-primary)] leading-tight mb-6 tracking-tight">
             {c.hero.headline}
           </h1>
 
-          <p className="text-base sm:text-xl text-hy-secondary max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-xl text-[var(--text-secondary)] max-w-2xl mx-auto leading-relaxed">
             {c.hero.sub}
           </p>
 
@@ -1654,13 +1654,13 @@ export function LandingPage() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-8">
             <button
               onClick={() => handleCTA()}
-              className="w-full sm:w-auto px-8 py-4 rounded-xl font-bold text-lg bg-hy-accent text-hy-base shadow-lg shadow-black/20 hover:bg-hy-accent-hover hover:-translate-y-0.5 transition-all"
+              className="w-full sm:w-auto px-8 py-4 rounded-xl font-bold text-lg bg-[var(--accent)] text-hy-base shadow-lg shadow-[var(--shadow-color)] hover:bg-[var(--accent)]-hover hover:-translate-y-0.5 transition-all"
             >
               {c.hero.cta1}
             </button>
             <button
               onClick={() => handleCTA('analyze')}
-              className="w-full sm:w-auto px-8 py-4 rounded-xl font-semibold text-base border border-hy-border text-hy-secondary hover:border-hy-accent hover:text-hy-primary transition-all"
+              className="w-full sm:w-auto px-8 py-4 rounded-xl font-semibold text-base border border-[var(--border)] text-[var(--text-secondary)] hover:border-[var(--accent)] hover:text-[var(--text-primary)] transition-all"
             >
               {c.hero.cta2}
             </button>
@@ -1669,17 +1669,17 @@ export function LandingPage() {
           {/* Micro-trust */}
           <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 mt-8">
             {c.hero.trust.map((t, i) => (
-              <div key={i} className="flex items-center gap-2 text-sm text-hy-muted">
-                <span className="text-hy-accent font-bold">✓</span>
+              <div key={i} className="flex items-center gap-2 text-sm text-[var(--text-muted)]">
+                <span className="text-[var(--accent)] font-bold">✓</span>
                 <span>{t}</span>
               </div>
             ))}
           </div>
 
           {/* Hero disclaimer */}
-          <div className="mt-8 inline-flex items-start gap-2 max-w-xl mx-auto p-3 rounded-xl bg-white/[0.02] border border-hy-border">
+          <div className="mt-8 inline-flex items-start gap-2 max-w-xl mx-auto p-3 rounded-xl bg-white/[0.02] border border-[var(--border)]">
             <span className="text-sm shrink-0 mt-0.5">⚖️</span>
-            <p className="text-[11px] text-hy-subtle-text text-center leading-relaxed">
+            <p className="text-[11px] text-[var(--text-muted)] text-center leading-relaxed">
               {c.hero.disclaimer}
             </p>
           </div>
@@ -1687,9 +1687,9 @@ export function LandingPage() {
       </section>
 
       {/* ─── SITUATION SELECTOR ──────────────────────────────────── */}
-      <section className="py-12 px-4 bg-hy-subtle">
+      <section className="py-12 px-4 bg-[var(--bg-elevated)]">
         <div className="max-w-3xl mx-auto">
-          <p className="text-center text-lg font-semibold text-hy-primary mb-6">
+          <p className="text-center text-lg font-semibold text-[var(--text-primary)] mb-6">
             {c.selector.title}
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -1700,13 +1700,15 @@ export function LandingPage() {
                 className={clsx(
                   'group flex flex-col items-center gap-2 p-4 rounded-2xl border-2 text-center transition-all duration-200 hover:-translate-y-1',
                   selected === item.id
-                    ? 'border-hy-accent bg-hy-accent-soft shadow-lg shadow-hy-accent/20'
-                    : 'border-hy-border bg-hy-base/50 hover:border-hy-accent/50 hover:bg-hy-accent-soft/20',
+                    ? 'border-[var(--accent)] bg-[var(--accent)]-soft shadow-lg shadow-hy-accent/20'
+                    : 'border-[var(--border)] bg-[var(--bg-primary)]/50 hover:border-[var(--accent)]/50 hover:bg-[var(--accent)]-soft/20',
                 )}
               >
                 <span className="text-3xl">{item.icon}</span>
-                <span className="font-semibold text-sm text-hy-primary">{item.label}</span>
-                <span className="text-xs text-hy-muted">{item.desc}</span>
+                <span className="font-semibold text-sm text-[var(--text-primary)]">
+                  {item.label}
+                </span>
+                <span className="text-xs text-[var(--text-muted)]">{item.desc}</span>
               </button>
             ))}
           </div>
@@ -1714,11 +1716,11 @@ export function LandingPage() {
       </section>
 
       {/* ─── SOCIAL PROOF STRIP ──────────────────────────────────── */}
-      <section className="py-6 px-4 border-y border-hy-border bg-hy-base">
+      <section className="py-6 px-4 border-y border-[var(--border)] bg-[var(--bg-primary)]">
         <div className="max-w-4xl mx-auto flex flex-wrap items-center justify-center gap-6 sm:gap-10">
           {c.proof.items.map((item, i) => (
-            <div key={i} className="flex items-center gap-2 text-sm text-hy-muted">
-              <span className="text-hy-accent font-bold text-lg">{item.icon}</span>
+            <div key={i} className="flex items-center gap-2 text-sm text-[var(--text-muted)]">
+              <span className="text-[var(--accent)] font-bold text-lg">{item.icon}</span>
               <span>{item.text}</span>
             </div>
           ))}
@@ -1726,33 +1728,33 @@ export function LandingPage() {
       </section>
 
       {/* ─── AI PREVIEW (LOCKED) ──────────────────────────────────── */}
-      <section className="py-16 sm:py-24 px-4 bg-hy-subtle">
+      <section className="py-16 sm:py-24 px-4 bg-[var(--bg-elevated)]">
         <div className="max-w-2xl mx-auto">
-          <p className="text-[10px] font-bold tracking-widest uppercase text-hy-muted text-center mb-2">
+          <p className="text-[10px] font-bold tracking-widest uppercase text-[var(--text-muted)] text-center mb-2">
             AI Analysis
           </p>
-          <h2 className="text-2xl sm:text-3xl font-display font-semibold text-hy-primary text-center mb-2">
+          <h2 className="text-2xl sm:text-3xl font-display font-semibold text-[var(--text-primary)] text-center mb-2">
             {c.aiPreview.title}
           </h2>
-          <p className="text-center text-hy-muted mb-8">{c.aiPreview.sub}</p>
+          <p className="text-center text-[var(--text-muted)] mb-8">{c.aiPreview.sub}</p>
 
           {/* Bullets (visible) */}
           <div className="flex flex-col gap-2 mb-6">
             {c.aiPreview.bullets.map((b, i) => (
               <div
                 key={i}
-                className="flex items-center gap-3 px-4 py-3 rounded-xl bg-hy-base/80 border border-hy-border"
+                className="flex items-center gap-3 px-4 py-3 rounded-xl bg-[var(--bg-primary)]/80 border border-[var(--border)]"
               >
-                <span className="w-5 h-5 rounded-full bg-hy-accent-soft border border-hy-accent/30 text-hy-accent flex items-center justify-center text-xs font-bold shrink-0">
+                <span className="w-5 h-5 rounded-full bg-[var(--accent)]-soft border border-[var(--accent)]/30 text-[var(--accent)] flex items-center justify-center text-xs font-bold shrink-0">
                   {i + 1}
                 </span>
-                <span className="text-sm text-hy-secondary">{b}</span>
+                <span className="text-sm text-[var(--text-secondary)]">{b}</span>
               </div>
             ))}
           </div>
 
           {/* Locked blurred content */}
-          <div className="relative rounded-2xl overflow-hidden border border-hy-accent/20">
+          <div className="relative rounded-2xl overflow-hidden border border-[var(--accent)]/20">
             {/* Blurred steps */}
             <div
               className={clsx('p-6 space-y-3', locked && 'blur-sm select-none pointer-events-none')}
@@ -1760,9 +1762,9 @@ export function LandingPage() {
               {c.aiPreview.blurItems.map((item, i) => (
                 <div
                   key={i}
-                  className="flex items-start gap-3 text-sm text-hy-muted py-2 border-b border-hy-border last:border-0"
+                  className="flex items-start gap-3 text-sm text-[var(--text-muted)] py-2 border-b border-[var(--border)] last:border-0"
                 >
-                  <span className="w-6 h-6 rounded-full bg-hy-accent-soft border border-hy-accent/20 text-hy-accent flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
+                  <span className="w-6 h-6 rounded-full bg-[var(--accent)]-soft border border-[var(--accent)]/20 text-[var(--accent)] flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
                     {i + 1}
                   </span>
                   <span>{item}</span>
@@ -1772,15 +1774,19 @@ export function LandingPage() {
 
             {/* Overlay */}
             {locked && (
-              <div className="absolute inset-0 flex flex-col items-center justify-center bg-hy-base/75 backdrop-blur-md p-6 text-center">
-                <div className="w-12 h-12 rounded-full bg-hy-accent-soft border border-hy-accent/30 flex items-center justify-center mb-4">
+              <div className="absolute inset-0 flex flex-col items-center justify-center bg-[var(--bg-primary)]/75 backdrop-blur-md p-6 text-center">
+                <div className="w-12 h-12 rounded-full bg-[var(--accent)]-soft border border-[var(--accent)]/30 flex items-center justify-center mb-4">
                   <LockIcon />
                 </div>
-                <p className="font-bold text-hy-primary text-lg mb-1">{c.aiPreview.lockTitle}</p>
-                <p className="text-sm text-hy-muted mb-5 max-w-xs">{c.aiPreview.lockSub}</p>
+                <p className="font-bold text-[var(--text-primary)] text-lg mb-1">
+                  {c.aiPreview.lockTitle}
+                </p>
+                <p className="text-sm text-[var(--text-muted)] mb-5 max-w-xs">
+                  {c.aiPreview.lockSub}
+                </p>
                 <button
                   onClick={() => handleCTA()}
-                  className="px-6 py-3 rounded-xl font-bold text-sm bg-hy-accent text-hy-base hover:bg-hy-accent-hover hover:-translate-y-0.5 transition-all"
+                  className="px-6 py-3 rounded-xl font-bold text-sm bg-[var(--accent)] text-hy-base hover:bg-[var(--accent)]-hover hover:-translate-y-0.5 transition-all"
                 >
                   {c.aiPreview.lockCta}
                 </button>
@@ -1791,43 +1797,48 @@ export function LandingPage() {
       </section>
 
       {/* ─── DOCUMENT AI ─────────────────────────────────────────── */}
-      <section className="py-16 sm:py-24 px-4 bg-hy-base">
+      <section className="py-16 sm:py-24 px-4 bg-[var(--bg-primary)]">
         <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
-            <div className="inline-block px-3 py-1 rounded-full bg-hy-accent-soft border border-hy-accent/30 text-hy-accent text-xs font-bold uppercase tracking-widest mb-4">
+            <div className="inline-block px-3 py-1 rounded-full bg-[var(--accent)]-soft border border-[var(--accent)]/30 text-[var(--accent)] text-xs font-bold uppercase tracking-widest mb-4">
               {c.docAI.badge}
             </div>
-            <h2 className="text-2xl sm:text-3xl font-display font-semibold text-hy-primary mb-4 leading-snug">
+            <h2 className="text-2xl sm:text-3xl font-display font-semibold text-[var(--text-primary)] mb-4 leading-snug">
               {c.docAI.title}
             </h2>
-            <p className="text-hy-muted mb-6 leading-relaxed">{c.docAI.sub}</p>
+            <p className="text-[var(--text-muted)] mb-6 leading-relaxed">{c.docAI.sub}</p>
             <ul className="space-y-2 mb-8">
               {c.docAI.items.map((item, i) => (
-                <li key={i} className="flex items-center gap-2.5 text-sm text-hy-secondary">
-                  <span className="text-hy-accent">→</span>
+                <li
+                  key={i}
+                  className="flex items-center gap-2.5 text-sm text-[var(--text-secondary)]"
+                >
+                  <span className="text-[var(--accent)]">→</span>
                   <span>{item}</span>
                 </li>
               ))}
             </ul>
             <button
               onClick={() => handleCTA()}
-              className="w-full sm:w-auto px-6 py-3.5 rounded-xl font-bold text-sm bg-hy-subtle border border-hy-border-strong text-hy-primary hover:bg-hy-hover hover:border-hy-accent/50 transition-all"
+              className="w-full sm:w-auto px-6 py-3.5 rounded-xl font-bold text-sm bg-[var(--bg-elevated)] border border-[var(--border)]-strong text-[var(--text-primary)] hover:hover:bg-[var(--bg-elevated)] hover:border-[var(--accent)]/50 transition-all"
             >
               📄 {c.docAI.cta}
             </button>
           </div>
 
           {/* Doc card mockup */}
-          <div className="bg-hy-card border border-hy-border rounded-2xl p-6 relative overflow-hidden shadow-hy">
+          <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-2xl p-6 relative overflow-hidden shadow-hy">
             <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-hy-accent/20 to-transparent" />
-            <div className="flex items-center gap-3 mb-5 pb-4 border-b border-hy-border">
-              <div className="w-9 h-9 rounded-lg bg-hy-accent-soft border border-hy-accent/20 flex items-center justify-center text-xl">
+            <div className="flex items-center gap-3 mb-5 pb-4 border-b border-[var(--border)]">
+              <div className="w-9 h-9 rounded-lg bg-[var(--accent)]-soft border border-[var(--accent)]/20 flex items-center justify-center text-xl">
                 📄
               </div>
               <div>
-                <p className="text-sm font-medium text-hy-primary">bank_statement_oct.pdf</p>
-                <p className="text-[11px] text-hy-accent flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-hy-accent animate-pulse" />
+                <p className="text-sm font-medium text-[var(--text-primary)]">
+                  bank_statement_oct.pdf
+                </p>
+                <p className="text-[11px] text-[var(--accent)] flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] animate-pulse" />
                   AI Analysis Complete
                 </p>
               </div>
@@ -1843,22 +1854,22 @@ export function LandingPage() {
                 key={i}
                 className={clsx(
                   'flex justify-between items-start gap-3 py-2.5',
-                  i < 4 && 'border-b border-hy-border',
+                  i < 4 && 'border-b border-[var(--border)]',
                 )}
               >
-                <span className="text-[10px] font-bold uppercase tracking-widest text-hy-muted">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-muted)]">
                   {row.label}
                 </span>
                 <span
                   className={clsx(
                     'text-end',
                     row.gold
-                      ? 'text-hy-primary font-semibold text-sm'
+                      ? 'text-[var(--text-primary)] font-semibold text-sm'
                       : row.red
-                        ? 'text-red-400 text-xs font-bold bg-red-500/10 border border-red-500/20 px-2 py-0.5 rounded-full'
+                        ? 'text-[var(--status-error)] text-xs font-bold bg-[var(--status-error)]/10 border border-[var(--status-error)]/20 px-2 py-0.5 rounded-full'
                         : row.small
-                          ? 'text-[11px] text-hy-primary max-w-[150px]'
-                          : 'text-sm text-hy-secondary',
+                          ? 'text-[11px] text-[var(--text-primary)] max-w-[150px]'
+                          : 'text-sm text-[var(--text-secondary)]',
                   )}
                 >
                   {row.value}
@@ -1870,12 +1881,14 @@ export function LandingPage() {
       </section>
 
       {/* ─── HOW IT WORKS ────────────────────────────────────────── */}
-      <section className="py-16 sm:py-24 px-4 bg-hy-subtle">
+      <section className="py-16 sm:py-24 px-4 bg-[var(--bg-elevated)]">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl sm:text-3xl font-display font-semibold text-hy-primary text-center mb-2">
+          <h2 className="text-2xl sm:text-3xl font-display font-semibold text-[var(--text-primary)] text-center mb-2">
             {c.how.title}
           </h2>
-          <p className="text-center text-hy-muted mb-12 max-w-xl mx-auto">{c.how.subtitle}</p>
+          <p className="text-center text-[var(--text-muted)] mb-12 max-w-xl mx-auto">
+            {c.how.subtitle}
+          </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {c.how.steps.map((step, i) => (
               <div key={i} className="relative">
@@ -1883,39 +1896,39 @@ export function LandingPage() {
                   <div className="hidden lg:block absolute top-7 start-[calc(50%+28px)] end-[-calc(50%-28px)] h-px bg-gradient-to-r from-hy-accent/30 to-transparent" />
                 )}
                 <div className="flex flex-col items-center text-center">
-                  <div className="w-14 h-14 rounded-full border-2 border-hy-accent/50 bg-hy-base flex items-center justify-center mb-4 font-display font-semibold text-xl text-hy-primary shadow-[0_0_20px_rgba(196,144,62,0.08)]">
+                  <div className="w-14 h-14 rounded-full border-2 border-[var(--accent)]/50 bg-[var(--bg-primary)] flex items-center justify-center mb-4 font-display font-semibold text-xl text-[var(--text-primary)] shadow-[0_0_20px_rgba(196,144,62,0.08)]">
                     {step.num}
                   </div>
-                  <p className="font-semibold text-hy-primary mb-2">{step.title}</p>
-                  <p className="text-sm text-hy-muted leading-relaxed">{step.desc}</p>
+                  <p className="font-semibold text-[var(--text-primary)] mb-2">{step.title}</p>
+                  <p className="text-sm text-[var(--text-muted)] leading-relaxed">{step.desc}</p>
                 </div>
               </div>
             ))}
           </div>
-          <div className="mt-10 p-5 rounded-2xl bg-hy-accent-soft border border-hy-accent/20 text-center">
-            <p className="text-sm text-hy-secondary">
-              <strong className="text-hy-primary">{c.how.callout}</strong>
+          <div className="mt-10 p-5 rounded-2xl bg-[var(--accent)]-soft border border-[var(--accent)]/20 text-center">
+            <p className="text-sm text-[var(--text-secondary)]">
+              <strong className="text-[var(--text-primary)]">{c.how.callout}</strong>
             </p>
           </div>
         </div>
       </section>
 
       {/* ─── EXECUTION / TRUST ───────────────────────────────────── */}
-      <section className="py-16 sm:py-24 px-4 bg-hy-base">
+      <section className="py-16 sm:py-24 px-4 bg-[var(--bg-primary)]">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-2xl sm:text-3xl font-display font-semibold text-hy-primary mb-2">
+          <h2 className="text-2xl sm:text-3xl font-display font-semibold text-[var(--text-primary)] mb-2">
             {c.execution.title}
           </h2>
-          <p className="text-hy-muted mb-12">{c.execution.sub}</p>
+          <p className="text-[var(--text-muted)] mb-12">{c.execution.sub}</p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
             {c.execution.roles.map((role, i) => (
               <div
                 key={i}
-                className="bg-hy-card border border-hy-border rounded-2xl p-6 hover:border-hy-accent/30 transition-all hover:-translate-y-1 shadow-hy"
+                className="bg-[var(--bg-card)] border border-[var(--border)] rounded-2xl p-6 hover:border-[var(--accent)]/30 transition-all hover:-translate-y-1 shadow-hy"
               >
                 <div className="text-3xl mb-4">{role.icon}</div>
-                <p className="font-bold text-hy-primary mb-2">{role.title}</p>
-                <p className="text-sm text-hy-muted">{role.desc}</p>
+                <p className="font-bold text-[var(--text-primary)] mb-2">{role.title}</p>
+                <p className="text-sm text-[var(--text-muted)]">{role.desc}</p>
               </div>
             ))}
           </div>
@@ -1923,16 +1936,16 @@ export function LandingPage() {
       </section>
 
       {/* ─── PRICING ─────────────────────────────────────────────── */}
-      <section className="py-16 sm:py-24 px-4 bg-hy-subtle">
+      <section className="py-16 sm:py-24 px-4 bg-[var(--bg-elevated)]">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <div className="inline-block px-3 py-1 rounded-full bg-hy-accent-soft border border-hy-accent/30 text-hy-accent text-xs font-bold uppercase tracking-widest mb-4">
+            <div className="inline-block px-3 py-1 rounded-full bg-[var(--accent)]-soft border border-[var(--accent)]/30 text-[var(--accent)] text-xs font-bold uppercase tracking-widest mb-4">
               {c.pricing.badge}
             </div>
-            <h2 className="text-3xl sm:text-4xl font-display font-semibold text-hy-primary mb-2">
+            <h2 className="text-3xl sm:text-4xl font-display font-semibold text-[var(--text-primary)] mb-2">
               {c.pricing.title}
             </h2>
-            <p className="text-hy-muted max-w-xl mx-auto">{c.pricing.subtitle}</p>
+            <p className="text-[var(--text-muted)] max-w-xl mx-auto">{c.pricing.subtitle}</p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -1942,36 +1955,42 @@ export function LandingPage() {
                 className={clsx(
                   'relative rounded-2xl p-5 border transition-all flex flex-col',
                   tier.highlighted
-                    ? 'bg-gradient-to-b from-hy-accent/10 to-transparent border-hy-accent/40 shadow-hy shadow-hy-accent/10'
-                    : 'bg-hy-card/50 border-hy-border hover:border-hy-accent/30',
+                    ? 'bg-gradient-to-b from-hy-accent/10 to-transparent border-[var(--accent)]/40 shadow-hy shadow-hy-accent/10'
+                    : 'bg-[var(--bg-card)]/50 border-[var(--border)] hover:border-[var(--accent)]/30',
                 )}
               >
                 {tier.highlighted && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-hy-accent text-hy-base text-[10px] font-black uppercase tracking-wider">
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-[var(--accent)] text-hy-base text-[10px] font-black uppercase tracking-wider">
                     {c.pricing.popularLabel}
                   </div>
                 )}
-                <h3 className="text-sm font-semibold text-hy-primary mb-1">{tier.name}</h3>
-                <p className="text-xs text-hy-muted mb-4 min-h-[2.5rem]">{tier.desc}</p>
+                <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-1">
+                  {tier.name}
+                </h3>
+                <p className="text-xs text-[var(--text-muted)] mb-4 min-h-[2.5rem]">{tier.desc}</p>
                 <div className="mb-4">
                   {tier.price ? (
                     <>
-                      <p className="text-3xl font-display font-semibold text-hy-primary">
+                      <p className="text-3xl font-display font-semibold text-[var(--text-primary)]">
                         {tier.price}
                       </p>
-                      <p className="text-[11px] text-hy-muted mt-0.5">{tier.priceLabel}</p>
+                      <p className="text-[11px] text-[var(--text-muted)] mt-0.5">
+                        {tier.priceLabel}
+                      </p>
                     </>
                   ) : (
                     <>
-                      <p className="text-3xl font-bold text-hy-secondary">Free</p>
-                      <p className="text-[11px] text-hy-muted mt-0.5">{tier.priceLabel}</p>
+                      <p className="text-3xl font-bold text-[var(--text-secondary)]">Free</p>
+                      <p className="text-[11px] text-[var(--text-muted)] mt-0.5">
+                        {tier.priceLabel}
+                      </p>
                     </>
                   )}
                 </div>
                 <ul className="space-y-2 mb-5 flex-1">
                   {tier.features.map((f, i) => (
-                    <li key={i} className="flex items-start gap-2 text-xs text-hy-muted">
-                      <span className="text-hy-accent shrink-0 mt-0.5">✓</span>
+                    <li key={i} className="flex items-start gap-2 text-xs text-[var(--text-muted)]">
+                      <span className="text-[var(--accent)] shrink-0 mt-0.5">✓</span>
                       <span className="leading-relaxed">{f}</span>
                     </li>
                   ))}
@@ -1981,8 +2000,8 @@ export function LandingPage() {
                   className={clsx(
                     'w-full py-2.5 rounded-lg font-bold text-sm transition-all',
                     tier.highlighted
-                      ? 'bg-hy-accent text-hy-base hover:bg-hy-accent-hover hover:-translate-y-0.5 shadow-lg shadow-hy-accent/20'
-                      : 'border border-hy-border text-hy-secondary hover:border-hy-accent hover:text-hy-primary',
+                      ? 'bg-[var(--accent)] text-hy-base hover:bg-[var(--accent)]-hover hover:-translate-y-0.5 shadow-lg shadow-hy-accent/20'
+                      : 'border border-[var(--border)] text-[var(--text-secondary)] hover:border-[var(--accent)] hover:text-[var(--text-primary)]',
                   )}
                 >
                   {tier.cta}
@@ -1992,17 +2011,17 @@ export function LandingPage() {
           </div>
 
           {/* Monetization transparency */}
-          <div className="mt-8 max-w-3xl mx-auto p-5 rounded-2xl bg-hy-base/50 border border-hy-border">
-            <h4 className="text-sm font-semibold text-hy-primary mb-2 flex items-center gap-2">
-              <span className="text-hy-accent">🔒</span>
+          <div className="mt-8 max-w-3xl mx-auto p-5 rounded-2xl bg-[var(--bg-primary)]/50 border border-[var(--border)]">
+            <h4 className="text-sm font-semibold text-[var(--text-primary)] mb-2 flex items-center gap-2">
+              <span className="text-[var(--accent)]">🔒</span>
               {c.pricing.monetizationTitle}
             </h4>
-            <p className="text-xs text-hy-muted leading-relaxed mb-3">
+            <p className="text-xs text-[var(--text-muted)] leading-relaxed mb-3">
               {c.pricing.monetizationText}
             </p>
-            <div className="flex items-start gap-2 p-3 rounded-lg bg-hy-accent-soft border border-hy-accent/10">
+            <div className="flex items-start gap-2 p-3 rounded-lg bg-[var(--accent)]-soft border border-[var(--accent)]/10">
               <span className="text-sm shrink-0 mt-0.5">⚠️</span>
-              <p className="text-[11px] text-hy-muted leading-relaxed">
+              <p className="text-[11px] text-[var(--text-muted)] leading-relaxed">
                 {c.pricing.monetizationNote}
               </p>
             </div>
@@ -2010,7 +2029,7 @@ export function LandingPage() {
 
           {/* Pricing disclaimer */}
           <div className="mt-6 text-center">
-            <p className="text-[11px] text-hy-subtle-text max-w-xl mx-auto leading-relaxed">
+            <p className="text-[11px] text-[var(--text-muted)] max-w-xl mx-auto leading-relaxed">
               {c.pricing.disclaimer}
             </p>
           </div>
@@ -2023,47 +2042,47 @@ export function LandingPage() {
           <div className="w-16 h-16 rounded-2xl bg-[#25D366]/10 border border-[#25D366]/30 flex items-center justify-center mx-auto mb-5 text-[#25D366]">
             <WAIcon size={28} />
           </div>
-          <h2 className="text-2xl sm:text-3xl font-display font-semibold text-hy-primary mb-2">
+          <h2 className="text-2xl sm:text-3xl font-display font-semibold text-[var(--text-primary)] mb-2">
             {c.whatsapp.title}
           </h2>
-          <p className="text-hy-muted mb-6">{c.whatsapp.sub}</p>
+          <p className="text-[var(--text-muted)] mb-6">{c.whatsapp.sub}</p>
           <a
             href={WA_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 px-8 py-4 rounded-xl font-bold text-base bg-[#25D366] text-hy-base shadow-lg shadow-black/20 hover:shadow-green-500/35 hover:-translate-y-0.5 transition-all"
+            className="inline-flex items-center gap-3 px-8 py-4 rounded-xl font-bold text-base bg-[#25D366] text-hy-base shadow-lg shadow-[var(--shadow-color)] hover:shadow-green-500/35 hover:-translate-y-0.5 transition-all"
           >
             <WAIcon size={22} />
             {c.whatsapp.cta}
           </a>
-          <p className="text-xs text-hy-muted mt-4">{c.whatsapp.note}</p>
+          <p className="text-xs text-[var(--text-muted)] mt-4">{c.whatsapp.note}</p>
         </div>
       </section>
 
       {/* ─── FOR LAWYERS ─────────────────────────────────────────── */}
-      <section className="py-16 sm:py-24 px-4 bg-hy-base">
+      <section className="py-16 sm:py-24 px-4 bg-[var(--bg-primary)]">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-hy-accent-soft border border-hy-accent/20 text-hy-accent text-xs font-bold uppercase tracking-widest mb-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--accent)]-soft border border-[var(--accent)]/20 text-[var(--accent)] text-xs font-bold uppercase tracking-widest mb-4">
               🏛️ {c.lawyers.badge}
             </div>
-            <h2 className="text-2xl sm:text-3xl font-display font-semibold text-hy-primary mb-2">
+            <h2 className="text-2xl sm:text-3xl font-display font-semibold text-[var(--text-primary)] mb-2">
               {c.lawyers.title}
             </h2>
-            <p className="text-hy-muted max-w-xl mx-auto">{c.lawyers.sub}</p>
+            <p className="text-[var(--text-muted)] max-w-xl mx-auto">{c.lawyers.sub}</p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
             {/* What we send */}
-            <div className="bg-hy-card border border-hy-border rounded-2xl p-5 shadow-hy">
-              <h3 className="text-sm font-semibold text-hy-primary mb-4 flex items-center gap-2">
-                <span className="text-hy-accent">✓</span>
+            <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-2xl p-5 shadow-hy">
+              <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-4 flex items-center gap-2">
+                <span className="text-[var(--accent)]">✓</span>
                 {c.lawyers.sendTitle}
               </h3>
               <ul className="space-y-3">
                 {c.lawyers.sendItems.map((item, i) => (
-                  <li key={i} className="flex items-start gap-2.5 text-sm text-hy-muted">
-                    <span className="text-hy-accent shrink-0 mt-0.5">✓</span>
+                  <li key={i} className="flex items-start gap-2.5 text-sm text-[var(--text-muted)]">
+                    <span className="text-[var(--accent)] shrink-0 mt-0.5">✓</span>
                     <span className="leading-relaxed">{item}</span>
                   </li>
                 ))}
@@ -2071,15 +2090,15 @@ export function LandingPage() {
             </div>
 
             {/* What we don't do */}
-            <div className="bg-hy-card border border-hy-border rounded-2xl p-5 shadow-hy">
-              <h3 className="text-sm font-semibold text-hy-primary mb-4 flex items-center gap-2">
-                <span className="text-red-400">⚠</span>
+            <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-2xl p-5 shadow-hy">
+              <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-4 flex items-center gap-2">
+                <span className="text-[var(--status-error)]">⚠</span>
                 {c.lawyers.dontTitle}
               </h3>
               <ul className="space-y-3">
                 {c.lawyers.dontItems.map((item, i) => (
-                  <li key={i} className="flex items-start gap-2.5 text-sm text-hy-muted">
-                    <span className="text-red-400/70 shrink-0 mt-0.5 text-xs">✕</span>
+                  <li key={i} className="flex items-start gap-2.5 text-sm text-[var(--text-muted)]">
+                    <span className="text-[var(--status-error)]/70 shrink-0 mt-0.5 text-xs">✕</span>
                     <span className="leading-relaxed">{item}</span>
                   </li>
                 ))}
@@ -2088,26 +2107,28 @@ export function LandingPage() {
           </div>
 
           {/* Compliance note */}
-          <div className="p-5 rounded-2xl bg-hy-accent-soft border border-hy-accent/20 mb-6">
+          <div className="p-5 rounded-2xl bg-[var(--accent)]-soft border border-[var(--accent)]/20 mb-6">
             <div className="flex items-start gap-3">
               <span className="text-lg shrink-0">⚖️</span>
               <div>
-                <p className="text-sm font-semibold text-hy-primary mb-1">
+                <p className="text-sm font-semibold text-[var(--text-primary)] mb-1">
                   {c.lawyers.complianceLabel}
                 </p>
-                <p className="text-xs text-hy-muted leading-relaxed">{c.lawyers.complianceText}</p>
+                <p className="text-xs text-[var(--text-muted)] leading-relaxed">
+                  {c.lawyers.complianceText}
+                </p>
               </div>
             </div>
           </div>
 
           {/* Onboarding */}
           <div className="text-center">
-            <p className="text-sm text-hy-muted mb-4 max-w-lg mx-auto">
+            <p className="text-sm text-[var(--text-muted)] mb-4 max-w-lg mx-auto">
               {c.lawyers.onboardingText}
             </p>
             <a
               href="mailto:partners@expatuae.kafeely.com"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm border border-hy-accent/40 text-hy-accent hover:bg-hy-accent-soft transition-all"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm border border-[var(--accent)]/40 text-[var(--accent)] hover:bg-[var(--accent)]-soft transition-all"
             >
               {c.lawyers.applyCta} →
             </a>
@@ -2116,13 +2137,13 @@ export function LandingPage() {
       </section>
 
       {/* ─── FAQ ────────────────────────────────────────────────── */}
-      <section className="py-16 sm:py-24 px-4 bg-hy-subtle">
+      <section className="py-16 sm:py-24 px-4 bg-[var(--bg-elevated)]">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-12">
-            <p className="text-[10px] font-bold tracking-widest uppercase text-hy-muted mb-2">
+            <p className="text-[10px] font-bold tracking-widest uppercase text-[var(--text-muted)] mb-2">
               {c.faq.badge}
             </p>
-            <h2 className="text-2xl sm:text-3xl font-display font-semibold text-hy-primary">
+            <h2 className="text-2xl sm:text-3xl font-display font-semibold text-[var(--text-primary)]">
               {c.faq.title}
             </h2>
           </div>
@@ -2130,15 +2151,17 @@ export function LandingPage() {
             {c.faq.items.map((faq, i) => (
               <details
                 key={i}
-                className="group bg-hy-base/50 border border-hy-border rounded-xl overflow-hidden"
+                className="group bg-[var(--bg-primary)]/50 border border-[var(--border)] rounded-xl overflow-hidden"
               >
-                <summary className="flex items-center justify-between gap-3 p-4 cursor-pointer text-sm font-medium text-hy-primary hover:bg-white/[0.02] transition-colors list-none">
+                <summary className="flex items-center justify-between gap-3 p-4 cursor-pointer text-sm font-medium text-[var(--text-primary)] hover:bg-white/[0.02] transition-colors list-none">
                   {faq.q}
-                  <span className="text-hy-muted shrink-0 group-open:rotate-180 transition-transform">
+                  <span className="text-[var(--text-muted)] shrink-0 group-open:rotate-180 transition-transform">
                     ▾
                   </span>
                 </summary>
-                <div className="px-4 pb-4 text-sm text-hy-muted leading-relaxed">{faq.a}</div>
+                <div className="px-4 pb-4 text-sm text-[var(--text-muted)] leading-relaxed">
+                  {faq.a}
+                </div>
               </details>
             ))}
           </div>
@@ -2146,19 +2169,19 @@ export function LandingPage() {
       </section>
 
       {/* ─── TRUST ───────────────────────────────────────────────── */}
-      <section className="py-12 px-4 bg-hy-subtle border-t border-hy-border">
+      <section className="py-12 px-4 bg-[var(--bg-elevated)] border-t border-[var(--border)]">
         <div className="max-w-3xl mx-auto">
-          <p className="text-center text-sm font-semibold text-hy-muted uppercase tracking-widest mb-6">
+          <p className="text-center text-sm font-semibold text-[var(--text-muted)] uppercase tracking-widest mb-6">
             {c.trust.title}
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {c.trust.items.map((item, i) => (
               <div
                 key={i}
-                className="flex flex-col items-center gap-2 p-4 rounded-xl bg-hy-base/60 border border-hy-border text-center"
+                className="flex flex-col items-center gap-2 p-4 rounded-xl bg-[var(--bg-primary)]/60 border border-[var(--border)] text-center"
               >
                 <span className="text-2xl">{item.icon}</span>
-                <span className="text-xs text-hy-muted leading-tight">{item.text}</span>
+                <span className="text-xs text-[var(--text-muted)] leading-tight">{item.text}</span>
               </div>
             ))}
           </div>
@@ -2166,21 +2189,23 @@ export function LandingPage() {
       </section>
 
       {/* ─── FOOTER ──────────────────────────────────────────────── */}
-      <footer className="py-10 px-4 bg-hy-base border-t border-hy-border">
+      <footer className="py-10 px-4 bg-[var(--bg-primary)] border-t border-[var(--border)]">
         <div className="max-w-4xl mx-auto">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 mb-6">
             <div className="flex items-center gap-2.5">
-              <div className="w-7 h-7 rounded-lg bg-hy-accent flex items-center justify-center text-hy-base font-bold text-xs">
+              <div className="w-7 h-7 rounded-lg bg-[var(--accent)] flex items-center justify-center text-hy-base font-bold text-xs">
                 R
               </div>
-              <span className="font-semibold text-hy-primary font-display">{c.nav.brand}</span>
+              <span className="font-semibold text-[var(--text-primary)] font-display">
+                {c.nav.brand}
+              </span>
             </div>
             <div className="flex gap-5">
               {c.footer.links.map((l, i) => (
                 <a
                   key={i}
                   href="#"
-                  className="text-sm text-hy-muted hover:text-hy-secondary transition-colors"
+                  className="text-sm text-[var(--text-muted)] hover:text-[var(--text-secondary)] transition-colors"
                 >
                   {l}
                 </a>
@@ -2188,11 +2213,13 @@ export function LandingPage() {
             </div>
           </div>
           {/* Disclaimer */}
-          <div className="flex items-start gap-3 p-4 rounded-xl bg-hy-accent-soft border border-hy-accent/15">
+          <div className="flex items-start gap-3 p-4 rounded-xl bg-[var(--accent)]-soft border border-[var(--accent)]/15">
             <span className="text-lg shrink-0">⚖️</span>
-            <p className="text-xs text-hy-muted leading-relaxed">{c.footer.disclaimer}</p>
+            <p className="text-xs text-[var(--text-muted)] leading-relaxed">
+              {c.footer.disclaimer}
+            </p>
           </div>
-          <p className="text-center text-xs text-hy-subtle-text mt-6">
+          <p className="text-center text-xs text-[var(--text-muted)] mt-6">
             © 2026 ExpatUAE. All rights reserved.
           </p>
         </div>
@@ -2201,17 +2228,17 @@ export function LandingPage() {
       {/* ─── STICKY BOTTOM BAR ───────────────────────────────────── */}
       <div
         className={clsx(
-          'fixed bottom-0 inset-x-0 z-40 bg-hy-base/96 backdrop-blur-xl border-t border-hy-border px-4 py-3 flex items-center justify-between gap-3 transition-transform duration-500',
+          'fixed bottom-0 inset-x-0 z-40 bg-[var(--bg-primary)]/96 backdrop-blur-xl border-t border-[var(--border)] px-4 py-3 flex items-center justify-between gap-3 transition-transform duration-500',
           scrolled ? 'translate-y-0' : 'translate-y-full',
         )}
       >
-        <p className="text-sm text-hy-muted hidden sm:block">
+        <p className="text-sm text-[var(--text-muted)] hidden sm:block">
           {c.stickyText || 'Not sure where to start? Try the free assessment.'}
         </p>
         <div className="flex items-center gap-2 ms-auto">
           <button
             onClick={() => handleCTA()}
-            className="px-5 py-2.5 rounded-lg font-bold text-sm bg-hy-accent text-hy-base shadow-lg shadow-black/20 hover:bg-hy-accent-hover hover:-translate-y-0.5 transition-all"
+            className="px-5 py-2.5 rounded-lg font-bold text-sm bg-[var(--accent)] text-hy-base shadow-lg shadow-[var(--shadow-color)] hover:bg-[var(--accent)]-hover hover:-translate-y-0.5 transition-all"
           >
             {c.sticky}
           </button>

@@ -81,7 +81,11 @@ const Input = forwardRef(function Input(
       </div>
 
       {error && (
-        <p id={errorId} role="alert" className="text-xs text-red-400 flex items-center gap-1">
+        <p
+          id={errorId}
+          role="alert"
+          className="text-xs text-[var(--status-error)] flex items-center gap-1"
+        >
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
             <circle cx="6" cy="6" r="5.5" stroke="currentColor" />
             <path d="M6 3.5V6.5" stroke="currentColor" strokeLinecap="round" />

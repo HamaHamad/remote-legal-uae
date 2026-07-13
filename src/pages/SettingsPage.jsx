@@ -52,7 +52,7 @@ function SectionCard({ title, icon: Icon, children, danger = false }) {
     <div
       className={clsx(
         'rounded-2xl p-6',
-        danger ? 'bg-red-500/5 border border-red-500/15' : 'glass-panel',
+        danger ? 'bg-red-500/5 border border-[var(--status-error)]/15' : 'glass-panel',
       )}
     >
       <div className="flex items-center gap-2.5 mb-5 pb-4 border-b border-[var(--border)]">
@@ -60,7 +60,7 @@ function SectionCard({ title, icon: Icon, children, danger = false }) {
           className={clsx(
             'w-7 h-7 rounded-lg flex items-center justify-center',
             danger
-              ? 'bg-red-500/10 border border-red-500/20 text-red-400'
+              ? 'bg-[var(--status-error)]/10 border border-[var(--status-error)]/20 text-[var(--status-error)]'
               : 'bg-gold-500/10 border border-gold-500/20 text-gold-400',
           )}
         >
@@ -69,7 +69,7 @@ function SectionCard({ title, icon: Icon, children, danger = false }) {
         <h2
           className={clsx(
             'text-sm font-semibold',
-            danger ? 'text-red-400' : 'text-[var(--text-primary)]',
+            danger ? 'text-[var(--status-error)]' : 'text-[var(--text-primary)]',
           )}
         >
           {title}
@@ -106,8 +106,8 @@ function Toast({ msg, type = 'success' }) {
       className={clsx(
         'flex items-center gap-2.5 px-4 py-3 rounded-xl text-sm font-medium animate-fade-in',
         type === 'success'
-          ? 'bg-green-500/10 border border-green-500/25 text-green-400'
-          : 'bg-red-500/10 border border-red-500/25 text-red-400',
+          ? 'bg-[var(--status-active)]/10 border border-green-500/25 text-[var(--status-active)]'
+          : 'bg-[var(--status-error)]/10 border border-[var(--status-error)]/25 text-[var(--status-error)]',
       )}
     >
       {type === 'success' ? <CheckCircle size={15} /> : <AlertCircle size={15} />}
@@ -243,7 +243,7 @@ export function SettingsPage() {
                       'flex items-center gap-3 px-4 py-3 rounded-xl border text-sm font-medium transition-all text-start',
                       selectedLang === lang.code
                         ? 'border-gold-500/40 bg-gold-500/8 text-gold-400'
-                        : 'border-[var(--border)] bg-[var(--bg-elevated)] text-[var(--text-secondary)] hover:border-white/15',
+                        : 'border-[var(--border)] bg-[var(--bg-elevated)] text-[var(--text-secondary)] hover:border-[var(--border)]',
                     )}
                   >
                     <span className="text-xl">{lang.flag}</span>
@@ -373,7 +373,7 @@ export function SettingsPage() {
                 key={item.label}
                 onClick={() => (item.href ? (window.location.href = item.href) : null)}
                 disabled={!item.href}
-                className="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] hover:border-white/15 hover:bg-[var(--bg-card)] transition-all disabled:opacity-50 disabled:cursor-not-allowed text-start"
+                className="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] hover:border-[var(--border)] hover:bg-[var(--bg-card)] transition-all disabled:opacity-50 disabled:cursor-not-allowed text-start"
               >
                 <div>
                   <p className="text-sm font-medium text-[var(--text-primary)]">{item.label}</p>
@@ -425,7 +425,7 @@ export function SettingsPage() {
               <p className="text-sm text-[#e8e2d8]/60 mb-4">{t('settings.deleteDesc')}</p>
               <button
                 onClick={() => setShowDelete(true)}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg border border-red-500/30 text-red-400 text-sm hover:bg-red-500/8 transition-all"
+                className="flex items-center gap-2 px-4 py-2 rounded-lg border border-[var(--status-error)]/30 text-[var(--status-error)] text-sm hover:bg-[var(--status-error)]/8 transition-all"
               >
                 <Trash2 size={14} />
                 {t('settings.deleteAccount')}
@@ -433,21 +433,25 @@ export function SettingsPage() {
             </div>
           ) : (
             <div className="space-y-4">
-              <div className="p-3 rounded-xl bg-red-500/8 border border-red-500/20">
-                <p className="text-sm text-red-400 font-medium mb-1">{t('settings.cannotUndo')}</p>
-                <p className="text-xs text-red-400/70">{t('settings.deleteWarning')}</p>
+              <div className="p-3 rounded-xl bg-[var(--status-error)]/8 border border-[var(--status-error)]/20">
+                <p className="text-sm text-[var(--status-error)] font-medium mb-1">
+                  {t('settings.cannotUndo')}
+                </p>
+                <p className="text-xs text-[var(--status-error)]/70">
+                  {t('settings.deleteWarning')}
+                </p>
               </div>
               <div>
                 <label className="block text-xs text-[var(--text-muted)] mb-1.5">
                   {t('settings.typeEmailConfirm')}{' '}
-                  <span className="text-red-400">{user?.email}</span>
+                  <span className="text-[var(--status-error)]">{user?.email}</span>
                 </label>
                 <input
                   type="email"
                   value={deleteInput}
                   onChange={(e) => setDeleteInput(e.target.value)}
                   placeholder={user?.email}
-                  className="w-full px-3 py-2.5 bg-[var(--bg-elevated)] border border-red-500/30 rounded-lg text-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:border-red-500 transition-all"
+                  className="w-full px-3 py-2.5 bg-[var(--bg-elevated)] border border-[var(--status-error)]/30 rounded-lg text-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:border-red-500 transition-all"
                 />
               </div>
               <div className="flex gap-2">
@@ -456,14 +460,14 @@ export function SettingsPage() {
                     setShowDelete(false)
                     setDeleteInput('')
                   }}
-                  className="flex-1 px-4 py-2 rounded-lg border border-[var(--border)] text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-white/15 transition-all"
+                  className="flex-1 px-4 py-2 rounded-lg border border-[var(--border)] text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--border)] transition-all"
                 >
                   {t('settings.cancel')}
                 </button>
                 <button
                   onClick={handleDeleteAccount}
                   disabled={deleteInput !== user?.email || deleting}
-                  className="flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-red-500/15 border border-red-500/30 text-red-400 text-sm font-medium hover:bg-red-500/20 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-[var(--status-error)]/15 border border-[var(--status-error)]/30 text-[var(--status-error)] text-sm font-medium hover:bg-red-500/20 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   {deleting ? (
                     <span className="w-3 h-3 border border-red-400/30 border-t-red-400 rounded-full animate-spin" />

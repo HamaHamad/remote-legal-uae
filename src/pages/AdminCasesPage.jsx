@@ -27,9 +27,17 @@ import { RiskBadge } from '@/components/AICaseReport'
 import Button from '@/components/ui/Button'
 
 const TYPE_META = {
-  banking: { icon: Briefcase, color: 'text-blue-400', bg: 'bg-blue-500/10' },
+  banking: {
+    icon: Briefcase,
+    color: 'text-[var(--status-resolved)]',
+    bg: 'bg-[var(--status-resolved)]/10',
+  },
   car: { icon: Car, color: 'text-orange-400', bg: 'bg-orange-500/10' },
-  employment: { icon: Users, color: 'text-green-400', bg: 'bg-green-500/10' },
+  employment: {
+    icon: Users,
+    color: 'text-[var(--status-active)]',
+    bg: 'bg-[var(--status-active)]/10',
+  },
   rental: { icon: Home, color: 'text-purple-400', bg: 'bg-purple-500/10' },
   legal: { icon: Scale, color: 'text-gold-400', bg: 'bg-gold-500/10' },
   visa: { icon: FolderOpen, color: 'text-cyan-400', bg: 'bg-cyan-500/10' },
@@ -89,7 +97,7 @@ function AssignModal({ caseItem, partners, onConfirm, onClose, loading }) {
                   'w-full flex items-center gap-3 px-3 py-3 rounded-xl border text-start transition-all',
                   selected === p.user_id
                     ? 'border-gold-500/40 bg-gold-500/8 text-gold-400'
-                    : 'border-[var(--border)] bg-[var(--bg-elevated)] text-[var(--text-secondary)] hover:border-white/15',
+                    : 'border-[var(--border)] bg-[var(--bg-elevated)] text-[var(--text-secondary)] hover:border-[var(--border)]',
                 )}
               >
                 <div className="w-8 h-8 rounded-full bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 text-xs font-semibold shrink-0">
@@ -296,7 +304,7 @@ export function AdminCasesPage() {
 
         {/* Success message */}
         {successMsg && (
-          <div className="flex items-center gap-2 p-3 rounded-xl bg-green-500/8 border border-green-500/20 text-green-400 text-sm animate-fade-in">
+          <div className="flex items-center gap-2 p-3 rounded-xl bg-green-500/8 border border-[var(--status-active)]/20 text-[var(--status-active)] text-sm animate-fade-in">
             <CheckCircle size={14} />
             {successMsg}
           </div>
@@ -337,7 +345,7 @@ export function AdminCasesPage() {
                   'px-3 py-2 rounded-lg text-xs font-medium capitalize transition-all',
                   statusFilter === s
                     ? 'bg-gold-500/15 text-gold-400 border border-gold-500/30'
-                    : 'bg-[var(--bg-elevated)] text-[var(--text-secondary)] border border-[var(--border)] hover:border-white/15',
+                    : 'bg-[var(--bg-elevated)] text-[var(--text-secondary)] border border-[var(--border)] hover:border-[var(--border)]',
                 )}
               >
                 {s === 'all'
@@ -357,7 +365,7 @@ export function AdminCasesPage() {
                   'px-3 py-2 rounded-lg text-xs font-medium capitalize transition-all',
                   riskFilter === r
                     ? 'bg-gold-500/15 text-gold-400 border border-gold-500/30'
-                    : 'bg-[var(--bg-elevated)] text-[var(--text-secondary)] border border-[var(--border)] hover:border-white/15',
+                    : 'bg-[var(--bg-elevated)] text-[var(--text-secondary)] border border-[var(--border)] hover:border-[var(--border)]',
                 )}
               >
                 {r === 'all' ? 'Any Risk' : r}
@@ -447,7 +455,7 @@ function AdminCaseRow({ caseItem, partners, t, onAssign, onCreateTask }) {
   const assignedPartner = partners.find((p) => p.user_id === caseItem.assigned_to)
 
   return (
-    <div className="grid grid-cols-[2.5rem_1fr_auto] lg:grid-cols-[2.5rem_1fr_8rem_7rem_7rem_8rem_8rem] items-center gap-3 px-4 py-3.5 rounded-xl glass-panel hover:border-white/10 hover:bg-[var(--bg-elevated)] transition-all">
+    <div className="grid grid-cols-[2.5rem_1fr_auto] lg:grid-cols-[2.5rem_1fr_8rem_7rem_7rem_8rem_8rem] items-center gap-3 px-4 py-3.5 rounded-xl glass-panel hover:border-[var(--border)] hover:bg-[var(--bg-elevated)] transition-all">
       <div
         className={clsx('w-9 h-9 rounded-xl flex items-center justify-center shrink-0', meta.bg)}
       >
@@ -457,7 +465,7 @@ function AdminCaseRow({ caseItem, partners, t, onAssign, onCreateTask }) {
       <div className="min-w-0">
         <div className="flex items-center gap-2 flex-wrap">
           <p className="text-sm font-semibold text-[var(--text-primary)]">{typeLabel}</p>
-          <span className="text-[10px] font-mono text-[var(--text-muted)] bg-white/4 px-1.5 py-0.5 rounded">
+          <span className="text-[10px] font-mono text-[var(--text-muted)] bg-[var(--text-primary)]/4 px-1.5 py-0.5 rounded">
             #{caseItem.id.slice(0, 8).toUpperCase()}
           </span>
         </div>

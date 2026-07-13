@@ -81,12 +81,12 @@ function StrengthBar({ password }) {
         {[0, 1, 2, 3].map((i) => (
           <div
             key={i}
-            className={`h-1 flex-1 rounded-full transition-all ${i < score ? colors[score - 1] : 'bg-white/10'}`}
+            className={`h-1 flex-1 rounded-full transition-all ${i < score ? colors[score - 1] : 'bg-[var(--text-primary)]/10'}`}
           />
         ))}
       </div>
       <p
-        className={`text-[11px] ${score <= 1 ? 'text-red-400' : score === 2 ? 'text-amber-400' : score === 3 ? 'text-amber-300' : 'text-green-400'}`}
+        className={`text-[11px] ${score <= 1 ? 'text-[var(--status-error)]' : score === 2 ? 'text-[var(--status-pending)]' : score === 3 ? 'text-[var(--status-pending)]' : 'text-[var(--status-active)]'}`}
       >
         {labels[score - 1] || ''}
       </p>
@@ -184,8 +184,8 @@ export function ResetPasswordPage() {
     return (
       <div className="min-h-screen auth-bg flex items-center justify-center px-4">
         <div className="glass-panel rounded-2xl p-8 max-w-sm w-full text-center animate-slide-up">
-          <div className="w-14 h-14 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center mx-auto mb-4">
-            <AlertCircle size={28} className="text-red-400" />
+          <div className="w-14 h-14 rounded-full bg-[var(--status-error)]/10 border border-[var(--status-error)]/20 flex items-center justify-center mx-auto mb-4">
+            <AlertCircle size={28} className="text-[var(--status-error)]" />
           </div>
           <h2 className="font-display text-2xl font-semibold text-[var(--text-primary)] mb-2">
             {t('resetPassword.linkExpired')}
@@ -206,14 +206,14 @@ export function ResetPasswordPage() {
     return (
       <div className="min-h-screen auth-bg flex items-center justify-center px-4">
         <div className="glass-panel gold-border rounded-2xl p-8 max-w-sm w-full text-center animate-slide-up shadow-gold">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-500/10 border border-green-500/30 mb-5">
-            <CheckCircle size={32} className="text-green-400" />
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[var(--status-active)]/10 border border-[var(--status-active)]/30 mb-5">
+            <CheckCircle size={32} className="text-[var(--status-active)]" />
           </div>
           <h2 className="font-display text-2xl font-semibold text-[var(--text-primary)] mb-2">
             {t('resetPassword.updated')}
           </h2>
           <p className="text-sm text-[var(--text-secondary)]">{t('resetPassword.redirecting')}</p>
-          <div className="mt-5 h-1 rounded-full bg-white/5 overflow-hidden">
+          <div className="mt-5 h-1 rounded-full bg-[var(--text-primary)]/5 overflow-hidden">
             <div
               className="h-full bg-gold-500 rounded-full"
               style={{ animation: 'countdown 2.5s linear forwards', width: '100%' }}
@@ -254,7 +254,7 @@ export function ResetPasswordPage() {
 
           <form onSubmit={handleSubmit} className="glass-panel rounded-2xl p-6 space-y-4">
             {error && (
-              <div className="flex items-start gap-2 p-3 rounded-xl bg-red-500/8 border border-red-500/20 text-red-400 text-sm animate-fade-in">
+              <div className="flex items-start gap-2 p-3 rounded-xl bg-[var(--status-error)]/8 border border-[var(--status-error)]/20 text-[var(--status-error)] text-sm animate-fade-in">
                 <AlertCircle size={14} className="shrink-0 mt-0.5" />
                 <span>{error}</span>
               </div>
@@ -277,7 +277,7 @@ export function ResetPasswordPage() {
             />
 
             {confirm && password !== confirm && (
-              <p className="text-xs text-red-400">{t('resetPassword.dontMatch')}</p>
+              <p className="text-xs text-[var(--status-error)]">{t('resetPassword.dontMatch')}</p>
             )}
 
             <Button

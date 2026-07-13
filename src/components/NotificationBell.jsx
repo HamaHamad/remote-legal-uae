@@ -17,17 +17,41 @@ import { useNotifications } from '@/hooks/useNotifications'
 
 // ─── Icon per notification type ───────────────────────────────────
 const TYPE_ICON = {
-  case_created: { icon: Briefcase, color: 'text-blue-400', bg: 'bg-blue-500/10' },
-  case_updated: { icon: Briefcase, color: 'text-amber-400', bg: 'bg-amber-500/10' },
+  case_created: {
+    icon: Briefcase,
+    color: 'text-[var(--status-resolved)]',
+    bg: 'bg-[var(--status-resolved)]/10',
+  },
+  case_updated: {
+    icon: Briefcase,
+    color: 'text-[var(--status-pending)]',
+    bg: 'bg-[var(--status-pending)]/10',
+  },
   case_assigned: { icon: Briefcase, color: 'text-purple-400', bg: 'bg-purple-500/10' },
-  payment_success: { icon: CreditCard, color: 'text-green-400', bg: 'bg-green-500/10' },
-  payment_failed: { icon: CreditCard, color: 'text-red-400', bg: 'bg-red-500/10' },
+  payment_success: {
+    icon: CreditCard,
+    color: 'text-[var(--status-active)]',
+    bg: 'bg-[var(--status-active)]/10',
+  },
+  payment_failed: {
+    icon: CreditCard,
+    color: 'text-[var(--status-error)]',
+    bg: 'bg-[var(--status-error)]/10',
+  },
   task_created: { icon: FileText, color: 'text-gold-400', bg: 'bg-gold-500/10' },
-  task_updated: { icon: FileText, color: 'text-amber-400', bg: 'bg-amber-500/10' },
-  task_done: { icon: Check, color: 'text-green-400', bg: 'bg-green-500/10' },
+  task_updated: {
+    icon: FileText,
+    color: 'text-[var(--status-pending)]',
+    bg: 'bg-[var(--status-pending)]/10',
+  },
+  task_done: {
+    icon: Check,
+    color: 'text-[var(--status-active)]',
+    bg: 'bg-[var(--status-active)]/10',
+  },
   document_uploaded: { icon: FileText, color: 'text-cyan-400', bg: 'bg-cyan-500/10' },
   ai_ready: { icon: Brain, color: 'text-gold-400', bg: 'bg-gold-500/10' },
-  system: { icon: Shield, color: 'text-[var(--text-muted)]', bg: 'bg-white/5' },
+  system: { icon: Shield, color: 'text-[var(--text-muted)]', bg: 'bg-[var(--text-primary)]/5' },
 }
 
 function timeAgo(iso) {
@@ -70,7 +94,7 @@ export function NotificationBell() {
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="relative w-9 h-9 rounded-lg flex items-center justify-center text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-white/8 transition-all border border-[var(--border)]"
+        className="relative w-9 h-9 rounded-lg flex items-center justify-center text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--text-primary)]/8 transition-all border border-[var(--border)]"
         aria-label={t('notifications.title', { defaultValue: 'Notifications' })}
       >
         <Bell size={16} />
@@ -92,7 +116,7 @@ export function NotificationBell() {
                 {t('notifications.title', { defaultValue: 'Notifications' })}
               </span>
               {unreadCount > 0 && (
-                <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-red-500/15 text-red-400 border border-red-500/20 font-medium">
+                <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-[var(--status-error)]/15 text-[var(--status-error)] border border-[var(--status-error)]/20 font-medium">
                   {unreadCount} {t('notifications.unread', { defaultValue: 'new' })}
                 </span>
               )}
@@ -131,7 +155,7 @@ export function NotificationBell() {
                       key={notif.id}
                       onClick={() => handleClick(notif)}
                       className={clsx(
-                        'w-full flex items-start gap-3 px-4 py-3 text-start transition-all hover:bg-white/3',
+                        'w-full flex items-start gap-3 px-4 py-3 text-start transition-all hover:bg-[var(--text-primary)]/3',
                         !notif.is_read && 'bg-gold-500/4',
                       )}
                     >

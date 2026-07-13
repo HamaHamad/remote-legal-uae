@@ -95,8 +95,8 @@ export function SignupPage() {
     return (
       <div className="min-h-screen auth-bg flex items-center justify-center px-4">
         <div className="glass-panel gold-border rounded-2xl p-8 max-w-sm w-full text-center animate-slide-up shadow-gold">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-500/10 border border-green-500/30 mb-5">
-            <CheckCircle2 size={32} className="text-green-400" />
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[var(--status-active)]/10 border border-[var(--status-active)]/30 mb-5">
+            <CheckCircle2 size={32} className="text-[var(--status-active)]" />
           </div>
           <h2 className="font-display text-2xl font-semibold text-[var(--text-primary)] mb-3">
             Account Created!
@@ -104,7 +104,7 @@ export function SignupPage() {
           <p className="text-sm text-[var(--text-secondary)] mb-2">
             Your account is ready. Redirecting to login…
           </p>
-          <div className="mt-5 h-1 rounded-full bg-white/5 overflow-hidden">
+          <div className="mt-5 h-1 rounded-full bg-[var(--text-primary)]/5 overflow-hidden">
             <div
               className="h-full bg-gold-500 rounded-full"
               style={{ animation: 'countdown 3s linear forwards', width: '100%' }}
@@ -145,7 +145,7 @@ export function SignupPage() {
           {/* Card */}
           <div className="glass-panel rounded-2xl p-6 gold-border shadow-gold">
             {serverError && (
-              <div className="mb-5 flex items-start gap-3 p-3.5 rounded-xl bg-red-500/8 border border-red-500/20 text-red-400 text-sm animate-fade-in">
+              <div className="mb-5 flex items-start gap-3 p-3.5 rounded-xl bg-[var(--status-error)]/8 border border-[var(--status-error)]/20 text-[var(--status-error)] text-sm animate-fade-in">
                 <AlertCircle size={16} className="shrink-0 mt-0.5" />
                 <span>{serverError}</span>
               </div>

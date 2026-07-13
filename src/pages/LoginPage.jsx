@@ -94,7 +94,7 @@ export function LoginPage() {
           <div className="glass-panel rounded-2xl p-6 gold-border shadow-gold">
             {/* Server error */}
             {serverError && (
-              <div className="mb-5 flex items-start gap-3 p-3.5 rounded-xl bg-red-500/8 border border-red-500/20 text-red-400 text-sm animate-fade-in">
+              <div className="mb-5 flex items-start gap-3 p-3.5 rounded-xl bg-[var(--status-error)]/8 border border-[var(--status-error)]/20 text-[var(--status-error)] text-sm animate-fade-in">
                 <AlertCircle size={16} className="shrink-0 mt-0.5" />
                 <span>{serverError}</span>
               </div>

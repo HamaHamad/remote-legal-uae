@@ -80,8 +80,8 @@ export function ForgotPasswordPage() {
 
         <div className="flex-1 flex items-center justify-center px-4 py-10">
           <div className="glass-panel gold-border rounded-2xl p-8 max-w-sm w-full text-center animate-slide-up shadow-gold">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-500/10 border border-green-500/30 mb-5">
-              <CheckCircle size={32} className="text-green-400" />
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[var(--status-active)]/10 border border-[var(--status-active)]/30 mb-5">
+              <CheckCircle size={32} className="text-[var(--status-active)]" />
             </div>
             <h2 className="font-display text-2xl font-semibold text-[var(--text-primary)] mb-3">
               Check your email
@@ -141,7 +141,7 @@ export function ForgotPasswordPage() {
 
           <form onSubmit={handleSubmit} className="glass-panel rounded-2xl p-6 space-y-5">
             {error && (
-              <div className="flex items-start gap-2 p-3 rounded-xl bg-red-500/8 border border-red-500/20 text-red-400 text-sm animate-fade-in">
+              <div className="flex items-start gap-2 p-3 rounded-xl bg-[var(--status-error)]/8 border border-[var(--status-error)]/20 text-[var(--status-error)] text-sm animate-fade-in">
                 <AlertCircle size={14} className="shrink-0 mt-0.5" />
                 <span>{error}</span>
               </div>

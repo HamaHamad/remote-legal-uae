@@ -24,9 +24,17 @@ import { StatusBadge } from '@/components/ui/Badge'
 import { RiskBadge } from '@/components/AICaseReport'
 
 const TYPE_META = {
-  banking: { icon: Briefcase, color: 'text-blue-400', bg: 'bg-blue-500/10' },
+  banking: {
+    icon: Briefcase,
+    color: 'text-[var(--status-resolved)]',
+    bg: 'bg-[var(--status-resolved)]/10',
+  },
   car: { icon: Car, color: 'text-orange-400', bg: 'bg-orange-500/10' },
-  employment: { icon: Users, color: 'text-green-400', bg: 'bg-green-500/10' },
+  employment: {
+    icon: Users,
+    color: 'text-[var(--status-active)]',
+    bg: 'bg-[var(--status-active)]/10',
+  },
   rental: { icon: Home, color: 'text-purple-400', bg: 'bg-purple-500/10' },
   legal: { icon: Scale, color: 'text-gold-400', bg: 'bg-gold-500/10' },
   visa: { icon: FileText, color: 'text-cyan-400', bg: 'bg-cyan-500/10' },
@@ -52,7 +60,7 @@ function CaseCard({ caseItem, taskCount }) {
   const name = caseItem.users?.full_name
 
   return (
-    <div className="glass-panel rounded-2xl p-5 hover:border-white/10 hover:bg-[var(--bg-elevated)] transition-all group">
+    <div className="glass-panel rounded-2xl p-5 hover:border-[var(--border)] hover:bg-[var(--bg-elevated)] transition-all group">
       {/* Header */}
       <div className="flex items-start gap-4 mb-4">
         <div
@@ -68,7 +76,7 @@ function CaseCard({ caseItem, taskCount }) {
             <p className="font-semibold text-[var(--text-primary)] capitalize">
               {typeKey.replace('_', ' ')} Case
             </p>
-            <span className="text-[10px] font-mono text-[var(--text-muted)] bg-white/5 px-1.5 py-0.5 rounded">
+            <span className="text-[10px] font-mono text-[var(--text-muted)] bg-[var(--text-primary)]/5 px-1.5 py-0.5 rounded">
               #{caseItem.id.slice(0, 8).toUpperCase()}
             </span>
           </div>
@@ -123,7 +131,7 @@ function CaseCard({ caseItem, taskCount }) {
           </button>
         </Link>
         <Link to="/partner" className="flex-1">
-          <button className="w-full flex items-center justify-center gap-1.5 text-xs font-medium px-3 py-2 rounded-lg bg-[var(--bg-elevated)] text-[var(--text-secondary)] border border-[var(--border)] hover:text-[var(--text-primary)] hover:border-white/15 transition-all">
+          <button className="w-full flex items-center justify-center gap-1.5 text-xs font-medium px-3 py-2 rounded-lg bg-[var(--bg-elevated)] text-[var(--text-secondary)] border border-[var(--border)] hover:text-[var(--text-primary)] hover:border-[var(--border)] transition-all">
             <FileText size={12} />
             {t('case.viewDetails', { defaultValue: 'Case Details' })}
           </button>
@@ -139,17 +147,17 @@ function Skeleton() {
       {[1, 2, 3, 4].map((i) => (
         <div key={i} className="glass-panel rounded-2xl p-5 animate-pulse">
           <div className="flex gap-4 mb-4">
-            <div className="w-11 h-11 rounded-xl bg-white/5 shrink-0" />
+            <div className="w-11 h-11 rounded-xl bg-[var(--text-primary)]/5 shrink-0" />
             <div className="flex-1 space-y-2">
-              <div className="h-4 bg-white/5 rounded w-1/2" />
-              <div className="h-3 bg-white/5 rounded w-2/3" />
+              <div className="h-4 bg-[var(--text-primary)]/5 rounded w-1/2" />
+              <div className="h-3 bg-[var(--text-primary)]/5 rounded w-2/3" />
             </div>
           </div>
           <div className="space-y-2 mb-4">
-            <div className="h-3 bg-white/5 rounded w-full" />
-            <div className="h-3 bg-white/5 rounded w-3/4" />
+            <div className="h-3 bg-[var(--text-primary)]/5 rounded w-full" />
+            <div className="h-3 bg-[var(--text-primary)]/5 rounded w-3/4" />
           </div>
-          <div className="h-8 bg-white/5 rounded-xl" />
+          <div className="h-8 bg-[var(--text-primary)]/5 rounded-xl" />
         </div>
       ))}
     </div>
@@ -209,7 +217,7 @@ export function PartnerCasesPage() {
       </div>
 
       {error && (
-        <div className="flex items-center gap-2 p-3 rounded-xl bg-red-500/8 border border-red-500/20 text-red-400 text-sm animate-fade-in">
+        <div className="flex items-center gap-2 p-3 rounded-xl bg-[var(--status-error)]/8 border border-[var(--status-error)]/20 text-[var(--status-error)] text-sm animate-fade-in">
           <AlertCircle size={14} /> {error}
         </div>
       )}
@@ -247,7 +255,7 @@ export function PartnerCasesPage() {
                 'px-3 py-2 rounded-lg text-xs font-medium capitalize transition-all',
                 status === s
                   ? 'bg-gold-500/15 text-gold-400 border border-gold-500/30'
-                  : 'bg-[var(--bg-elevated)] text-[var(--text-secondary)] border border-[var(--border)] hover:border-white/15',
+                  : 'bg-[var(--bg-elevated)] text-[var(--text-secondary)] border border-[var(--border)] hover:border-[var(--border)]',
               )}
             >
               {s === 'all'
@@ -263,7 +271,7 @@ export function PartnerCasesPage() {
         <Skeleton />
       ) : filtered.length === 0 ? (
         <div className="glass-panel rounded-2xl p-12 text-center animate-fade-in">
-          <div className="w-14 h-14 rounded-2xl bg-white/5 border border-[var(--border)] flex items-center justify-center mx-auto mb-4">
+          <div className="w-14 h-14 rounded-2xl bg-[var(--text-primary)]/5 border border-[var(--border)] flex items-center justify-center mx-auto mb-4">
             <Briefcase size={24} className="text-[var(--text-muted)]" />
           </div>
           <h3 className="font-display text-xl font-semibold text-[var(--text-primary)] mb-2">

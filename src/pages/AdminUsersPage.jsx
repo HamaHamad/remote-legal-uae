@@ -137,7 +137,7 @@ function ChangeRoleModal({ user, onConfirm, onClose, loading }) {
                 'w-full flex items-center justify-between px-4 py-3 rounded-xl border text-sm font-medium capitalize transition-all',
                 role === r
                   ? 'border-gold-500/40 bg-gold-500/8 text-gold-400'
-                  : 'border-[var(--border)] bg-[var(--bg-elevated)] text-[var(--text-secondary)] hover:border-white/15',
+                  : 'border-[var(--border)] bg-[var(--bg-elevated)] text-[var(--text-secondary)] hover:border-[var(--border)]',
               )}
             >
               {r}
@@ -236,7 +236,7 @@ export function AdminUsersPage() {
 
         {/* Toast */}
         {successMsg && (
-          <div className="flex items-center gap-2 p-3 rounded-xl bg-green-500/8 border border-green-500/20 text-green-400 text-sm animate-fade-in">
+          <div className="flex items-center gap-2 p-3 rounded-xl bg-green-500/8 border border-[var(--status-active)]/20 text-[var(--status-active)] text-sm animate-fade-in">
             <CheckCircle size={14} /> {successMsg}
           </div>
         )}
@@ -274,7 +274,7 @@ export function AdminUsersPage() {
                   'px-3 py-2 rounded-lg text-xs font-medium capitalize transition-all',
                   roleFilter === r
                     ? 'bg-gold-500/15 text-gold-400 border border-gold-500/30'
-                    : 'bg-[var(--bg-elevated)] text-[var(--text-secondary)] border border-[var(--border)] hover:border-white/15',
+                    : 'bg-[var(--bg-elevated)] text-[var(--text-secondary)] border border-[var(--border)] hover:border-[var(--border)]',
                 )}
               >
                 {r === 'all'
@@ -359,7 +359,7 @@ export function AdminUsersPage() {
                         <div className="flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
                           <button
                             onClick={() => setRoleModal(user)}
-                            className="text-[10px] px-2 py-1 rounded-md bg-white/5 text-[var(--text-secondary)] hover:bg-white/10 border border-[var(--border)] transition-all"
+                            className="text-[10px] px-2 py-1 rounded-md bg-[var(--text-primary)]/5 text-[var(--text-secondary)] hover:bg-[var(--text-primary)]/10 border border-[var(--border)] transition-all"
                           >
                             Change Role
                           </button>

@@ -28,11 +28,13 @@ import { useDocumentAnalysis } from '@/hooks/useDocumentAnalysis'
 function Section({ icon: Icon, title, color = 'gold', children }) {
   const colorMap = {
     gold: 'text-gold-400   bg-gold-500/10   border-gold-500/20',
-    red: 'text-red-400    bg-red-500/10    border-red-500/20',
-    green: 'text-green-400  bg-green-500/10  border-green-500/20',
-    blue: 'text-blue-400   bg-blue-500/10   border-blue-500/20',
+    red: 'text-[var(--status-error)]    bg-[var(--status-error)]/10    border-[var(--status-error)]/20',
+    green:
+      'text-[var(--status-active)]  bg-[var(--status-active)]/10  border-[var(--status-active)]/20',
+    blue: 'text-[var(--status-resolved)]   bg-[var(--status-resolved)]/10   border-[var(--status-resolved)]/20',
     purple: 'text-purple-400 bg-purple-500/10 border-purple-500/20',
-    amber: 'text-amber-400  bg-amber-500/10  border-amber-500/20',
+    amber:
+      'text-[var(--status-pending)]  bg-[var(--status-pending)]/10  border-[var(--status-pending)]/20',
   }
   return (
     <div>
@@ -87,17 +89,17 @@ function FinancialRow({ label, value }) {
 function AnalysisSkeleton() {
   return (
     <div className="space-y-5 animate-pulse">
-      <div className="h-4 bg-white/5 rounded w-1/3" />
+      <div className="h-4 bg-[var(--text-primary)]/5 rounded w-1/3" />
       <div className="space-y-2">
-        <div className="h-3 bg-white/5 rounded w-full" />
-        <div className="h-3 bg-white/5 rounded w-5/6" />
-        <div className="h-3 bg-white/5 rounded w-4/6" />
+        <div className="h-3 bg-[var(--text-primary)]/5 rounded w-full" />
+        <div className="h-3 bg-[var(--text-primary)]/5 rounded w-5/6" />
+        <div className="h-3 bg-[var(--text-primary)]/5 rounded w-4/6" />
       </div>
       {[1, 2, 3].map((i) => (
         <div key={i} className="space-y-2">
-          <div className="h-3.5 bg-white/5 rounded w-1/4" />
-          <div className="h-3 bg-white/5 rounded w-3/4" />
-          <div className="h-3 bg-white/5 rounded w-2/3" />
+          <div className="h-3.5 bg-[var(--text-primary)]/5 rounded w-1/4" />
+          <div className="h-3 bg-[var(--text-primary)]/5 rounded w-3/4" />
+          <div className="h-3 bg-[var(--text-primary)]/5 rounded w-2/3" />
         </div>
       ))}
     </div>
@@ -214,7 +216,7 @@ export function DocumentIntelligencePanel({
           Extract entities, financials, risks and obligations from this document using AI.
         </p>
         {error && (
-          <div className="mb-4 flex items-start gap-2 p-3 rounded-xl bg-red-500/8 border border-red-500/20 text-red-400 text-xs text-start">
+          <div className="mb-4 flex items-start gap-2 p-3 rounded-xl bg-[var(--status-error)]/8 border border-[var(--status-error)]/20 text-[var(--status-error)] text-xs text-start">
             <AlertTriangle size={13} className="shrink-0 mt-0.5" />
             <span>{error}</span>
           </div>
@@ -253,8 +255,8 @@ export function DocumentIntelligencePanel({
   if (analysis.status === 'failed') {
     return (
       <div className="glass-panel rounded-2xl p-5 flex items-start gap-3">
-        <div className="w-9 h-9 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center shrink-0">
-          <AlertTriangle size={16} className="text-red-400" />
+        <div className="w-9 h-9 rounded-xl bg-[var(--status-error)]/10 border border-[var(--status-error)]/20 flex items-center justify-center shrink-0">
+          <AlertTriangle size={16} className="text-[var(--status-error)]" />
         </div>
         <div className="flex-1">
           <p className="text-sm font-semibold text-[var(--text-primary)] mb-1">Analysis Failed</p>
@@ -289,7 +291,7 @@ export function DocumentIntelligencePanel({
             <span className="text-sm font-semibold text-[var(--text-primary)]">
               {t('docIntelligence.title')}
             </span>
-            <span className="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-green-500/10 text-green-400 border border-green-500/20">
+            <span className="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-[var(--status-active)]/10 text-[var(--status-active)] border border-[var(--status-active)]/20">
               <CheckCircle size={9} /> Analysed
             </span>
           </div>
@@ -302,7 +304,7 @@ export function DocumentIntelligencePanel({
             <button
               onClick={handleReanalyze}
               title={t('docIntelligence.reanalyze')}
-              className="w-6 h-6 rounded-md flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-white/8 transition-all"
+              className="w-6 h-6 rounded-md flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--text-primary)]/8 transition-all"
             >
               <RefreshCw size={11} />
             </button>
@@ -320,7 +322,7 @@ export function DocumentIntelligencePanel({
                 {entities.dates.map((d, i) => (
                   <span
                     key={i}
-                    className="text-[10px] px-2 py-0.5 rounded-full bg-white/5 text-[var(--text-muted)] border border-[var(--border)]"
+                    className="text-[10px] px-2 py-0.5 rounded-full bg-[var(--text-primary)]/5 text-[var(--text-muted)] border border-[var(--border)]"
                   >
                     <Calendar size={9} className="inline me-1" />
                     {d}
@@ -342,7 +344,7 @@ export function DocumentIntelligencePanel({
                     {entities.parties.map((p, i) => (
                       <span
                         key={i}
-                        className="text-xs px-2.5 py-1 rounded-lg bg-blue-500/8 text-blue-400 border border-blue-500/20"
+                        className="text-xs px-2.5 py-1 rounded-lg bg-blue-500/8 text-[var(--status-resolved)] border border-[var(--status-resolved)]/20"
                       >
                         {p}
                       </span>
@@ -359,7 +361,7 @@ export function DocumentIntelligencePanel({
                     {entities.reference_numbers.map((r, i) => (
                       <span
                         key={i}
-                        className="text-xs px-2.5 py-1 rounded-lg bg-white/5 text-[var(--text-secondary)] border border-[var(--border)] font-mono"
+                        className="text-xs px-2.5 py-1 rounded-lg bg-[var(--text-primary)]/5 text-[var(--text-secondary)] border border-[var(--border)] font-mono"
                       >
                         {r}
                       </span>
@@ -398,7 +400,11 @@ export function DocumentIntelligencePanel({
                   <p className="text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-2">
                     Fees & Penalties
                   </p>
-                  <BulletList items={financials.fees} color="text-amber-400" dot="bg-amber-400" />
+                  <BulletList
+                    items={financials.fees}
+                    color="text-[var(--status-pending)]"
+                    dot="bg-amber-400"
+                  />
                 </div>
               )}
             </Section>
@@ -422,9 +428,12 @@ export function DocumentIntelligencePanel({
                 {ai.risks.map((risk, i) => (
                   <div
                     key={i}
-                    className="flex items-start gap-2.5 p-3 rounded-xl bg-red-500/6 border border-red-500/15"
+                    className="flex items-start gap-2.5 p-3 rounded-xl bg-red-500/6 border border-[var(--status-error)]/15"
                   >
-                    <AlertTriangle size={13} className="text-red-400 shrink-0 mt-0.5" />
+                    <AlertTriangle
+                      size={13}
+                      className="text-[var(--status-error)] shrink-0 mt-0.5"
+                    />
                     <p className="text-sm text-red-300/90 leading-relaxed">{risk}</p>
                   </div>
                 ))}

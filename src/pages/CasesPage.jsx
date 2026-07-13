@@ -27,18 +27,30 @@ import { clsx } from 'clsx'
 
 // ─── shared type map ──────────────────────────────────────────────
 const TYPE_META = {
-  banking: { icon: Briefcase, color: 'text-blue-400', bg: 'bg-blue-500/10' },
+  banking: {
+    icon: Briefcase,
+    color: 'text-[var(--status-resolved)]',
+    bg: 'bg-[var(--status-resolved)]/10',
+  },
   car: { icon: Car, color: 'text-orange-400', bg: 'bg-orange-500/10' },
-  employment: { icon: Users, color: 'text-green-400', bg: 'bg-green-500/10' },
+  employment: {
+    icon: Users,
+    color: 'text-[var(--status-active)]',
+    bg: 'bg-[var(--status-active)]/10',
+  },
   rental: { icon: Home, color: 'text-purple-400', bg: 'bg-purple-500/10' },
   legal: { icon: Scale, color: 'text-gold-400', bg: 'bg-gold-500/10' },
   visa: { icon: FileText, color: 'text-cyan-400', bg: 'bg-cyan-500/10' },
-  business: { icon: Briefcase, color: 'text-blue-400', bg: 'bg-blue-500/10' },
-  dispute: { icon: Scale, color: 'text-red-400', bg: 'bg-red-500/10' },
+  business: {
+    icon: Briefcase,
+    color: 'text-[var(--status-resolved)]',
+    bg: 'bg-[var(--status-resolved)]/10',
+  },
+  dispute: { icon: Scale, color: 'text-[var(--status-error)]', bg: 'bg-[var(--status-error)]/10' },
   contract: { icon: FileText, color: 'text-yellow-400', bg: 'bg-yellow-500/10' },
   property: { icon: Home, color: 'text-purple-400', bg: 'bg-purple-500/10' },
   family: { icon: Users, color: 'text-pink-400', bg: 'bg-pink-500/10' },
-  criminal: { icon: Scale, color: 'text-red-400', bg: 'bg-red-500/10' },
+  criminal: { icon: Scale, color: 'text-[var(--status-error)]', bg: 'bg-[var(--status-error)]/10' },
   other: { icon: HelpCircle, color: 'text-gray-400', bg: 'bg-gray-500/10' },
 }
 
@@ -62,7 +74,7 @@ function CaseRow({ caseItem, t }) {
       type="button"
       onClick={() => navigate(`/dashboard/cases/${caseItem.id}`)}
       aria-label={`View case ${label}: ${caseItem.status}`}
-      className="group grid grid-cols-[2.5rem_1fr_auto_auto] sm:grid-cols-[2.5rem_1fr_8rem_8rem_6rem_5rem] items-center gap-4 px-4 py-3.5 rounded-xl bg-[var(--bg-card)] border border-[var(--border)] hover:border-white/10 hover:bg-[var(--bg-elevated)] transition-all duration-200 cursor-pointer text-start w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400/50"
+      className="group grid grid-cols-[2.5rem_1fr_auto_auto] sm:grid-cols-[2.5rem_1fr_8rem_8rem_6rem_5rem] items-center gap-4 px-4 py-3.5 rounded-xl bg-[var(--bg-card)] border border-[var(--border)] hover:border-[var(--border)] hover:bg-[var(--bg-elevated)] transition-all duration-200 cursor-pointer text-start w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400/50"
     >
       {/* Icon */}
       <div
@@ -75,7 +87,7 @@ function CaseRow({ caseItem, t }) {
       <div className="min-w-0">
         <div className="flex items-center gap-2">
           <span className="text-sm font-semibold text-[var(--text-primary)] truncate">{label}</span>
-          <span className="hidden sm:inline text-[10px] font-mono text-[var(--text-muted)] bg-white/4 px-1.5 py-0.5 rounded shrink-0">
+          <span className="hidden sm:inline text-[10px] font-mono text-[var(--text-muted)] bg-[var(--text-primary)]/4 px-1.5 py-0.5 rounded shrink-0">
             #{caseItem.id.slice(0, 8).toUpperCase()}
           </span>
         </div>
@@ -154,12 +166,12 @@ function Skeleton() {
           key={i}
           className="grid grid-cols-[2.5rem_1fr_auto] items-center gap-4 px-4 py-3.5 rounded-xl bg-[var(--bg-card)] border border-[var(--border)] animate-pulse"
         >
-          <div className="w-10 h-10 rounded-xl bg-white/5" />
+          <div className="w-10 h-10 rounded-xl bg-[var(--text-primary)]/5" />
           <div className="space-y-2">
-            <div className="h-3.5 bg-white/5 rounded w-1/4" />
-            <div className="h-2.5 bg-white/5 rounded w-1/2" />
+            <div className="h-3.5 bg-[var(--text-primary)]/5 rounded w-1/4" />
+            <div className="h-2.5 bg-[var(--text-primary)]/5 rounded w-1/2" />
           </div>
-          <div className="h-5 bg-white/5 rounded-full w-16" />
+          <div className="h-5 bg-[var(--text-primary)]/5 rounded-full w-16" />
         </div>
       ))}
     </div>
@@ -250,7 +262,7 @@ export function CasesPage() {
                   'px-3 py-2 rounded-lg text-xs font-medium transition-all duration-200 capitalize',
                   statusFilter === s
                     ? 'bg-gold-500/15 text-gold-400 border border-gold-500/30'
-                    : 'bg-[var(--bg-elevated)] text-[var(--text-secondary)] border border-[var(--border)] hover:border-white/15',
+                    : 'bg-[var(--bg-elevated)] text-[var(--text-secondary)] border border-[var(--border)] hover:border-[var(--border)]',
                 )}
               >
                 {s === 'all' ? `All (${cases.length})` : `${s} (${stats[s] ?? 0})`}

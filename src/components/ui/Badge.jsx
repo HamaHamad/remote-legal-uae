@@ -9,7 +9,8 @@ const statusConfig = {
 
 const roleConfig = {
   client: {
-    className: 'text-blue-400  bg-blue-500/10  border border-blue-500/20',
+    className:
+      'text-[var(--status-resolved)]  bg-[var(--status-resolved)]/10  border border-[var(--status-resolved)]/20',
     labelKey: 'roles.client',
   },
   admin: {
@@ -59,11 +60,13 @@ export function RoleBadge({ role }) {
 
 export function Badge({ children, variant = 'default', className = '' }) {
   const variants = {
-    default: 'bg-white/8 text-[var(--text-secondary)] border border-white/10',
+    default:
+      'bg-[var(--text-primary)]/8 text-[var(--text-secondary)] border border-[var(--border)]',
     gold: 'bg-gold-500/10 text-gold-400 border border-gold-500/20',
-    green: 'bg-green-500/10 text-green-400 border border-green-500/20',
-    red: 'bg-red-500/10 text-red-400 border border-red-500/20',
-    blue: 'bg-blue-500/10 text-blue-400 border border-blue-500/20',
+    green:
+      'bg-[var(--status-active)]/10 text-[var(--status-active)] border border-[var(--status-active)]/20',
+    red: 'bg-[var(--status-error)]/10 text-[var(--status-error)] border border-[var(--status-error)]/20',
+    blue: 'bg-[var(--status-resolved)]/10 text-[var(--status-resolved)] border border-[var(--status-resolved)]/20',
     purple: 'bg-purple-500/10 text-purple-400 border border-purple-500/20',
   }
   return (

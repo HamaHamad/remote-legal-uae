@@ -54,7 +54,7 @@ describe('Button', () => {
 
   it('applies the danger variant', () => {
     const { container } = render(<Button variant="danger">Delete</Button>)
-    expect(container.firstChild).toHaveClass('bg-red-500/10')
+    expect(container.firstChild).toHaveClass('bg-[var(--status-error)]/10')
   })
 
   it('applies fullWidth class', () => {

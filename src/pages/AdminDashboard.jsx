@@ -66,7 +66,7 @@ export function AdminDashboard() {
 
       {/* Error */}
       {error && (
-        <div className="p-4 rounded-xl bg-red-500/8 border border-red-500/20 text-red-400 text-sm animate-fade-in">
+        <div className="p-4 rounded-xl bg-[var(--status-error)]/8 border border-[var(--status-error)]/20 text-[var(--status-error)] text-sm animate-fade-in">
           {error}
         </div>
       )}
@@ -142,14 +142,14 @@ export function AdminDashboard() {
                     <Icon size={14} className="text-[var(--text-muted)]" />
                     {label}
                   </div>
-                  <div className="flex items-center gap-1.5 text-xs text-green-400">
+                  <div className="flex items-center gap-1.5 text-xs text-[var(--status-active)]">
                     <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
                     OK
                   </div>
                 </div>
               ))}
               <div className="pt-2 mt-1 border-t border-[var(--border)]">
-                <div className="flex items-center gap-2 text-xs text-green-400">
+                <div className="flex items-center gap-2 text-xs text-[var(--status-active)]">
                   <CheckCircle size={13} />
                   <span>{t('admin.allGood')}</span>
                 </div>
@@ -173,7 +173,7 @@ export function AdminDashboard() {
                 {recentUsers.map((user) => (
                   <div
                     key={user.id}
-                    className="flex items-center gap-3 px-3 py-2.5 rounded-xl glass-panel hover:border-white/10 transition-all"
+                    className="flex items-center gap-3 px-3 py-2.5 rounded-xl glass-panel hover:border-[var(--border)] transition-all"
                   >
                     <div className="w-7 h-7 rounded-full bg-gold-500/10 border border-gold-500/20 flex items-center justify-center text-gold-400 text-xs font-semibold shrink-0">
                       {(user.email || '?')[0].toUpperCase()}
@@ -235,7 +235,7 @@ export function AdminDashboard() {
                     <tr key={user.id} className="hover:bg-white/2 transition-colors group">
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-2.5">
-                          <div className="w-7 h-7 rounded-full bg-white/5 flex items-center justify-center text-xs font-medium text-[var(--text-secondary)] shrink-0">
+                          <div className="w-7 h-7 rounded-full bg-[var(--text-primary)]/5 flex items-center justify-center text-xs font-medium text-[var(--text-secondary)] shrink-0">
                             {(user.email || '?')[0].toUpperCase()}
                           </div>
                           <span className="text-[var(--text-primary)] truncate max-w-[200px]">
@@ -275,9 +275,9 @@ function CaseRow({ caseItem, t }) {
 
   return (
     <Link to={`/admin/cases`}>
-      <div className="flex items-center justify-between gap-4 px-4 py-3 rounded-xl glass-panel hover:border-white/10 transition-all duration-200 group cursor-pointer">
+      <div className="flex items-center justify-between gap-4 px-4 py-3 rounded-xl glass-panel hover:border-[var(--border)] transition-all duration-200 group cursor-pointer">
         <div className="flex items-center gap-3 min-w-0">
-          <div className="w-7 h-7 rounded-md bg-white/5 flex items-center justify-center shrink-0">
+          <div className="w-7 h-7 rounded-md bg-[var(--text-primary)]/5 flex items-center justify-center shrink-0">
             <FolderOpen size={12} className="text-[var(--text-muted)]" />
           </div>
           <div className="min-w-0">
@@ -323,12 +323,12 @@ function CaseSkeleton() {
           key={i}
           className="flex items-center gap-4 px-4 py-3 rounded-xl glass-panel animate-pulse"
         >
-          <div className="w-7 h-7 rounded-md bg-white/5 shrink-0" />
+          <div className="w-7 h-7 rounded-md bg-[var(--text-primary)]/5 shrink-0" />
           <div className="flex-1 space-y-1.5">
-            <div className="h-3 bg-white/5 rounded w-1/3" />
-            <div className="h-2.5 bg-white/5 rounded w-1/2" />
+            <div className="h-3 bg-[var(--text-primary)]/5 rounded w-1/3" />
+            <div className="h-2.5 bg-[var(--text-primary)]/5 rounded w-1/2" />
           </div>
-          <div className="h-5 bg-white/5 rounded-full w-16" />
+          <div className="h-5 bg-[var(--text-primary)]/5 rounded-full w-16" />
         </div>
       ))}
     </div>
@@ -343,9 +343,9 @@ function UserSkeleton() {
           key={i}
           className="flex items-center gap-3 px-3 py-2.5 rounded-xl glass-panel animate-pulse"
         >
-          <div className="w-7 h-7 rounded-full bg-white/5 shrink-0" />
-          <div className="flex-1 h-3 bg-white/5 rounded" />
-          <div className="h-4 bg-white/5 rounded-full w-14" />
+          <div className="w-7 h-7 rounded-full bg-[var(--text-primary)]/5 shrink-0" />
+          <div className="flex-1 h-3 bg-[var(--text-primary)]/5 rounded" />
+          <div className="h-4 bg-[var(--text-primary)]/5 rounded-full w-14" />
         </div>
       ))}
     </div>

@@ -154,8 +154,8 @@ export function AutoCaseBuilder({ onClose, onCaseCreated }) {
     return (
       <div className="flex flex-col items-center text-center py-6 px-4 animate-slide-up">
         <div className="relative mb-5">
-          <div className="w-20 h-20 rounded-full bg-green-500/10 border-2 border-green-500/30 flex items-center justify-center">
-            <CheckCircle size={38} className="text-green-400" />
+          <div className="w-20 h-20 rounded-full bg-[var(--status-active)]/10 border-2 border-[var(--status-active)]/30 flex items-center justify-center">
+            <CheckCircle size={38} className="text-[var(--status-active)]" />
           </div>
           <div className="absolute -inset-2 rounded-full border border-green-500/10 animate-ping" />
         </div>
@@ -184,8 +184,8 @@ export function AutoCaseBuilder({ onClose, onCaseCreated }) {
 
         {/* Risk warning */}
         {ai.risks?.length > 0 && (
-          <div className="w-full max-w-sm mb-5 p-3 rounded-xl bg-red-500/8 border border-red-500/20 text-start">
-            <p className="text-xs text-red-400 font-semibold flex items-center gap-1.5 mb-1">
+          <div className="w-full max-w-sm mb-5 p-3 rounded-xl bg-[var(--status-error)]/8 border border-[var(--status-error)]/20 text-start">
+            <p className="text-xs text-[var(--status-error)] font-semibold flex items-center gap-1.5 mb-1">
               <AlertTriangle size={12} /> {ai.risks.length} risk{ai.risks.length !== 1 ? 's' : ''}{' '}
               found
             </p>
@@ -254,7 +254,9 @@ export function AutoCaseBuilder({ onClose, onCaseCreated }) {
           <div
             className={clsx(
               'w-14 h-14 rounded-xl mx-auto mb-4 flex items-center justify-center transition-all',
-              dragging ? 'bg-gold-500/20 text-gold-400' : 'bg-white/5 text-[var(--text-muted)]',
+              dragging
+                ? 'bg-gold-500/20 text-gold-400'
+                : 'bg-[var(--text-primary)]/5 text-[var(--text-muted)]',
             )}
           >
             <Upload size={24} />
@@ -270,7 +272,7 @@ export function AutoCaseBuilder({ onClose, onCaseCreated }) {
             {['PDF', 'JPG', 'PNG', 'DOCX'].map((ext) => (
               <span
                 key={ext}
-                className="text-[10px] px-2 py-0.5 rounded bg-white/4 border border-white/8 text-[var(--text-muted)] uppercase tracking-wider"
+                className="text-[10px] px-2 py-0.5 rounded bg-[var(--text-primary)]/4 border border-[var(--border)] text-[var(--text-muted)] uppercase tracking-wider"
               >
                 {ext}
               </span>
@@ -291,7 +293,7 @@ export function AutoCaseBuilder({ onClose, onCaseCreated }) {
           </div>
           <button
             onClick={() => setFile(null)}
-            className="w-6 h-6 rounded-md flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-white/8 transition-all"
+            className="w-6 h-6 rounded-md flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--text-primary)]/8 transition-all"
           >
             <X size={13} />
           </button>
@@ -307,10 +309,10 @@ export function AutoCaseBuilder({ onClose, onCaseCreated }) {
                 className={clsx(
                   'w-6 h-6 rounded-full flex items-center justify-center shrink-0 transition-all duration-300',
                   i < stage
-                    ? 'bg-green-500/15 border border-green-500/30 text-green-400'
+                    ? 'bg-[var(--status-active)]/15 border border-[var(--status-active)]/30 text-[var(--status-active)]'
                     : i === stage
                       ? 'bg-gold-500/15  border border-gold-500/30  text-gold-400'
-                      : 'bg-white/5      border border-[var(--border)] text-[var(--text-muted)]',
+                      : 'bg-[var(--text-primary)]/5      border border-[var(--border)] text-[var(--text-muted)]',
                 )}
               >
                 {i < stage ? (
@@ -340,7 +342,7 @@ export function AutoCaseBuilder({ onClose, onCaseCreated }) {
 
       {/* Error */}
       {error && (
-        <div className="mb-4 flex items-start gap-2.5 p-3 rounded-xl bg-red-500/8 border border-red-500/20 text-red-400 text-xs animate-fade-in">
+        <div className="mb-4 flex items-start gap-2.5 p-3 rounded-xl bg-[var(--status-error)]/8 border border-[var(--status-error)]/20 text-[var(--status-error)] text-xs animate-fade-in">
           <AlertTriangle size={13} className="shrink-0 mt-0.5" />
           <span>{error}</span>
         </div>
@@ -356,7 +358,7 @@ export function AutoCaseBuilder({ onClose, onCaseCreated }) {
           ].map((item) => (
             <div
               key={item.label}
-              className="flex flex-col items-center text-center p-3 rounded-xl bg-white/2 border border-white/5"
+              className="flex flex-col items-center text-center p-3 rounded-xl bg-white/2 border border-[var(--border)]"
             >
               <item.icon size={18} className="text-gold-400/60 mb-1.5" />
               <p className="text-xs font-semibold text-[var(--text-secondary)]">{item.label}</p>
