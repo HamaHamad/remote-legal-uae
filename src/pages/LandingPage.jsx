@@ -4,7 +4,7 @@ import { clsx } from 'clsx'
 
 // ─── WhatsApp number — change to real number ──────────────────────
 const WA_NUMBER = '971501234567'
-const WA_URL    = `https://wa.me/${WA_NUMBER}?text=Hello%2C+I+need+help+with+a+UAE+case`
+const WA_URL = `https://wa.me/${WA_NUMBER}?text=Hello%2C+I+need+help+with+a+UAE+case`
 
 // ─── Language content ─────────────────────────────────────────────
 const LANG_META = {
@@ -17,79 +17,241 @@ const LANG_META = {
 
 const COPY = {
   en: {
-    nav: { brand: 'ResolveUAE', login: 'Log In', start: 'Start Free' },
+    nav: { brand: 'ExpatUAE', login: 'Log In', start: 'Start Free' },
     hero: {
-      headline: "You don't need to go back to the UAE to fix your case.",
-      sub: 'Bank loans, legal issues, car fines, or job disputes — we handle everything remotely with AI + real experts.',
-      cta1: 'Start My Case Now',
-      cta2: 'See My Situation Free',
-      trust: ['Takes 2 minutes', '100% confidential', 'No travel required'],
+      badge: 'AI-assisted intake · Licensed UAE lawyers',
+      headline: 'Clarity for expats facing UAE legal, financial, and immigration issues.',
+      sub: 'An AI-assisted intake platform that helps you understand your situation, organises your documents, and connects you to licensed UAE lawyers and experts for the actual work. We are not a law firm — we help you start smart.',
+      cta1: 'Start Free Assessment',
+      cta2: 'See How It Works',
+      trust: ['Free initial questionnaire', 'No card required', 'Takes about 5 minutes'],
+      disclaimer:
+        'Free initial questionnaire. No legal advice is provided by ExpatUAE. All legal work is handled by independent licensed UAE lawyers.',
     },
     selector: {
       title: 'What best describes your situation?',
       items: [
-        { id: 'banking',    icon: '🏦', label: 'Bank Debt',       desc: 'Loans, frozen accounts, interest' },
-        { id: 'car',        icon: '🚗', label: 'Car Left Behind',  desc: 'Fines, repossession, loans' },
-        { id: 'legal',      icon: '⚖️', label: 'Legal Issue',      desc: 'Court cases, travel bans' },
-        { id: 'employment', icon: '💼', label: 'Job Problem',      desc: 'Unpaid salary, disputes' },
+        { id: 'banking', icon: '🏦', label: 'Bank Debt', desc: 'Loans, frozen accounts, interest' },
+        { id: 'car', icon: '🚗', label: 'Car Left Behind', desc: 'Fines, repossession, loans' },
+        { id: 'legal', icon: '⚖️', label: 'Legal Issue', desc: 'Court cases, travel bans' },
+        { id: 'employment', icon: '💼', label: 'Job Problem', desc: 'Unpaid salary, disputes' },
       ],
     },
     proof: {
       items: [
-        { icon: '✓', text: '500+ cases analyzed' },
-        { icon: '✓', text: 'Trusted by expats in 40+ countries' },
-        { icon: '✓', text: 'Fast & confidential' },
+        { icon: '✓', text: 'Free initial assessment' },
+        { icon: '✓', text: 'Confidential & encrypted' },
+        { icon: '✓', text: '5-minute questionnaire' },
       ],
-      live: 'Last case resolved 2h ago',
     },
     aiPreview: {
-      title: 'We analyze your case instantly',
-      sub: 'Based on your situation, your case may involve:',
-      bullets: ['Bank settlement negotiation', 'Legal clearance process', 'Payment restructuring plan'],
-      lockTitle: 'Unlock your full case plan',
-      lockSub: 'Step-by-step resolution, expert assignment, and timeline',
-      lockCta: 'Unlock Full Plan — AED 99',
+      title: 'We help you understand your case',
+      sub: 'Based on your situation, our AI may identify:',
+      bullets: [
+        'The type of issue you appear to have',
+        'What kind of professional typically handles it',
+        'Documents you may need to gather',
+        'Questions worth asking a lawyer',
+      ],
+      lockTitle: 'Get your detailed AI report',
+      lockSub: 'A deeper written analysis with risk-area flagging and a clean handover document',
+      lockCta: 'Start Free Assessment',
       blurItems: [
-        'Step 1: Contact your bank legal department via official UAE channels…',
-        'Step 2: Submit a debt restructuring request under Central Bank guidelines…',
-        'Step 3: Negotiate a settlement within 30–90 days to clear liability…',
-        'Step 4: Obtain official clearance certificate and bank clearance letter…',
+        'Summary of your situation and the issues identified…',
+        'Suggested type of professional who handles this matter…',
+        'Documents to gather before speaking with a lawyer…',
+        'Questions to ask and potential risk areas to discuss…',
       ],
     },
     docAI: {
       badge: 'Document Intelligence',
       title: "We don't just store your documents — we understand them.",
       sub: 'Upload any contract, bank statement, or legal notice. AI extracts risks, obligations, and exact next steps in seconds.',
-      items: ['Contracts & agreements', 'Bank statements', 'Legal documents & court notices', 'Employment papers'],
+      items: [
+        'Contracts & agreements',
+        'Bank statements',
+        'Legal documents & court notices',
+        'Employment papers',
+      ],
       cta: 'Upload & Analyze My Documents',
     },
     how: {
       title: 'How it works',
+      subtitle: 'Nothing happens instantly — each step is honest about timing.',
       steps: [
-        { num: '01', title: 'Tell us your situation',     desc: 'Fill in the details. Takes under 2 minutes.' },
-        { num: '02', title: 'Get AI-powered analysis',    desc: 'Our engine assesses your case and builds a plan.' },
-        { num: '03', title: 'Approve the execution plan', desc: 'See exactly what will be done before you commit.' },
-        { num: '04', title: 'We resolve it remotely',     desc: 'Our UAE team handles everything on the ground.' },
+        {
+          num: '01',
+          title: 'Tell us your situation',
+          desc: 'Answer a structured questionnaire. Free, confidential, 5–10 minutes.',
+        },
+        {
+          num: '02',
+          title: 'Get an AI-assisted summary',
+          desc: 'Our AI reviews your inputs and produces a structured summary. Informational only — not legal advice.',
+        },
+        {
+          num: '03',
+          title: 'Choose a paid report',
+          desc: 'Optional: a deeper written analysis with risk flagging and a handover document.',
+        },
+        {
+          num: '04',
+          title: 'Connect with a professional',
+          desc: 'If you choose, we introduce you to a licensed UAE law firm or expert. They work independently.',
+        },
       ],
+      callout:
+        'You stay in control at every step. We help you start; a qualified professional handles the legal work.',
     },
     execution: {
-      title: 'Real experts handle your case',
-      sub: 'No need to travel. We handle everything.',
+      title: 'Connect with licensed professionals',
+      sub: 'We match you with the right professional for your issue.',
       roles: [
-        { icon: '⚖️', title: 'Licensed UAE Lawyers',    desc: 'Court filings, legal disputes, negotiations' },
-        { icon: '🏛️', title: 'Government PROs',         desc: 'Ministry filings, official documentation' },
-        { icon: '🤝', title: 'Debt Negotiators',        desc: 'Bank settlements and payment restructuring' },
+        {
+          icon: '⚖️',
+          title: 'Licensed UAE Lawyers',
+          desc: 'Court filings, legal disputes, negotiations',
+        },
+        { icon: '🏛️', title: 'Government PROs', desc: 'Ministry filings, official documentation' },
+        {
+          icon: '🤝',
+          title: 'Debt Negotiators',
+          desc: 'Bank settlements and payment restructuring',
+        },
       ],
     },
     pricing: {
       badge: 'Pricing',
-      title: 'Start for free.',
-      anchor: 'Typical legal consultation: AED 750+',
-      cta: 'Unlock My Full Case Plan — AED 99',
-      note: 'One-time payment · Instant access · No subscription',
+      title: 'Transparent, tiered pricing',
+      subtitle:
+        'Start free. Pay only when you want a deeper analysis. Lawyer fees are separate and set by the lawyer.',
+      tiers: [
+        {
+          id: 'free',
+          name: 'Free',
+          price: null,
+          priceLabel: 'No card required',
+          desc: "Start here if you're not sure what you need.",
+          features: [
+            'Structured intake questionnaire',
+            'Short AI-generated summary',
+            'Suggested professional type',
+          ],
+          cta: 'Start Free',
+          highlighted: false,
+        },
+        {
+          id: 'basic',
+          name: 'Basic',
+          price: 'AED 299',
+          priceLabel: 'One-time payment',
+          desc: 'AI analysis + summary report',
+          features: [
+            'Everything in Free',
+            'Detailed written AI report',
+            'Document intelligence on up to 3 files',
+            'Clean handover PDF',
+          ],
+          cta: 'Get Basic Report',
+          highlighted: false,
+        },
+        {
+          id: 'standard',
+          name: 'Standard',
+          price: 'AED 499–599',
+          priceLabel: 'One-time + intro call',
+          desc: 'AI report + lawyer matching + intro call',
+          features: [
+            'Everything in Basic',
+            'Matching to a licensed UAE law firm',
+            'Intro call with matched professional (15–30 min)',
+            'Document handover to the lawyer',
+            'Lawyer confirms if they can take your case',
+          ],
+          cta: 'Get Standard',
+          highlighted: true,
+        },
+        {
+          id: 'premium',
+          name: 'Premium',
+          price: 'AED 999+',
+          priceLabel: 'One-time + priority support',
+          desc: 'Higher-touch support for complex matters',
+          features: [
+            'Everything in Standard',
+            'Priority matching',
+            'File prep support',
+            'Follow-up summary if situation changes',
+            'Best for multi-issue matters',
+          ],
+          cta: 'Get Premium',
+          highlighted: false,
+        },
+      ],
+      popularLabel: 'Most Popular',
+      monetizationTitle: 'How we make money',
+      monetizationText:
+        'We earn through assessment fees paid by users for paid reports. When you choose to engage a lawyer we introduce you to, we may also receive a referral fee from that law firm. This does not increase what you pay the lawyer and is disclosed before you commit to anything.',
+      monetizationNote:
+        'No hidden fees. You will always see the price before you pay. Lawyer fees are set by the lawyer and agreed directly between you and them.',
+      disclaimer:
+        'Paid reports are informational products, not legal advice. Lawyer fees are separate. ExpatUAE may receive a referral fee from partner firms; this is disclosed before you commit.',
     },
-    urgency: {
-      text: '⚠ Delays can increase penalties or legal risk. Start now to avoid complications.',
+    lawyers: {
+      badge: 'For Lawyers & Law Firms',
+      title: 'Receive qualified, pre-screened leads',
+      sub: 'ExpatUAE sends you cases that have already been through structured intake and AI-assisted summarisation. You spend less time on fact-finding calls and more time on actual legal work.',
+      sendTitle: 'What we send you',
+      sendItems: [
+        'A clean intake summary covering issue type, parties, timeline, and documents',
+        'Organised, indexed document bundle',
+        "The user's preferred language and contact preferences",
+        'Confirmation that the user has consented to share their file with you',
+      ],
+      dontTitle: "What we don't do",
+      dontItems: [
+        "We don't give the user legal advice on your behalf",
+        "We don't represent users in court or in negotiations",
+        "We don't set your fees, manage your caseload, or supervise your work",
+        "We don't take a percentage of your professional fees — only an optional pre-agreed referral fee, disclosed to the user",
+      ],
+      complianceLabel: 'Compliance note',
+      complianceText:
+        'ExpatUAE does not practise law, employ lawyers, or split legal fees. Every partner firm operates independently under its own professional licence.',
+      onboardingText:
+        "If you're a licensed UAE law firm or a regulated professional, apply to join the network. We verify licence status with the UAE Ministry of Justice before listing any partner. Onboarding typically takes 5–10 business days.",
+      applyCta: 'Apply to Join',
+    },
+    faq: {
+      badge: 'FAQ',
+      title: 'Frequently asked questions',
+      items: [
+        {
+          q: 'Is ExpatUAE a law firm?',
+          a: 'No. We are a technology platform that provides AI-assisted intake and connects users to independent licensed UAE lawyers and experts.',
+        },
+        {
+          q: 'Will I get legal advice from ExpatUAE?',
+          a: 'No. Our AI summaries are informational only. For legal advice, you need to speak with a licensed UAE lawyer — which we can help arrange.',
+        },
+        {
+          q: 'Do you guarantee a specific outcome?',
+          a: 'No. No one can guarantee the outcome of a legal matter. Anyone who promises you a result is not being honest.',
+        },
+        {
+          q: 'How much does it cost?',
+          a: 'The basic questionnaire is free. Paid AI reports start at AED 299. Lawyer fees are separate and are set by the lawyer.',
+        },
+        {
+          q: 'Is my information confidential?',
+          a: 'Yes. Your data is encrypted at rest and in transit, access is restricted, and we never sell your information. You can request deletion at any time.',
+        },
+        { q: 'Which languages do you support?', a: 'Arabic, English, Hindi, Urdu, and Tagalog.' },
+        {
+          q: 'Can I use my own lawyer?',
+          a: 'Yes. The paid AI report includes a clean PDF you can share with any lawyer of your choosing.',
+        },
+      ],
     },
     whatsapp: {
       title: 'Need help right now?',
@@ -107,10 +269,11 @@ const COPY = {
       ],
     },
     footer: {
-      disclaimer: 'This platform provides AI-assisted case organization and coordination. It does NOT provide legal advice.',
-      links: ['Privacy', 'Terms', 'Contact'],
+      disclaimer:
+        'ExpatUAE is a technology platform, not a law firm. We do not provide legal advice and do not guarantee any outcome. All legal work is performed by independent licensed UAE professionals. Using ExpatUAE does not create a lawyer–client relationship between you and ExpatUAE.',
+      links: ['Privacy', 'Terms', 'Cookies', 'Contact'],
     },
-    sticky: 'Start My Case Now',
+    sticky: 'Start Free Assessment',
   },
   ar: {
     nav: { brand: 'ريزولف يو إي', login: 'تسجيل الدخول', start: 'ابدأ مجاناً' },
@@ -124,10 +287,10 @@ const COPY = {
     selector: {
       title: 'ما الذي يصف وضعك بشكل أفضل؟',
       items: [
-        { id: 'banking',    icon: '🏦', label: 'ديون بنكية',        desc: 'قروض، حسابات مجمدة، فوائد' },
-        { id: 'car',        icon: '🚗', label: 'سيارة مخلفة',       desc: 'مخالفات، مصادرة، قروض' },
-        { id: 'legal',      icon: '⚖️', label: 'قضية قانونية',      desc: 'قضايا محاكم، حظر سفر' },
-        { id: 'employment', icon: '💼', label: 'مشكلة عمل',         desc: 'رواتب غير مدفوعة، نزاعات' },
+        { id: 'banking', icon: '🏦', label: 'ديون بنكية', desc: 'قروض، حسابات مجمدة، فوائد' },
+        { id: 'car', icon: '🚗', label: 'سيارة مخلفة', desc: 'مخالفات، مصادرة، قروض' },
+        { id: 'legal', icon: '⚖️', label: 'قضية قانونية', desc: 'قضايا محاكم، حظر سفر' },
+        { id: 'employment', icon: '💼', label: 'مشكلة عمل', desc: 'رواتب غير مدفوعة، نزاعات' },
       ],
     },
     proof: {
@@ -156,25 +319,38 @@ const COPY = {
       badge: 'ذكاء المستندات',
       title: 'نحن لا نخزن مستنداتك فقط — بل نفهمها.',
       sub: 'ارفع أي عقد أو كشف حساب أو إشعار قانوني. يستخرج الذكاء الاصطناعي المخاطر والالتزامات والخطوات الفعلية التالية في ثوانٍ.',
-      items: ['العقود والاتفاقيات', 'كشوف الحسابات البنكية', 'المستندات القانونية وإشعارات المحاكم', 'أوراق التوظيف'],
+      items: [
+        'العقود والاتفاقيات',
+        'كشوف الحسابات البنكية',
+        'المستندات القانونية وإشعارات المحاكم',
+        'أوراق التوظيف',
+      ],
       cta: 'ارفع مستنداتي وحللها',
     },
     how: {
       title: 'كيف يعمل',
       steps: [
-        { num: '٠١', title: 'أخبرنا بوضعك',           desc: 'أدخل التفاصيل. يستغرق أقل من دقيقتين.' },
-        { num: '٠٢', title: 'احصل على تحليل بالذكاء الاصطناعي', desc: 'يقيّم محركنا قضيتك ويبني خطة.' },
-        { num: '٠٣', title: 'وافق على خطة التنفيذ',    desc: 'اعرف بالضبط ما سيُنجز قبل أن تلتزم.' },
-        { num: '٠٤', title: 'نحلها عن بُعد',            desc: 'فريقنا الإماراتي يتولى كل شيء.' },
+        { num: '٠١', title: 'أخبرنا بوضعك', desc: 'أدخل التفاصيل. يستغرق أقل من دقيقتين.' },
+        {
+          num: '٠٢',
+          title: 'احصل على تحليل بالذكاء الاصطناعي',
+          desc: 'يقيّم محركنا قضيتك ويبني خطة.',
+        },
+        { num: '٠٣', title: 'وافق على خطة التنفيذ', desc: 'اعرف بالضبط ما سيُنجز قبل أن تلتزم.' },
+        { num: '٠٤', title: 'نحلها عن بُعد', desc: 'فريقنا الإماراتي يتولى كل شيء.' },
       ],
     },
     execution: {
       title: 'خبراء حقيقيون يتولون قضيتك',
       sub: 'لا حاجة للسفر. نتولى كل شيء.',
       roles: [
-        { icon: '⚖️', title: 'محامون إماراتيون مرخّصون', desc: 'رفع دعاوى، نزاعات قانونية، مفاوضات' },
+        {
+          icon: '⚖️',
+          title: 'محامون إماراتيون مرخّصون',
+          desc: 'رفع دعاوى، نزاعات قانونية، مفاوضات',
+        },
         { icon: '🏛️', title: 'متخصصو العلاقات الحكومية', desc: 'معاملات وزارية، وثائق رسمية' },
-        { icon: '🤝', title: 'مفاوضو الديون',             desc: 'تسويات بنكية وإعادة هيكلة المدفوعات' },
+        { icon: '🤝', title: 'مفاوضو الديون', desc: 'تسويات بنكية وإعادة هيكلة المدفوعات' },
       ],
     },
     pricing: {
@@ -203,7 +379,8 @@ const COPY = {
       ],
     },
     footer: {
-      disclaimer: 'تقدم هذه المنصة تنظيم القضايا بمساعدة الذكاء الاصطناعي فقط. لا تقدم استشارة قانونية.',
+      disclaimer:
+        'تقدم هذه المنصة تنظيم القضايا بمساعدة الذكاء الاصطناعي فقط. لا تقدم استشارة قانونية.',
       links: ['الخصوصية', 'الشروط', 'اتصل بنا'],
     },
     sticky: 'ابدأ قضيتي الآن',
@@ -220,10 +397,10 @@ const COPY = {
     selector: {
       title: 'आपकी स्थिति सबसे अच्छी तरह क्या बताती है?',
       items: [
-        { id: 'banking',    icon: '🏦', label: 'बैंक कर्ज',        desc: 'लोन, जमे खाते, ब्याज' },
-        { id: 'car',        icon: '🚗', label: 'कार छोड़ी',         desc: 'जुर्माने, जब्ती, लोन' },
-        { id: 'legal',      icon: '⚖️', label: 'कानूनी मामला',     desc: 'अदालती मामले, ट्रैवल बैन' },
-        { id: 'employment', icon: '💼', label: 'नौकरी समस्या',     desc: 'अवैतनिक वेतन, विवाद' },
+        { id: 'banking', icon: '🏦', label: 'बैंक कर्ज', desc: 'लोन, जमे खाते, ब्याज' },
+        { id: 'car', icon: '🚗', label: 'कार छोड़ी', desc: 'जुर्माने, जब्ती, लोन' },
+        { id: 'legal', icon: '⚖️', label: 'कानूनी मामला', desc: 'अदालती मामले, ट्रैवल बैन' },
+        { id: 'employment', icon: '💼', label: 'नौकरी समस्या', desc: 'अवैतनिक वेतन, विवाद' },
       ],
     },
     proof: {
@@ -258,10 +435,18 @@ const COPY = {
     how: {
       title: 'यह कैसे काम करता है',
       steps: [
-        { num: '०१', title: 'अपनी स्थिति बताएं',          desc: 'विवरण भरें। 2 मिनट से कम लगते हैं।' },
-        { num: '०२', title: 'AI-आधारित विश्लेषण पाएं',   desc: 'हमारा इंजन आपके केस का मूल्यांकन करता है।' },
-        { num: '०३', title: 'एक्जिक्यूशन प्लान मंजूर करें', desc: 'प्रतिबद्ध होने से पहले सब देखें।' },
-        { num: '०४', title: 'हम दूर से हल करते हैं',      desc: 'हमारी UAE टीम सब संभालती है।' },
+        { num: '०१', title: 'अपनी स्थिति बताएं', desc: 'विवरण भरें। 2 मिनट से कम लगते हैं।' },
+        {
+          num: '०२',
+          title: 'AI-आधारित विश्लेषण पाएं',
+          desc: 'हमारा इंजन आपके केस का मूल्यांकन करता है।',
+        },
+        {
+          num: '०३',
+          title: 'एक्जिक्यूशन प्लान मंजूर करें',
+          desc: 'प्रतिबद्ध होने से पहले सब देखें।',
+        },
+        { num: '०४', title: 'हम दूर से हल करते हैं', desc: 'हमारी UAE टीम सब संभालती है।' },
       ],
     },
     execution: {
@@ -269,8 +454,8 @@ const COPY = {
       sub: 'यात्रा की कोई जरूरत नहीं। हम सब संभालते हैं।',
       roles: [
         { icon: '⚖️', title: 'UAE लाइसेंस प्राप्त वकील', desc: 'कोर्ट फाइलिंग, कानूनी विवाद' },
-        { icon: '🏛️', title: 'सरकारी PRO',               desc: 'मंत्रालय फाइलिंग, सरकारी दस्तावेज़' },
-        { icon: '🤝', title: 'ऋण वार्ताकार',              desc: 'बैंक सेटलमेंट और पुनर्गठन' },
+        { icon: '🏛️', title: 'सरकारी PRO', desc: 'मंत्रालय फाइलिंग, सरकारी दस्तावेज़' },
+        { icon: '🤝', title: 'ऋण वार्ताकार', desc: 'बैंक सेटलमेंट और पुनर्गठन' },
       ],
     },
     pricing: {
@@ -314,10 +499,10 @@ const COPY = {
     selector: {
       title: 'آپ کی صورت حال کو سب سے بہتر کیا بیان کرتا ہے؟',
       items: [
-        { id: 'banking',    icon: '🏦', label: 'بینک قرض',         desc: 'لون، بند اکاؤنٹ، سود' },
-        { id: 'car',        icon: '🚗', label: 'کار چھوڑی',        desc: 'جرمانے، ضبطی، لون' },
-        { id: 'legal',      icon: '⚖️', label: 'قانونی مسئلہ',     desc: 'عدالتی مقدمات، ٹریول بین' },
-        { id: 'employment', icon: '💼', label: 'ملازمت مسئلہ',     desc: 'غیر ادا تنخواہ، تنازعات' },
+        { id: 'banking', icon: '🏦', label: 'بینک قرض', desc: 'لون، بند اکاؤنٹ، سود' },
+        { id: 'car', icon: '🚗', label: 'کار چھوڑی', desc: 'جرمانے، ضبطی، لون' },
+        { id: 'legal', icon: '⚖️', label: 'قانونی مسئلہ', desc: 'عدالتی مقدمات، ٹریول بین' },
+        { id: 'employment', icon: '💼', label: 'ملازمت مسئلہ', desc: 'غیر ادا تنخواہ، تنازعات' },
       ],
     },
     proof: {
@@ -352,10 +537,10 @@ const COPY = {
     how: {
       title: 'یہ کیسے کام کرتا ہے',
       steps: [
-        { num: '۰۱', title: 'اپنی صورت بتائیں',           desc: 'تفصیلات درج کریں۔ 2 منٹ سے کم۔' },
-        { num: '۰۲', title: 'AI تجزیہ حاصل کریں',         desc: 'ہمارا انجن کیس کا جائزہ لیتا ہے۔' },
-        { num: '۰۳', title: 'نفاذ منصوبہ منظور کریں',     desc: 'وعدہ سے پہلے سب دیکھیں۔' },
-        { num: '۰۴', title: 'ہم دور سے حل کرتے ہیں',     desc: 'ہماری UAE ٹیم سب سنبھالتی ہے۔' },
+        { num: '۰۱', title: 'اپنی صورت بتائیں', desc: 'تفصیلات درج کریں۔ 2 منٹ سے کم۔' },
+        { num: '۰۲', title: 'AI تجزیہ حاصل کریں', desc: 'ہمارا انجن کیس کا جائزہ لیتا ہے۔' },
+        { num: '۰۳', title: 'نفاذ منصوبہ منظور کریں', desc: 'وعدہ سے پہلے سب دیکھیں۔' },
+        { num: '۰۴', title: 'ہم دور سے حل کرتے ہیں', desc: 'ہماری UAE ٹیم سب سنبھالتی ہے۔' },
       ],
     },
     execution: {
@@ -363,8 +548,8 @@ const COPY = {
       sub: 'سفر کی ضرورت نہیں۔ ہم سب سنبھالتے ہیں۔',
       roles: [
         { icon: '⚖️', title: 'لائسنس یافتہ UAE وکیل', desc: 'عدالتی درخواستیں، قانونی تنازعات' },
-        { icon: '🏛️', title: 'حکومتی PRO',             desc: 'وزارتی درخواستیں، دستاویزات' },
-        { icon: '🤝', title: 'قرض مذاکرات کار',         desc: 'بینک تصفیہ اور ادائیگی ترتیب' },
+        { icon: '🏛️', title: 'حکومتی PRO', desc: 'وزارتی درخواستیں، دستاویزات' },
+        { icon: '🤝', title: 'قرض مذاکرات کار', desc: 'بینک تصفیہ اور ادائیگی ترتیب' },
       ],
     },
     pricing: {
@@ -391,7 +576,8 @@ const COPY = {
       ],
     },
     footer: {
-      disclaimer: 'یہ پلیٹ فارم صرف AI کی مدد سے کیس آرگنائزیشن فراہم کرتا ہے۔ یہ قانونی مشورہ نہیں۔',
+      disclaimer:
+        'یہ پلیٹ فارم صرف AI کی مدد سے کیس آرگنائزیشن فراہم کرتا ہے۔ یہ قانونی مشورہ نہیں۔',
       links: ['پرائیویسی', 'شرائط', 'رابطہ'],
     },
     sticky: 'ابھی اپنا کیس شروع کریں',
@@ -408,10 +594,15 @@ const COPY = {
     selector: {
       title: 'Ano ang pinakamahusay na naglalarawan ng iyong sitwasyon?',
       items: [
-        { id: 'banking',    icon: '🏦', label: 'Bank Utang',       desc: 'Loans, frozen accounts, interes' },
-        { id: 'car',        icon: '🚗', label: 'Naiwan na Sasakyan', desc: 'Multa, repossession, loans' },
-        { id: 'legal',      icon: '⚖️', label: 'Legal na Isyu',    desc: 'Court cases, travel ban' },
-        { id: 'employment', icon: '💼', label: 'Problema sa Trabaho', desc: 'Hindi bayad na sahod, alitan' },
+        { id: 'banking', icon: '🏦', label: 'Bank Utang', desc: 'Loans, frozen accounts, interes' },
+        { id: 'car', icon: '🚗', label: 'Naiwan na Sasakyan', desc: 'Multa, repossession, loans' },
+        { id: 'legal', icon: '⚖️', label: 'Legal na Isyu', desc: 'Court cases, travel ban' },
+        {
+          id: 'employment',
+          icon: '💼',
+          label: 'Problema sa Trabaho',
+          desc: 'Hindi bayad na sahod, alitan',
+        },
       ],
     },
     proof: {
@@ -425,7 +616,11 @@ const COPY = {
     aiPreview: {
       title: 'Sinusuri namin ang iyong kaso kaagad',
       sub: 'Batay sa iyong sitwasyon, maaaring kasama sa iyong kaso ang:',
-      bullets: ['Negosasyon ng bank settlement', 'Proseso ng legal clearance', 'Plano ng muling pagtaas ng bayad'],
+      bullets: [
+        'Negosasyon ng bank settlement',
+        'Proseso ng legal clearance',
+        'Plano ng muling pagtaas ng bayad',
+      ],
       lockTitle: 'I-unlock ang iyong kumpletong case plan',
       lockSub: 'Hakbang-hakbang na resolusyon, pag-aasign ng eksperto, at timeline',
       lockCta: 'I-unlock ang Buong Plano — AED 99',
@@ -440,25 +635,50 @@ const COPY = {
       badge: 'Document Intelligence',
       title: 'Hindi lang namin iniimbak ang iyong mga dokumento — naiintindihan namin sila.',
       sub: 'Mag-upload ng anumang kontrata, bank statement, o legal notice. Kukuha ang AI ng mga panganib, obligasyon, at susunod na hakbang sa loob ng ilang segundo.',
-      items: ['Mga kontrata at kasunduan', 'Mga bank statement', 'Legal na dokumento at court notice', 'Mga papel sa trabaho'],
+      items: [
+        'Mga kontrata at kasunduan',
+        'Mga bank statement',
+        'Legal na dokumento at court notice',
+        'Mga papel sa trabaho',
+      ],
       cta: 'I-upload ang Aking mga Dokumento at Suriin',
     },
     how: {
       title: 'Paano ito gumagana',
       steps: [
-        { num: '01', title: 'Sabihin ang iyong sitwasyon', desc: 'Punan ang mga detalye. Wala pang 2 minuto.' },
-        { num: '02', title: 'Makuha ang AI analysis',      desc: 'Tinatasa ng aming engine ang iyong kaso.' },
-        { num: '03', title: 'Aprubahan ang plano',         desc: 'Tingnan ang lahat bago mag-commit.' },
-        { num: '04', title: 'Nireresolba namin ito',       desc: 'Ang aming UAE team ang humahawak ng lahat.' },
+        {
+          num: '01',
+          title: 'Sabihin ang iyong sitwasyon',
+          desc: 'Punan ang mga detalye. Wala pang 2 minuto.',
+        },
+        {
+          num: '02',
+          title: 'Makuha ang AI analysis',
+          desc: 'Tinatasa ng aming engine ang iyong kaso.',
+        },
+        { num: '03', title: 'Aprubahan ang plano', desc: 'Tingnan ang lahat bago mag-commit.' },
+        {
+          num: '04',
+          title: 'Nireresolba namin ito',
+          desc: 'Ang aming UAE team ang humahawak ng lahat.',
+        },
       ],
     },
     execution: {
       title: 'Mga tunay na eksperto ang humahawak ng iyong kaso',
       sub: 'Hindi kailangan ng biyahe. Hinahawakan namin ang lahat.',
       roles: [
-        { icon: '⚖️', title: 'Mga Lisensyadong UAE Abogado', desc: 'Court filings, legal disputes' },
-        { icon: '🏛️', title: 'Government PROs',              desc: 'Ministeryal na filings, opisyal na dokumentasyon' },
-        { icon: '🤝', title: 'Mga Debt Negotiator',          desc: 'Bank settlements at muling pagbabayad' },
+        {
+          icon: '⚖️',
+          title: 'Mga Lisensyadong UAE Abogado',
+          desc: 'Court filings, legal disputes',
+        },
+        {
+          icon: '🏛️',
+          title: 'Government PROs',
+          desc: 'Ministeryal na filings, opisyal na dokumentasyon',
+        },
+        { icon: '🤝', title: 'Mga Debt Negotiator', desc: 'Bank settlements at muling pagbabayad' },
       ],
     },
     pricing: {
@@ -468,7 +688,9 @@ const COPY = {
       cta: 'I-unlock ang Aking Buong Plano — AED 99',
       note: 'Isang beses na bayad · Agarang access · Walang subscription',
     },
-    urgency: { text: '⚠ Ang pagpapaliban ay maaaring magdulot ng mas mataas na multa at legal na panganib. Magsimula na ngayon.' },
+    urgency: {
+      text: '⚠ Ang pagpapaliban ay maaaring magdulot ng mas mataas na multa at legal na panganib. Magsimula na ngayon.',
+    },
     whatsapp: {
       title: 'Kailangan ng tulong ngayon?',
       sub: 'Makipag-usap sa isang tunay na tao sa loob ng ilang minuto',
@@ -485,7 +707,8 @@ const COPY = {
       ],
     },
     footer: {
-      disclaimer: 'Nagbibigay lamang ang platform na ito ng AI-assisted na organisasyon ng kaso. Hindi ito legal na payo.',
+      disclaimer:
+        'Nagbibigay lamang ang platform na ito ng AI-assisted na organisasyon ng kaso. Hindi ito legal na payo.',
       links: ['Privacy', 'Terms', 'Contact'],
     },
     sticky: 'Simulan ang Aking Kaso Ngayon',
@@ -496,16 +719,23 @@ const COPY = {
 function WAIcon({ size = 20 }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
-      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
     </svg>
   )
 }
 
 function LockIcon() {
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-      <path d="M7 11V7a5 5 0 0110 0v4"/>
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    >
+      <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+      <path d="M7 11V7a5 5 0 0110 0v4" />
     </svg>
   )
 }
@@ -514,11 +744,11 @@ function LockIcon() {
 export function LandingPage() {
   const navigate = useNavigate()
 
-  const [lang,     setLangState]  = useState(() => localStorage.getItem('resolve-lang') || 'en')
-  const [selected, setSelected]   = useState(null)   // situation card
-  const [langOpen, setLangOpen]   = useState(false)
-  const [scrolled, setScrolled]   = useState(false)
-  const [locked,   setLocked]     = useState(true)
+  const [lang, setLangState] = useState(() => localStorage.getItem('resolve-lang') || 'en')
+  const [selected, setSelected] = useState(null) // situation card
+  const [langOpen, setLangOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+  const [locked, setLocked] = useState(true)
 
   const c = COPY[lang] || COPY.en
   const meta = LANG_META[lang] || LANG_META.en
@@ -526,10 +756,10 @@ export function LandingPage() {
 
   // Update html dir for RTL
   useEffect(() => {
-    document.documentElement.dir  = meta.dir
+    document.documentElement.dir = meta.dir
     document.documentElement.lang = lang
     return () => {
-      document.documentElement.dir  = 'ltr'
+      document.documentElement.dir = 'ltr'
       document.documentElement.lang = 'en'
     }
   }, [lang, meta.dir])
@@ -544,7 +774,7 @@ export function LandingPage() {
   // Close lang dropdown on outside click
   const langRef = useRef(null)
   useEffect(() => {
-    const handler = e => {
+    const handler = (e) => {
       if (langRef.current && !langRef.current.contains(e.target)) setLangOpen(false)
     }
     document.addEventListener('mousedown', handler)
@@ -569,7 +799,6 @@ export function LandingPage() {
 
   return (
     <div className="min-h-screen bg-[#060c1a] text-[#e8e2d8] font-sans overflow-x-hidden">
-
       {/* ── NAVBAR ─────────────────────────────────────────────── */}
       <nav className="fixed top-0 inset-x-0 z-50 bg-[#060c1a]/90 backdrop-blur-xl border-b border-white/8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
@@ -578,7 +807,9 @@ export function LandingPage() {
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#c9992e] to-[#e8b84b] flex items-center justify-center text-[#060c1a] font-bold text-sm shadow-lg">
               R
             </div>
-            <span className="font-semibold text-[#e8b84b] text-lg tracking-tight">{c.nav.brand}</span>
+            <span className="font-semibold text-[#e8b84b] text-lg tracking-tight">
+              {c.nav.brand}
+            </span>
           </div>
 
           {/* Right nav */}
@@ -586,7 +817,7 @@ export function LandingPage() {
             {/* Language switcher */}
             <div className="relative" ref={langRef}>
               <button
-                onClick={() => setLangOpen(v => !v)}
+                onClick={() => setLangOpen((v) => !v)}
                 className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-white/10 text-[#e8e2d8]/60 hover:text-[#e8e2d8] hover:border-white/20 transition-all text-sm"
               >
                 <span>{meta.flag}</span>
@@ -607,7 +838,17 @@ export function LandingPage() {
                       )}
                     >
                       <span>{m.flag}</span>
-                      <span>{code === 'en' ? 'English' : code === 'ar' ? 'العربية' : code === 'hi' ? 'हिन्दी' : code === 'ur' ? 'اردو' : 'Filipino'}</span>
+                      <span>
+                        {code === 'en'
+                          ? 'English'
+                          : code === 'ar'
+                            ? 'العربية'
+                            : code === 'hi'
+                              ? 'हिन्दी'
+                              : code === 'ur'
+                                ? 'اردو'
+                                : 'Filipino'}
+                      </span>
                     </button>
                   ))}
                 </div>
@@ -639,8 +880,13 @@ export function LandingPage() {
           <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-[#c9992e]/5 rounded-full blur-3xl" />
           <div className="absolute top-20 right-0 w-[400px] h-[400px] bg-blue-500/3 rounded-full blur-3xl" />
           {/* Geometric grid */}
-          <div className="absolute inset-0 opacity-[0.025]"
-            style={{ backgroundImage: 'linear-gradient(rgba(201,153,46,1) 1px, transparent 1px), linear-gradient(90deg, rgba(201,153,46,1) 1px, transparent 1px)', backgroundSize: '50px 50px' }}
+          <div
+            className="absolute inset-0 opacity-[0.025]"
+            style={{
+              backgroundImage:
+                'linear-gradient(rgba(201,153,46,1) 1px, transparent 1px), linear-gradient(90deg, rgba(201,153,46,1) 1px, transparent 1px)',
+              backgroundSize: '50px 50px',
+            }}
           />
         </div>
 
@@ -648,7 +894,7 @@ export function LandingPage() {
           {/* Trust badge */}
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#c9992e]/30 bg-[#c9992e]/8 text-[#e8b84b] text-xs font-semibold uppercase tracking-widest mb-6">
             <span className="w-1.5 h-1.5 rounded-full bg-[#e8b84b] animate-pulse" />
-            Trusted by Expats in 40+ Countries
+            {c.hero.badge}
           </div>
 
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold text-[#f5f0e8] leading-tight mb-6 tracking-tight">
@@ -684,6 +930,14 @@ export function LandingPage() {
               </div>
             ))}
           </div>
+
+          {/* Hero disclaimer */}
+          <div className="mt-8 inline-flex items-start gap-2 max-w-xl mx-auto p-3 rounded-xl bg-white/[0.02] border border-white/5">
+            <span className="text-sm shrink-0 mt-0.5">⚖️</span>
+            <p className="text-[11px] text-[#e8e2d8]/40 text-center leading-relaxed">
+              {c.hero.disclaimer}
+            </p>
+          </div>
         </div>
       </section>
 
@@ -694,7 +948,7 @@ export function LandingPage() {
             {c.selector.title}
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            {c.selector.items.map(item => (
+            {c.selector.items.map((item) => (
               <button
                 key={item.id}
                 onClick={() => handleSituationSelect(item.id)}
@@ -723,24 +977,27 @@ export function LandingPage() {
               <span>{item.text}</span>
             </div>
           ))}
-          <div className="flex items-center gap-2 text-sm">
-            <span className="w-2 h-2 rounded-full bg-[#22c55e] animate-pulse" />
-            <span className="text-[#22c55e]/80 font-medium">{c.proof.live}</span>
-          </div>
         </div>
       </section>
 
       {/* ── AI PREVIEW (LOCKED) ──────────────────────────────────── */}
       <section className="py-16 sm:py-24 px-4 bg-[#0c1829]">
         <div className="max-w-2xl mx-auto">
-          <p className="text-[10px] font-bold tracking-widest uppercase text-[#c9992e]/70 text-center mb-2">AI Analysis</p>
-          <h2 className="text-2xl sm:text-3xl font-bold text-[#f5f0e8] text-center mb-2">{c.aiPreview.title}</h2>
+          <p className="text-[10px] font-bold tracking-widest uppercase text-[#c9992e]/70 text-center mb-2">
+            AI Analysis
+          </p>
+          <h2 className="text-2xl sm:text-3xl font-bold text-[#f5f0e8] text-center mb-2">
+            {c.aiPreview.title}
+          </h2>
           <p className="text-center text-[#e8e2d8]/50 mb-8">{c.aiPreview.sub}</p>
 
           {/* Bullets (visible) */}
           <div className="flex flex-col gap-2 mb-6">
             {c.aiPreview.bullets.map((b, i) => (
-              <div key={i} className="flex items-center gap-3 px-4 py-3 rounded-xl bg-[#060c1a]/80 border border-white/8">
+              <div
+                key={i}
+                className="flex items-center gap-3 px-4 py-3 rounded-xl bg-[#060c1a]/80 border border-white/8"
+              >
                 <span className="w-5 h-5 rounded-full bg-[#c9992e]/15 border border-[#c9992e]/30 text-[#e8b84b] flex items-center justify-center text-xs font-bold shrink-0">
                   {i + 1}
                 </span>
@@ -752,9 +1009,14 @@ export function LandingPage() {
           {/* Locked blurred content */}
           <div className="relative rounded-2xl overflow-hidden border border-[#c9992e]/20">
             {/* Blurred steps */}
-            <div className={clsx('p-6 space-y-3', locked && 'blur-sm select-none pointer-events-none')}>
+            <div
+              className={clsx('p-6 space-y-3', locked && 'blur-sm select-none pointer-events-none')}
+            >
               {c.aiPreview.blurItems.map((item, i) => (
-                <div key={i} className="flex items-start gap-3 text-sm text-[#e8e2d8]/60 py-2 border-b border-white/5 last:border-0">
+                <div
+                  key={i}
+                  className="flex items-start gap-3 text-sm text-[#e8e2d8]/60 py-2 border-b border-white/5 last:border-0"
+                >
                   <span className="w-6 h-6 rounded-full bg-[#22c55e]/10 border border-[#22c55e]/20 text-[#22c55e] flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
                     {i + 1}
                   </span>
@@ -790,7 +1052,9 @@ export function LandingPage() {
             <div className="inline-block px-3 py-1 rounded-full bg-[#c9992e]/10 border border-[#c9992e]/30 text-[#e8b84b] text-xs font-bold uppercase tracking-widest mb-4">
               {c.docAI.badge}
             </div>
-            <h2 className="text-2xl sm:text-3xl font-bold text-[#f5f0e8] mb-4 leading-snug">{c.docAI.title}</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold text-[#f5f0e8] mb-4 leading-snug">
+              {c.docAI.title}
+            </h2>
             <p className="text-[#e8e2d8]/55 mb-6 leading-relaxed">{c.docAI.sub}</p>
             <ul className="space-y-2 mb-8">
               {c.docAI.items.map((item, i) => (
@@ -812,7 +1076,9 @@ export function LandingPage() {
           <div className="bg-[#0c1829] border border-[#c9992e]/15 rounded-2xl p-6 relative overflow-hidden">
             <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#c9992e]/40 to-transparent" />
             <div className="flex items-center gap-3 mb-5 pb-4 border-b border-white/8">
-              <div className="w-9 h-9 rounded-lg bg-[#c9992e]/12 border border-[#c9992e]/20 flex items-center justify-center text-xl">📄</div>
+              <div className="w-9 h-9 rounded-lg bg-[#c9992e]/12 border border-[#c9992e]/20 flex items-center justify-center text-xl">
+                📄
+              </div>
               <div>
                 <p className="text-sm font-medium text-[#e8e2d8]">bank_statement_oct.pdf</p>
                 <p className="text-[11px] text-[#22c55e] flex items-center gap-1">
@@ -828,15 +1094,28 @@ export function LandingPage() {
               { label: 'Risk Level', value: '⚠️ HIGH', red: true },
               { label: 'Next Step', value: 'File formal dispute within 14 days', small: true },
             ].map((row, i) => (
-              <div key={i} className={clsx('flex justify-between items-start gap-3 py-2.5', i < 4 && 'border-b border-white/5')}>
-                <span className="text-[10px] font-bold uppercase tracking-widest text-[#e8e2d8]/35">{row.label}</span>
-                <span className={clsx(
-                  'text-end',
-                  row.gold ? 'text-[#e8b84b] font-semibold text-sm' :
-                  row.red  ? 'text-red-400 text-xs font-bold bg-red-500/10 border border-red-500/20 px-2 py-0.5 rounded-full' :
-                  row.small ? 'text-[11px] text-[#c9992e] max-w-[150px]' :
-                  'text-sm text-[#e8e2d8]/75'
-                )}>
+              <div
+                key={i}
+                className={clsx(
+                  'flex justify-between items-start gap-3 py-2.5',
+                  i < 4 && 'border-b border-white/5',
+                )}
+              >
+                <span className="text-[10px] font-bold uppercase tracking-widest text-[#e8e2d8]/35">
+                  {row.label}
+                </span>
+                <span
+                  className={clsx(
+                    'text-end',
+                    row.gold
+                      ? 'text-[#e8b84b] font-semibold text-sm'
+                      : row.red
+                        ? 'text-red-400 text-xs font-bold bg-red-500/10 border border-red-500/20 px-2 py-0.5 rounded-full'
+                        : row.small
+                          ? 'text-[11px] text-[#c9992e] max-w-[150px]'
+                          : 'text-sm text-[#e8e2d8]/75',
+                  )}
+                >
                   {row.value}
                 </span>
               </div>
@@ -848,7 +1127,10 @@ export function LandingPage() {
       {/* ── HOW IT WORKS ────────────────────────────────────────── */}
       <section className="py-16 sm:py-24 px-4 bg-[#0c1829]">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl sm:text-3xl font-bold text-[#f5f0e8] text-center mb-12">{c.how.title}</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold text-[#f5f0e8] text-center mb-2">
+            {c.how.title}
+          </h2>
+          <p className="text-center text-[#e8e2d8]/50 mb-12 max-w-xl mx-auto">{c.how.subtitle}</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {c.how.steps.map((step, i) => (
               <div key={i} className="relative">
@@ -866,17 +1148,28 @@ export function LandingPage() {
               </div>
             ))}
           </div>
+          {/* Callout */}
+          <div className="mt-10 p-5 rounded-2xl bg-[#c9992e]/5 border border-[#c9992e]/15 text-center">
+            <p className="text-sm text-[#e8e2d8]/65">
+              <strong className="text-[#e8b84b]">{c.how.callout}</strong>
+            </p>
+          </div>
         </div>
       </section>
 
       {/* ── EXECUTION / TRUST ───────────────────────────────────── */}
       <section className="py-16 sm:py-24 px-4 bg-[#060c1a]">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold text-[#f5f0e8] mb-2">{c.execution.title}</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold text-[#f5f0e8] mb-2">
+            {c.execution.title}
+          </h2>
           <p className="text-[#e8e2d8]/50 mb-12">{c.execution.sub}</p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
             {c.execution.roles.map((role, i) => (
-              <div key={i} className="bg-[#0c1829] border border-white/8 rounded-2xl p-6 hover:border-[#c9992e]/25 transition-all hover:-translate-y-1">
+              <div
+                key={i}
+                className="bg-[#0c1829] border border-white/8 rounded-2xl p-6 hover:border-[#c9992e]/25 transition-all hover:-translate-y-1"
+              >
                 <div className="text-3xl mb-4">{role.icon}</div>
                 <p className="font-bold text-[#f5f0e8] mb-2">{role.title}</p>
                 <p className="text-sm text-[#e8e2d8]/50">{role.desc}</p>
@@ -888,45 +1181,96 @@ export function LandingPage() {
 
       {/* ── PRICING ─────────────────────────────────────────────── */}
       <section className="py-16 sm:py-24 px-4 bg-[#0c1829]">
-        <div className="max-w-lg mx-auto text-center">
-          <div className="inline-block px-3 py-1 rounded-full bg-[#c9992e]/10 border border-[#c9992e]/30 text-[#e8b84b] text-xs font-bold uppercase tracking-widest mb-4">
-            {c.pricing.badge}
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <div className="inline-block px-3 py-1 rounded-full bg-[#c9992e]/10 border border-[#c9992e]/30 text-[#e8b84b] text-xs font-bold uppercase tracking-widest mb-4">
+              {c.pricing.badge}
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-bold text-[#f5f0e8] mb-2">
+              {c.pricing.title}
+            </h2>
+            <p className="text-[#e8e2d8]/55 max-w-xl mx-auto">{c.pricing.subtitle}</p>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-bold text-[#f5f0e8] mb-2">{c.pricing.title}</h2>
 
-          <div className="mt-8 p-6 rounded-2xl border-2 border-[#c9992e]/40 bg-[#060c1a] relative">
-            <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#c9992e] text-[#060c1a] text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full">
-              Best Value
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {c.pricing.tiers.map((tier) => (
+              <div
+                key={tier.id}
+                className={clsx(
+                  'relative rounded-2xl p-5 border transition-all flex flex-col',
+                  tier.highlighted
+                    ? 'bg-gradient-to-b from-[#c9992e]/8 to-transparent border-[#c9992e]/40 shadow-xl shadow-[#c9992e]/10'
+                    : 'bg-[#060c1a]/50 border-white/10 hover:border-[#c9992e]/30',
+                )}
+              >
+                {tier.highlighted && (
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-gradient-to-r from-[#c9992e] to-[#e8b84b] text-[#060c1a] text-[10px] font-black uppercase tracking-wider">
+                    {c.pricing.popularLabel}
+                  </div>
+                )}
+                <h3 className="text-sm font-semibold text-[#f5f0e8] mb-1">{tier.name}</h3>
+                <p className="text-xs text-[#e8e2d8]/45 mb-4 min-h-[2.5rem]">{tier.desc}</p>
+                <div className="mb-4">
+                  {tier.price ? (
+                    <>
+                      <p className="text-3xl font-bold text-[#e8b84b]">{tier.price}</p>
+                      <p className="text-[11px] text-[#e8e2d8]/40 mt-0.5">{tier.priceLabel}</p>
+                    </>
+                  ) : (
+                    <>
+                      <p className="text-3xl font-bold text-[#e8e2d8]/80">Free</p>
+                      <p className="text-[11px] text-[#e8e2d8]/40 mt-0.5">{tier.priceLabel}</p>
+                    </>
+                  )}
+                </div>
+                <ul className="space-y-2 mb-5 flex-1">
+                  {tier.features.map((f, i) => (
+                    <li key={i} className="flex items-start gap-2 text-xs text-[#e8e2d8]/60">
+                      <span className="text-[#22c55e] shrink-0 mt-0.5">✓</span>
+                      <span className="leading-relaxed">{f}</span>
+                    </li>
+                  ))}
+                </ul>
+                <button
+                  onClick={() => handleCTA()}
+                  className={clsx(
+                    'w-full py-2.5 rounded-lg font-bold text-sm transition-all',
+                    tier.highlighted
+                      ? 'bg-gradient-to-r from-[#c9992e] to-[#e8b84b] text-[#060c1a] hover:-translate-y-0.5 shadow-lg shadow-[#c9992e]/20'
+                      : 'border border-white/15 text-[#e8e2d8]/70 hover:border-[#c9992e]/40 hover:text-[#e8b84b]',
+                  )}
+                >
+                  {tier.cta}
+                </button>
+              </div>
+            ))}
+          </div>
+
+          {/* Monetization transparency */}
+          <div className="mt-8 max-w-3xl mx-auto p-5 rounded-2xl bg-[#060c1a]/50 border border-white/8">
+            <h4 className="text-sm font-semibold text-[#f5f0e8] mb-2 flex items-center gap-2">
+              <span className="text-[#c9992e]">🔒</span>
+              {c.pricing.monetizationTitle}
+            </h4>
+            <p className="text-xs text-[#e8e2d8]/55 leading-relaxed mb-3">
+              {c.pricing.monetizationText}
+            </p>
+            <div className="flex items-start gap-2 p-3 rounded-lg bg-[#c9992e]/5 border border-[#c9992e]/10">
+              <span className="text-sm shrink-0 mt-0.5">⚠️</span>
+              <p className="text-[11px] text-[#e8e2d8]/50 leading-relaxed">
+                {c.pricing.monetizationNote}
+              </p>
             </div>
-            <div className="flex items-baseline justify-center gap-1 mb-2">
-              <span className="text-4xl font-bold text-[#e8b84b]">AED 99</span>
-              <span className="text-[#e8e2d8]/40 text-sm">/ case</span>
-            </div>
-            <p className="text-sm text-[#e8e2d8]/40 mb-1">{c.pricing.anchor}</p>
-            <div className="my-4 h-px bg-white/8" />
-            <ul className="space-y-2 text-sm text-[#e8e2d8]/65 text-start mb-5">
-              {['Full AI case analysis', 'Step-by-step action plan', 'Expert assignment', 'Progress tracking'].map((f, i) => (
-                <li key={i} className="flex items-center gap-2">
-                  <span className="text-[#22c55e]">✓</span>
-                  {f}
-                </li>
-              ))}
-            </ul>
-            <button
-              onClick={() => handleCTA()}
-              className="w-full py-4 rounded-xl font-bold text-base bg-gradient-to-r from-[#22c55e] to-[#16a34a] text-white shadow-lg shadow-green-500/25 hover:shadow-green-500/40 hover:-translate-y-0.5 transition-all"
-            >
-              {c.pricing.cta}
-            </button>
-            <p className="text-xs text-[#e8e2d8]/30 mt-3">{c.pricing.note}</p>
+          </div>
+
+          {/* Pricing disclaimer */}
+          <div className="mt-6 text-center">
+            <p className="text-[11px] text-[#e8e2d8]/35 max-w-xl mx-auto leading-relaxed">
+              {c.pricing.disclaimer}
+            </p>
           </div>
         </div>
       </section>
-
-      {/* ── URGENCY STRIP ───────────────────────────────────────── */}
-      <div className="py-4 px-4 bg-gradient-to-r from-red-950/40 via-red-900/20 to-red-950/40 border-y border-red-500/15">
-        <p className="text-center text-sm text-red-300/80 font-medium">{c.urgency.text}</p>
-      </div>
 
       {/* ── WHATSAPP ────────────────────────────────────────────── */}
       <section className="py-16 sm:py-24 px-4 bg-gradient-to-br from-[#060c1a] via-[#0c1f10] to-[#060c1a]">
@@ -949,13 +1293,123 @@ export function LandingPage() {
         </div>
       </section>
 
+      {/* ── FOR LAWYERS ─────────────────────────────────────────── */}
+      <section className="py-16 sm:py-24 px-4 bg-[#060c1a]">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#c9992e]/10 border border-[#c9992e]/20 text-[#e8b84b] text-xs font-bold uppercase tracking-widest mb-4">
+              🏛️ {c.lawyers.badge}
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-bold text-[#f5f0e8] mb-2">
+              {c.lawyers.title}
+            </h2>
+            <p className="text-[#e8e2d8]/55 max-w-xl mx-auto">{c.lawyers.sub}</p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+            {/* What we send */}
+            <div className="bg-[#0c1829] border border-white/8 rounded-2xl p-5">
+              <h3 className="text-sm font-semibold text-[#f5f0e8] mb-4 flex items-center gap-2">
+                <span className="text-[#22c55e]">✓</span>
+                {c.lawyers.sendTitle}
+              </h3>
+              <ul className="space-y-3">
+                {c.lawyers.sendItems.map((item, i) => (
+                  <li key={i} className="flex items-start gap-2.5 text-sm text-[#e8e2d8]/65">
+                    <span className="text-[#22c55e] shrink-0 mt-0.5">✓</span>
+                    <span className="leading-relaxed">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* What we don't do */}
+            <div className="bg-[#0c1829] border border-white/8 rounded-2xl p-5">
+              <h3 className="text-sm font-semibold text-[#f5f0e8] mb-4 flex items-center gap-2">
+                <span className="text-red-400">⚠</span>
+                {c.lawyers.dontTitle}
+              </h3>
+              <ul className="space-y-3">
+                {c.lawyers.dontItems.map((item, i) => (
+                  <li key={i} className="flex items-start gap-2.5 text-sm text-[#e8e2d8]/65">
+                    <span className="text-red-400/70 shrink-0 mt-0.5 text-xs">✕</span>
+                    <span className="leading-relaxed">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          {/* Compliance note */}
+          <div className="p-5 rounded-2xl bg-[#c9992e]/5 border border-[#c9992e]/15 mb-6">
+            <div className="flex items-start gap-3">
+              <span className="text-lg shrink-0">⚖️</span>
+              <div>
+                <p className="text-sm font-semibold text-[#e8b84b] mb-1">
+                  {c.lawyers.complianceLabel}
+                </p>
+                <p className="text-xs text-[#e8e2d8]/55 leading-relaxed">
+                  {c.lawyers.complianceText}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Onboarding */}
+          <div className="text-center">
+            <p className="text-sm text-[#e8e2d8]/55 mb-4 max-w-lg mx-auto">
+              {c.lawyers.onboardingText}
+            </p>
+            <a
+              href="mailto:partners@expatuae.kafeely.com"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm border border-[#c9992e]/40 text-[#e8b84b] hover:bg-[#c9992e]/8 transition-all"
+            >
+              {c.lawyers.applyCta} →
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* ── FAQ ────────────────────────────────────────────────── */}
+      <section className="py-16 sm:py-24 px-4 bg-[#0c1829]">
+        <div className="max-w-3xl mx-auto">
+          <div className="text-center mb-12">
+            <p className="text-[10px] font-bold tracking-widest uppercase text-[#c9992e]/70 mb-2">
+              {c.faq.badge}
+            </p>
+            <h2 className="text-2xl sm:text-3xl font-bold text-[#f5f0e8]">{c.faq.title}</h2>
+          </div>
+          <div className="space-y-3">
+            {c.faq.items.map((faq, i) => (
+              <details
+                key={i}
+                className="group bg-[#060c1a]/50 border border-white/8 rounded-xl overflow-hidden"
+              >
+                <summary className="flex items-center justify-between gap-3 p-4 cursor-pointer text-sm font-medium text-[#f5f0e8] hover:bg-white/[0.02] transition-colors list-none">
+                  {faq.q}
+                  <span className="text-[#e8e2d8]/40 shrink-0 group-open:rotate-180 transition-transform">
+                    ▾
+                  </span>
+                </summary>
+                <div className="px-4 pb-4 text-sm text-[#e8e2d8]/55 leading-relaxed">{faq.a}</div>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── TRUST ───────────────────────────────────────────────── */}
       <section className="py-12 px-4 bg-[#0c1829] border-t border-white/5">
         <div className="max-w-3xl mx-auto">
-          <p className="text-center text-sm font-semibold text-[#e8e2d8]/50 uppercase tracking-widest mb-6">{c.trust.title}</p>
+          <p className="text-center text-sm font-semibold text-[#e8e2d8]/50 uppercase tracking-widest mb-6">
+            {c.trust.title}
+          </p>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {c.trust.items.map((item, i) => (
-              <div key={i} className="flex flex-col items-center gap-2 p-4 rounded-xl bg-[#060c1a]/60 border border-white/5 text-center">
+              <div
+                key={i}
+                className="flex flex-col items-center gap-2 p-4 rounded-xl bg-[#060c1a]/60 border border-white/5 text-center"
+              >
                 <span className="text-2xl">{item.icon}</span>
                 <span className="text-xs text-[#e8e2d8]/55 leading-tight">{item.text}</span>
               </div>
@@ -969,12 +1423,20 @@ export function LandingPage() {
         <div className="max-w-4xl mx-auto">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 mb-6">
             <div className="flex items-center gap-2.5">
-              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#c9992e] to-[#e8b84b] flex items-center justify-center text-[#060c1a] font-bold text-xs">R</div>
+              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#c9992e] to-[#e8b84b] flex items-center justify-center text-[#060c1a] font-bold text-xs">
+                R
+              </div>
               <span className="font-semibold text-[#e8b84b]">{c.nav.brand}</span>
             </div>
             <div className="flex gap-5">
               {c.footer.links.map((l, i) => (
-                <a key={i} href="#" className="text-sm text-[#e8e2d8]/35 hover:text-[#e8e2d8]/60 transition-colors">{l}</a>
+                <a
+                  key={i}
+                  href="#"
+                  className="text-sm text-[#e8e2d8]/35 hover:text-[#e8e2d8]/60 transition-colors"
+                >
+                  {l}
+                </a>
               ))}
             </div>
           </div>
@@ -983,16 +1445,22 @@ export function LandingPage() {
             <span className="text-lg shrink-0">⚖️</span>
             <p className="text-xs text-[#e8e2d8]/40 leading-relaxed">{c.footer.disclaimer}</p>
           </div>
-          <p className="text-center text-xs text-[#e8e2d8]/20 mt-6">© 2025 ResolveUAE. All rights reserved.</p>
+          <p className="text-center text-xs text-[#e8e2d8]/20 mt-6">
+            © 2026 ExpatUAE. All rights reserved.
+          </p>
         </div>
       </footer>
 
       {/* ── STICKY BOTTOM BAR ───────────────────────────────────── */}
-      <div className={clsx(
-        'fixed bottom-0 inset-x-0 z-40 bg-[#060c1a]/96 backdrop-blur-xl border-t border-white/10 px-4 py-3 flex items-center justify-between gap-3 transition-transform duration-500',
-        scrolled ? 'translate-y-0' : 'translate-y-full',
-      )}>
-        <p className="text-sm text-[#e8e2d8]/50 hidden sm:block">Ready to resolve your UAE case?</p>
+      <div
+        className={clsx(
+          'fixed bottom-0 inset-x-0 z-40 bg-[#060c1a]/96 backdrop-blur-xl border-t border-white/10 px-4 py-3 flex items-center justify-between gap-3 transition-transform duration-500',
+          scrolled ? 'translate-y-0' : 'translate-y-full',
+        )}
+      >
+        <p className="text-sm text-[#e8e2d8]/50 hidden sm:block">
+          Not sure where to start? Try the free assessment.
+        </p>
         <div className="flex items-center gap-2 ms-auto">
           <a
             href={WA_URL}
