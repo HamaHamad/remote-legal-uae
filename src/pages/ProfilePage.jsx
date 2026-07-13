@@ -1,8 +1,16 @@
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
-  User, Mail, Globe, Lock, CheckCircle, AlertCircle,
-  Eye, EyeOff, Save, Shield
+  User,
+  Mail,
+  Globe,
+  Lock,
+  CheckCircle,
+  AlertCircle,
+  Eye,
+  EyeOff,
+  Save,
+  Shield,
 } from 'lucide-react'
 import { clsx } from 'clsx'
 import { supabase } from '@/lib/supabase'
@@ -37,7 +45,7 @@ function PasswordInput({ label, value, onChange, placeholder, error }) {
         />
         <button
           type="button"
-          onClick={() => setShow(v => !v)}
+          onClick={() => setShow((v) => !v)}
           className="absolute end-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
         >
           {show ? <EyeOff size={14} /> : <Eye size={14} />}
@@ -51,16 +59,15 @@ function PasswordInput({ label, value, onChange, placeholder, error }) {
 // ─── Toast notification ────────────────────────────────────────────
 function Toast({ message, type = 'success' }) {
   return (
-    <div className={clsx(
-      'flex items-center gap-2.5 px-4 py-3 rounded-xl text-sm font-medium animate-fade-in',
-      type === 'success'
-        ? 'bg-green-500/10 border border-green-500/25 text-green-400'
-        : 'bg-red-500/10 border border-red-500/25 text-red-400',
-    )}>
-      {type === 'success'
-        ? <CheckCircle size={15} />
-        : <AlertCircle size={15} />
-      }
+    <div
+      className={clsx(
+        'flex items-center gap-2.5 px-4 py-3 rounded-xl text-sm font-medium animate-fade-in',
+        type === 'success'
+          ? 'bg-green-500/10 border border-green-500/25 text-green-400'
+          : 'bg-red-500/10 border border-red-500/25 text-red-400',
+      )}
+    >
+      {type === 'success' ? <CheckCircle size={15} /> : <AlertCircle size={15} />}
       {message}
     </div>
   )
@@ -87,18 +94,18 @@ export function ProfilePage() {
   const { user, profile, fetchProfile, updateLanguage } = useAuth()
 
   // ── Profile form state ─────────────────────────────────────────
-  const [fullName,    setFullName]    = useState(profile?.full_name || '')
+  const [fullName, setFullName] = useState(profile?.full_name || '')
   const [selectedLang, setSelectedLang] = useState(profile?.language || 'en')
-  const [profileMsg,  setProfileMsg]  = useState(null)
+  const [profileMsg, setProfileMsg] = useState(null)
   const [profileLoad, setProfileLoad] = useState(false)
 
   // ── Password form state ────────────────────────────────────────
-  const [current,    setCurrent]    = useState('')
-  const [newPass,    setNewPass]    = useState('')
+  const [current, setCurrent] = useState('')
+  const [newPass, setNewPass] = useState('')
   const [confirmPass, setConfirmPass] = useState('')
-  const [passErrors, setPassErrors]  = useState({})
-  const [passMsg,    setPassMsg]    = useState(null)
-  const [passLoad,   setPassLoad]   = useState(false)
+  const [passErrors, setPassErrors] = useState({})
+  const [passMsg, setPassMsg] = useState(null)
+  const [passLoad, setPassLoad] = useState(false)
 
   // Sync profile changes from context
   useEffect(() => {
@@ -145,11 +152,11 @@ export function ProfilePage() {
   // ── Change password ────────────────────────────────────────────
   const validatePassword = () => {
     const e = {}
-    if (!current)               e.current = 'Current password is required'
-    if (!newPass)               e.newPass = 'New password is required'
+    if (!current) e.current = 'Current password is required'
+    if (!newPass) e.newPass = 'New password is required'
     else if (newPass.length < 8) e.newPass = 'Password must be at least 8 characters'
     if (newPass !== confirmPass) e.confirmPass = 'Passwords do not match'
-    if (newPass === current)    e.newPass = 'New password must be different from current'
+    if (newPass === current) e.newPass = 'New password must be different from current'
     setPassErrors(e)
     return Object.keys(e).length === 0
   }
@@ -193,15 +200,15 @@ export function ProfilePage() {
     }
   }
 
-  const roleColor = {
-    admin:   'bg-gold-500/10   text-gold-400   border-gold-500/25',
-    partner: 'bg-purple-500/10 text-purple-400 border-purple-500/25',
-    client:  'bg-blue-500/10   text-blue-400   border-blue-500/25',
-  }[profile?.role || 'client'] || 'bg-white/5 text-[var(--text-muted)] border-white/10'
+  const roleColor =
+    {
+      admin: 'bg-gold-500/10   text-gold-400   border-gold-500/25',
+      partner: 'bg-purple-500/10 text-purple-400 border-purple-500/25',
+      client: 'bg-blue-500/10   text-blue-400   border-blue-500/25',
+    }[profile?.role || 'client'] || 'bg-white/5 text-[var(--text-muted)] border-white/10'
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
-
       {/* Header */}
       <div className="animate-slide-up">
         <h1 className="font-display text-3xl font-semibold text-[var(--text-primary)] mb-1">
@@ -223,10 +230,12 @@ export function ProfilePage() {
           </p>
           <p className="text-sm text-[var(--text-muted)] truncate">{user?.email}</p>
         </div>
-        <span className={clsx(
-          'text-xs font-semibold px-2.5 py-1 rounded-full border capitalize shrink-0',
-          roleColor,
-        )}>
+        <span
+          className={clsx(
+            'text-xs font-semibold px-2.5 py-1 rounded-full border capitalize shrink-0',
+            roleColor,
+          )}
+        >
           {profile?.role || 'client'}
         </span>
       </div>
@@ -262,7 +271,7 @@ export function ProfilePage() {
             <Input
               label="Full Name"
               value={fullName}
-              onChange={e => setFullName(e.target.value)}
+              onChange={(e) => setFullName(e.target.value)}
               placeholder="Your full name"
               icon={User}
             />
@@ -278,10 +287,10 @@ export function ProfilePage() {
                 </div>
                 <select
                   value={selectedLang}
-                  onChange={e => setSelectedLang(e.target.value)}
+                  onChange={(e) => setSelectedLang(e.target.value)}
                   className="w-full ps-10 pe-4 py-3 bg-[var(--bg-elevated)] border border-[var(--border)] rounded-xl text-sm text-[var(--text-primary)] focus:outline-none focus:border-gold-500 transition-all appearance-none cursor-pointer"
                 >
-                  {SUPPORTED_LANGUAGES.map(lang => (
+                  {SUPPORTED_LANGUAGES.map((lang) => (
                     <option key={lang.code} value={lang.code}>
                       {lang.flag} {lang.nativeLabel} ({lang.label})
                     </option>
@@ -306,7 +315,7 @@ export function ProfilePage() {
             <PasswordInput
               label="Current Password"
               value={current}
-              onChange={e => setCurrent(e.target.value)}
+              onChange={(e) => setCurrent(e.target.value)}
               placeholder="Your current password"
               error={passErrors.current}
             />
@@ -314,7 +323,7 @@ export function ProfilePage() {
             <PasswordInput
               label="New Password"
               value={newPass}
-              onChange={e => setNewPass(e.target.value)}
+              onChange={(e) => setNewPass(e.target.value)}
               placeholder="At least 8 characters"
               error={passErrors.newPass}
             />
@@ -323,7 +332,7 @@ export function ProfilePage() {
             {newPass && (
               <div className="space-y-1">
                 <div className="flex gap-1">
-                  {[0,1,2,3].map(i => {
+                  {[0, 1, 2, 3].map((i) => {
                     const checks = [
                       newPass.length >= 8,
                       /[A-Z]/.test(newPass),
@@ -333,7 +342,10 @@ export function ProfilePage() {
                     const score = checks.filter(Boolean).length
                     const colors = ['bg-red-500', 'bg-orange-400', 'bg-amber-400', 'bg-green-400']
                     return (
-                      <div key={i} className={`h-1 flex-1 rounded-full transition-all ${i < score ? colors[score-1] : 'bg-white/10'}`} />
+                      <div
+                        key={i}
+                        className={`h-1 flex-1 rounded-full transition-all ${i < score ? colors[score - 1] : 'bg-white/10'}`}
+                      />
                     )
                   })}
                 </div>
@@ -343,7 +355,7 @@ export function ProfilePage() {
             <PasswordInput
               label="Confirm New Password"
               value={confirmPass}
-              onChange={e => setConfirmPass(e.target.value)}
+              onChange={(e) => setConfirmPass(e.target.value)}
               placeholder="Repeat new password"
               error={passErrors.confirmPass}
             />
@@ -366,9 +378,11 @@ export function ProfilePage() {
           Member since{' '}
           <span className="text-[var(--text-secondary)]">
             {profile?.created_at
-              ? new Date(profile.created_at).toLocaleDateString('en-AE', { month: 'long', year: 'numeric' })
-              : '—'
-            }
+              ? new Date(profile.created_at).toLocaleDateString('en-AE', {
+                  month: 'long',
+                  year: 'numeric',
+                })
+              : '—'}
           </span>
         </span>
         <span>

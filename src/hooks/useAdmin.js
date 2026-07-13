@@ -6,12 +6,12 @@ import { supabase } from '@/lib/supabase'
  * All queries rely on Supabase RLS + is_admin() policies.
  */
 export function useAdmin() {
-  const [stats,    setStats]    = useState({ users: 0, cases: 0, partners: 0, pending: 0 })
-  const [cases,    setCases]    = useState([])
-  const [users,    setUsers]    = useState([])
+  const [stats, setStats] = useState({ users: 0, cases: 0, partners: 0, pending: 0 })
+  const [cases, setCases] = useState([])
+  const [users, setUsers] = useState([])
   const [partners, setPartners] = useState([])
-  const [loading,  setLoading]  = useState(true)
-  const [error,    setError]    = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
   const fetchAll = useCallback(async () => {
     setLoading(true)
@@ -19,18 +19,20 @@ export function useAdmin() {
     try {
       // Run all queries in parallel
       const [
-        { data: casesData,    error: casesErr    },
-        { data: usersData,    error: usersErr    },
+        { data: casesData, error: casesErr },
+        { data: usersData, error: usersErr },
         { data: partnersData, error: partnersErr },
       ] = await Promise.all([
         supabase
           .from('cases')
-          .select(`
+          .select(
+            `
             id, type, status, description, created_at, updated_at,
             user_id, assigned_to,
             ai_status, ai_risk_level, ai_unlocked,
             users!cases_user_id_fkey ( email, full_name )
-          `)
+          `,
+          )
           .order('created_at', { ascending: false })
           .limit(200),
 
@@ -47,12 +49,12 @@ export function useAdmin() {
           .order('name'),
       ])
 
-      if (casesErr)    throw casesErr
-      if (usersErr)    throw usersErr
+      if (casesErr) throw casesErr
+      if (usersErr) throw usersErr
       if (partnersErr && partnersErr.code !== 'PGRST116') throw partnersErr
 
-      const allCases    = casesData    || []
-      const allUsers    = usersData    || []
+      const allCases = casesData || []
+      const allUsers = usersData || []
       const allPartners = partnersData || []
 
       setCases(allCases)
@@ -60,10 +62,10 @@ export function useAdmin() {
       setPartners(allPartners)
 
       setStats({
-        users:    allUsers.length,
-        cases:    allCases.length,
+        users: allUsers.length,
+        cases: allCases.length,
         partners: allPartners.length,
-        pending:  allCases.filter(c => c.status === 'pending').length,
+        pending: allCases.filter((c) => c.status === 'pending').length,
       })
     } catch (err) {
       console.error('[useAdmin] fetchAll error:', err.message)
@@ -73,7 +75,9 @@ export function useAdmin() {
     }
   }, [])
 
-  useEffect(() => { fetchAll() }, [fetchAll])
+  useEffect(() => {
+    fetchAll()
+  }, [fetchAll])
 
   // ─── Assign partner to case ────────────────────────────────────
   const assignPartner = useCallback(async (caseId, partnerUserId) => {
@@ -83,28 +87,30 @@ export function useAdmin() {
       .eq('id', caseId)
 
     if (!err) {
-      setCases(prev => prev.map(c =>
-        c.id === caseId
-          ? { ...c, assigned_to: partnerUserId, status: 'active' }
-          : c
-      ))
+      setCases((prev) =>
+        prev.map((c) =>
+          c.id === caseId ? { ...c, assigned_to: partnerUserId, status: 'active' } : c,
+        ),
+      )
     }
     return { error: err?.message || null }
   }, [])
 
   // ─── Create task for a case ────────────────────────────────────
   const createTask = useCallback(async ({ caseId, assignedTo, title, notes, dueDate }) => {
-    const { data: { user } } = await supabase.auth.getUser()
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
     const { data, error: err } = await supabase
       .from('tasks')
       .insert({
-        case_id:     caseId,
+        case_id: caseId,
         assigned_to: assignedTo,
-        created_by:  user?.id,
+        created_by: user?.id,
         title,
         notes,
-        due_date:    dueDate || null,
-        status:      'pending',
+        due_date: dueDate || null,
+        status: 'pending',
       })
       .select()
       .single()
@@ -121,11 +127,11 @@ export function useAdmin() {
   const updateUserRole = useCallback(async (userId, role) => {
     const { error: err } = await supabase.rpc('set_user_role', {
       p_user_id: userId,
-      p_role:    role,
+      p_role: role,
     })
 
     if (!err) {
-      setUsers(prev => prev.map(u => u.id === userId ? { ...u, role } : u))
+      setUsers((prev) => prev.map((u) => (u.id === userId ? { ...u, role } : u)))
     }
     return { error: err?.message || null }
   }, [])
@@ -139,24 +145,28 @@ export function useAdmin() {
       .single()
 
     if (!err && data) {
-      setPartners(prev => [...prev, data])
+      setPartners((prev) => [...prev, data])
       // Promote user to partner role via the admin-only RPC
       const { error: roleErr } = await supabase.rpc('set_user_role', {
         p_user_id: userId,
-        p_role:    'partner',
+        p_role: 'partner',
       })
       if (roleErr) {
         console.warn('[useAdmin.createPartner] role promotion failed:', roleErr.message)
       } else {
-        setUsers(prev => prev.map(u => u.id === userId ? { ...u, role: 'partner' } : u))
+        setUsers((prev) => prev.map((u) => (u.id === userId ? { ...u, role: 'partner' } : u)))
       }
     }
     return { data, error: err?.message || null }
   }, [])
 
   return {
-    stats, cases, users, partners,
-    loading, error,
+    stats,
+    cases,
+    users,
+    partners,
+    loading,
+    error,
     fetchAll,
     assignPartner,
     createTask,

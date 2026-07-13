@@ -1,10 +1,24 @@
 import { useState, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
-  FolderOpen, Search, X, ChevronDown,
-  UserCheck, Clock, CheckCircle, AlertCircle,
-  Briefcase, Car, Users, Home, Scale, HelpCircle,
-  UserPlus, Check, RefreshCw, Brain
+  FolderOpen,
+  Search,
+  X,
+  ChevronDown,
+  UserCheck,
+  Clock,
+  CheckCircle,
+  AlertCircle,
+  Briefcase,
+  Car,
+  Users,
+  Home,
+  Scale,
+  HelpCircle,
+  UserPlus,
+  Check,
+  RefreshCw,
+  Brain,
 } from 'lucide-react'
 import { clsx } from 'clsx'
 import { useAdmin } from '@/hooks/useAdmin'
@@ -13,20 +27,24 @@ import { RiskBadge } from '@/components/AICaseReport'
 import Button from '@/components/ui/Button'
 
 const TYPE_META = {
-  banking:    { icon: Briefcase, color: 'text-blue-400',   bg: 'bg-blue-500/10'   },
-  car:        { icon: Car,       color: 'text-orange-400', bg: 'bg-orange-500/10' },
-  employment: { icon: Users,     color: 'text-green-400',  bg: 'bg-green-500/10'  },
-  rental:     { icon: Home,      color: 'text-purple-400', bg: 'bg-purple-500/10' },
-  legal:      { icon: Scale,     color: 'text-gold-400',   bg: 'bg-gold-500/10'   },
-  visa:       { icon: FolderOpen,color: 'text-cyan-400',   bg: 'bg-cyan-500/10'   },
-  other:      { icon: HelpCircle,color: 'text-gray-400',   bg: 'bg-gray-500/10'   },
+  banking: { icon: Briefcase, color: 'text-blue-400', bg: 'bg-blue-500/10' },
+  car: { icon: Car, color: 'text-orange-400', bg: 'bg-orange-500/10' },
+  employment: { icon: Users, color: 'text-green-400', bg: 'bg-green-500/10' },
+  rental: { icon: Home, color: 'text-purple-400', bg: 'bg-purple-500/10' },
+  legal: { icon: Scale, color: 'text-gold-400', bg: 'bg-gold-500/10' },
+  visa: { icon: FolderOpen, color: 'text-cyan-400', bg: 'bg-cyan-500/10' },
+  other: { icon: HelpCircle, color: 'text-gray-400', bg: 'bg-gray-500/10' },
 }
 
 const STATUS_OPTIONS = ['all', 'pending', 'active', 'resolved']
-const RISK_OPTIONS   = ['all', 'high', 'medium', 'low']
+const RISK_OPTIONS = ['all', 'high', 'medium', 'low']
 
 function formatDate(iso) {
-  return new Date(iso).toLocaleDateString('en-AE', { month: 'short', day: 'numeric', year: 'numeric' })
+  return new Date(iso).toLocaleDateString('en-AE', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  })
 }
 
 // ─── Assign Partner Modal ─────────────────────────────────────────
@@ -39,13 +57,16 @@ function AssignModal({ caseItem, partners, onConfirm, onClose, loading }) {
       <div className="absolute inset-0 bg-black/70 backdrop-blur-sm animate-fade-in" />
       <div
         className="relative z-10 w-full max-w-sm glass-panel gold-border rounded-2xl p-6 animate-slide-up shadow-gold"
-        onClick={e => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
       >
         <h3 className="font-display text-xl font-semibold text-[var(--text-primary)] mb-1">
           Assign Partner
         </h3>
         <p className="text-xs text-[var(--text-muted)] mb-5">
-          Case: <span className="text-[var(--text-secondary)]">{t(`case.types.${caseItem.type}`, { defaultValue: caseItem.type })}</span>
+          Case:{' '}
+          <span className="text-[var(--text-secondary)]">
+            {t(`case.types.${caseItem.type}`, { defaultValue: caseItem.type })}
+          </span>
           {' · '}
           <span className="font-mono">{caseItem.id.slice(0, 8).toUpperCase()}</span>
         </p>
@@ -60,7 +81,7 @@ function AssignModal({ caseItem, partners, onConfirm, onClose, loading }) {
           </div>
         ) : (
           <div className="space-y-2 max-h-60 overflow-y-auto mb-5">
-            {partners.map(p => (
+            {partners.map((p) => (
               <button
                 key={p.id}
                 onClick={() => setSelected(p.user_id)}
@@ -85,7 +106,9 @@ function AssignModal({ caseItem, partners, onConfirm, onClose, loading }) {
         )}
 
         <div className="flex gap-2">
-          <Button variant="ghost" size="sm" onClick={onClose} className="flex-1">Cancel</Button>
+          <Button variant="ghost" size="sm" onClick={onClose} className="flex-1">
+            Cancel
+          </Button>
           <Button
             size="sm"
             onClick={() => onConfirm(caseItem.id, selected)}
@@ -105,14 +128,14 @@ function AssignModal({ caseItem, partners, onConfirm, onClose, loading }) {
 // ─── Create Task Modal ─────────────────────────────────────────────
 function CreateTaskModal({ caseItem, partners, onConfirm, onClose, loading }) {
   const [form, setForm] = useState({ title: '', notes: '', assignedTo: '', dueDate: '' })
-  const update = f => e => setForm(p => ({ ...p, [f]: e.target.value }))
+  const update = (f) => (e) => setForm((p) => ({ ...p, [f]: e.target.value }))
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={onClose}>
       <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
       <div
         className="relative z-10 w-full max-w-sm glass-panel rounded-2xl p-6 animate-slide-up border border-[var(--border)]"
-        onClick={e => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
       >
         <h3 className="font-display text-xl font-semibold text-[var(--text-primary)] mb-5">
           Create Task
@@ -120,7 +143,9 @@ function CreateTaskModal({ caseItem, partners, onConfirm, onClose, loading }) {
 
         <div className="space-y-4">
           <div>
-            <label className="text-xs font-medium text-[var(--text-muted)] uppercase tracking-wider block mb-1.5">Task Title *</label>
+            <label className="text-xs font-medium text-[var(--text-muted)] uppercase tracking-wider block mb-1.5">
+              Task Title *
+            </label>
             <input
               value={form.title}
               onChange={update('title')}
@@ -130,21 +155,27 @@ function CreateTaskModal({ caseItem, partners, onConfirm, onClose, loading }) {
           </div>
 
           <div>
-            <label className="text-xs font-medium text-[var(--text-muted)] uppercase tracking-wider block mb-1.5">Assign To *</label>
+            <label className="text-xs font-medium text-[var(--text-muted)] uppercase tracking-wider block mb-1.5">
+              Assign To *
+            </label>
             <select
               value={form.assignedTo}
               onChange={update('assignedTo')}
               className="w-full bg-[var(--bg-elevated)] border border-[var(--border)] rounded-lg px-3 py-2.5 text-sm text-[var(--text-primary)] focus:outline-none focus:border-gold-500"
             >
               <option value="">Select partner…</option>
-              {partners.map(p => (
-                <option key={p.id} value={p.user_id}>{p.name} ({p.specialty})</option>
+              {partners.map((p) => (
+                <option key={p.id} value={p.user_id}>
+                  {p.name} ({p.specialty})
+                </option>
               ))}
             </select>
           </div>
 
           <div>
-            <label className="text-xs font-medium text-[var(--text-muted)] uppercase tracking-wider block mb-1.5">Notes</label>
+            <label className="text-xs font-medium text-[var(--text-muted)] uppercase tracking-wider block mb-1.5">
+              Notes
+            </label>
             <textarea
               value={form.notes}
               onChange={update('notes')}
@@ -155,7 +186,9 @@ function CreateTaskModal({ caseItem, partners, onConfirm, onClose, loading }) {
           </div>
 
           <div>
-            <label className="text-xs font-medium text-[var(--text-muted)] uppercase tracking-wider block mb-1.5">Due Date</label>
+            <label className="text-xs font-medium text-[var(--text-muted)] uppercase tracking-wider block mb-1.5">
+              Due Date
+            </label>
             <input
               type="date"
               value={form.dueDate}
@@ -166,7 +199,9 @@ function CreateTaskModal({ caseItem, partners, onConfirm, onClose, loading }) {
         </div>
 
         <div className="flex gap-2 mt-5">
-          <Button variant="ghost" size="sm" onClick={onClose} className="flex-1">Cancel</Button>
+          <Button variant="ghost" size="sm" onClick={onClose} className="flex-1">
+            Cancel
+          </Button>
           <Button
             size="sm"
             onClick={() => onConfirm({ caseId: caseItem.id, ...form })}
@@ -187,25 +222,26 @@ export function AdminCasesPage() {
   const { t } = useTranslation()
   const { cases, partners, loading, error, fetchAll, assignPartner, createTask } = useAdmin()
 
-  const [search,       setSearch]       = useState('')
-  const [statusFilter, setStatus]       = useState('all')
-  const [riskFilter,   setRisk]         = useState('all')
-  const [assignModal,  setAssignModal]  = useState(null)  // caseItem
-  const [taskModal,    setTaskModal]    = useState(null)   // caseItem
+  const [search, setSearch] = useState('')
+  const [statusFilter, setStatus] = useState('all')
+  const [riskFilter, setRisk] = useState('all')
+  const [assignModal, setAssignModal] = useState(null) // caseItem
+  const [taskModal, setTaskModal] = useState(null) // caseItem
   const [actionLoading, setActionLoading] = useState(false)
-  const [successMsg,   setSuccessMsg]   = useState('')
+  const [successMsg, setSuccessMsg] = useState('')
 
   // ─── Filter logic ───────────────────────────────────────────────
   const filtered = useMemo(() => {
-    return cases.filter(c => {
-      const matchSearch = !search.trim() ||
+    return cases.filter((c) => {
+      const matchSearch =
+        !search.trim() ||
         c.type?.toLowerCase().includes(search.toLowerCase()) ||
         c.description?.toLowerCase().includes(search.toLowerCase()) ||
         c.id.toLowerCase().includes(search.toLowerCase()) ||
         c.users?.email?.toLowerCase().includes(search.toLowerCase())
 
       const matchStatus = statusFilter === 'all' || c.status === statusFilter
-      const matchRisk   = riskFilter   === 'all' || c.ai_risk_level === riskFilter
+      const matchRisk = riskFilter === 'all' || c.ai_risk_level === riskFilter
 
       return matchSearch && matchStatus && matchRisk
     })
@@ -237,16 +273,23 @@ export function AdminCasesPage() {
   return (
     <>
       <div className="max-w-6xl mx-auto space-y-6">
-
         {/* Header */}
         <div className="flex items-end justify-between animate-slide-up">
           <div>
-            <h1 className="font-display text-3xl font-semibold text-[var(--text-primary)]">All Cases</h1>
+            <h1 className="font-display text-3xl font-semibold text-[var(--text-primary)]">
+              All Cases
+            </h1>
             <p className="text-sm text-[var(--text-secondary)] mt-1">
               {loading ? '—' : `${filtered.length} of ${cases.length} cases`}
             </p>
           </div>
-          <Button variant="secondary" size="sm" icon={RefreshCw} onClick={fetchAll} disabled={loading}>
+          <Button
+            variant="secondary"
+            size="sm"
+            icon={RefreshCw}
+            onClick={fetchAll}
+            disabled={loading}
+          >
             Refresh
           </Button>
         </div>
@@ -263,16 +306,22 @@ export function AdminCasesPage() {
         <div className="flex flex-wrap gap-3 animate-slide-up-delay-1">
           {/* Search */}
           <div className="relative flex-1 min-w-[220px]">
-            <Search size={14} className="absolute start-3.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)] pointer-events-none" />
+            <Search
+              size={14}
+              className="absolute start-3.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)] pointer-events-none"
+            />
             <input
               type="text"
               placeholder="Search by type, client, ID…"
               value={search}
-              onChange={e => setSearch(e.target.value)}
+              onChange={(e) => setSearch(e.target.value)}
               className="w-full ps-10 pe-9 py-2.5 bg-[var(--bg-elevated)] border border-[var(--border)] rounded-lg text-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:border-gold-500"
             />
             {search && (
-              <button onClick={() => setSearch('')} className="absolute end-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)]">
+              <button
+                onClick={() => setSearch('')}
+                className="absolute end-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)]"
+              >
                 <X size={13} />
               </button>
             )}
@@ -280,7 +329,7 @@ export function AdminCasesPage() {
 
           {/* Status filter */}
           <div className="flex gap-1.5">
-            {STATUS_OPTIONS.map(s => (
+            {STATUS_OPTIONS.map((s) => (
               <button
                 key={s}
                 onClick={() => setStatus(s)}
@@ -293,15 +342,14 @@ export function AdminCasesPage() {
               >
                 {s === 'all'
                   ? `All (${cases.length})`
-                  : `${s} (${cases.filter(c => c.status === s).length})`
-                }
+                  : `${s} (${cases.filter((c) => c.status === s).length})`}
               </button>
             ))}
           </div>
 
           {/* Risk filter */}
           <div className="flex gap-1.5">
-            {RISK_OPTIONS.map(r => (
+            {RISK_OPTIONS.map((r) => (
               <button
                 key={r}
                 onClick={() => setRisk(r)}
@@ -334,7 +382,7 @@ export function AdminCasesPage() {
         {/* Cases */}
         {loading ? (
           <div className="space-y-2">
-            {[1,2,3,4,5].map(i => (
+            {[1, 2, 3, 4, 5].map((i) => (
               <div key={i} className="h-16 rounded-xl glass-panel animate-pulse" />
             ))}
           </div>
@@ -347,7 +395,7 @@ export function AdminCasesPage() {
           </div>
         ) : (
           <div className="space-y-2 animate-fade-in">
-            {filtered.map(c => (
+            {filtered.map((c) => (
               <AdminCaseRow
                 key={c.id}
                 caseItem={c}
@@ -391,17 +439,18 @@ export function AdminCasesPage() {
 }
 
 function AdminCaseRow({ caseItem, partners, t, onAssign, onCreateTask }) {
-  const typeKey  = caseItem.type || 'other'
-  const meta     = TYPE_META[typeKey] || TYPE_META.other
-  const Icon     = meta.icon
+  const typeKey = caseItem.type || 'other'
+  const meta = TYPE_META[typeKey] || TYPE_META.other
+  const Icon = meta.icon
   const typeLabel = t(`case.types.${typeKey}`, { defaultValue: typeKey })
-  const client   = caseItem.users?.email || '—'
-  const assignedPartner = partners.find(p => p.user_id === caseItem.assigned_to)
+  const client = caseItem.users?.email || '—'
+  const assignedPartner = partners.find((p) => p.user_id === caseItem.assigned_to)
 
   return (
     <div className="grid grid-cols-[2.5rem_1fr_auto] lg:grid-cols-[2.5rem_1fr_8rem_7rem_7rem_8rem_8rem] items-center gap-3 px-4 py-3.5 rounded-xl glass-panel hover:border-white/10 hover:bg-[var(--bg-elevated)] transition-all">
-
-      <div className={clsx('w-9 h-9 rounded-xl flex items-center justify-center shrink-0', meta.bg)}>
+      <div
+        className={clsx('w-9 h-9 rounded-xl flex items-center justify-center shrink-0', meta.bg)}
+      >
         <Icon size={16} className={meta.color} />
       </div>
 
@@ -409,7 +458,7 @@ function AdminCaseRow({ caseItem, partners, t, onAssign, onCreateTask }) {
         <div className="flex items-center gap-2 flex-wrap">
           <p className="text-sm font-semibold text-[var(--text-primary)]">{typeLabel}</p>
           <span className="text-[10px] font-mono text-[var(--text-muted)] bg-white/4 px-1.5 py-0.5 rounded">
-            #{caseItem.id.slice(0,8).toUpperCase()}
+            #{caseItem.id.slice(0, 8).toUpperCase()}
           </span>
         </div>
         <p className="text-xs text-[var(--text-secondary)] truncate">{client}</p>
@@ -424,13 +473,14 @@ function AdminCaseRow({ caseItem, partners, t, onAssign, onCreateTask }) {
       </div>
 
       <div className="hidden lg:block">
-        {caseItem.ai_risk_level
-          ? <RiskBadge level={caseItem.ai_risk_level} />
-          : <span className="text-[10px] text-[var(--text-muted)] flex items-center gap-1">
-              <Brain size={10} className="opacity-40" />
-              {caseItem.ai_status === 'processing' ? 'Analyzing' : 'N/A'}
-            </span>
-        }
+        {caseItem.ai_risk_level ? (
+          <RiskBadge level={caseItem.ai_risk_level} />
+        ) : (
+          <span className="text-[10px] text-[var(--text-muted)] flex items-center gap-1">
+            <Brain size={10} className="opacity-40" />
+            {caseItem.ai_status === 'processing' ? 'Analyzing' : 'N/A'}
+          </span>
+        )}
       </div>
 
       <div className="hidden lg:block">

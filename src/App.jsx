@@ -7,7 +7,7 @@ import { ErrorBoundary } from '@/components/ErrorBoundary'
 function AppInner() {
   const { loading, configError } = useAuth()
   if (configError) return <LoadingScreen configError />
-  if (loading)     return <LoadingScreen />
+  if (loading) return <LoadingScreen />
   return <AppRouter />
 }
 
@@ -24,4 +24,3 @@ function App() {
 }
 
 export default App
-

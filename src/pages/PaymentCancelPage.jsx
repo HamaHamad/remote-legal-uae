@@ -5,7 +5,7 @@ import { usePayments } from '@/hooks/usePayments'
 
 export function PaymentCancelPage() {
   const [searchParams] = useSearchParams()
-  const navigate       = useNavigate()
+  const navigate = useNavigate()
   const { startCheckout, loading, redirecting } = usePayments()
 
   const caseId = searchParams.get('case_id')
@@ -24,7 +24,6 @@ export function PaymentCancelPage() {
     <div className="min-h-screen auth-bg flex items-center justify-center px-4">
       <div className="w-full max-w-sm animate-slide-up">
         <div className="glass-panel rounded-2xl p-8 text-center border border-[var(--border)]">
-
           {/* Icon */}
           <div className="w-16 h-16 rounded-full bg-[var(--bg-elevated)] border border-[var(--border)] flex items-center justify-center mx-auto mb-5">
             <XCircle size={30} className="text-[var(--text-muted)]" />
@@ -34,7 +33,8 @@ export function PaymentCancelPage() {
             Payment Cancelled
           </h1>
           <p className="text-sm text-[var(--text-secondary)] mb-6 leading-relaxed">
-            No charge was made. You can try again whenever you're ready to unlock your AI case report.
+            No charge was made. You can try again whenever you're ready to unlock your AI case
+            report.
           </p>
 
           <div className="space-y-2">
@@ -49,13 +49,7 @@ export function PaymentCancelPage() {
               {redirecting ? 'Redirecting to Stripe…' : 'Try Again — AED 99'}
             </Button>
 
-            <Button
-              onClick={handleBack}
-              variant="ghost"
-              fullWidth
-              size="md"
-              icon={ArrowLeft}
-            >
+            <Button onClick={handleBack} variant="ghost" fullWidth size="md" icon={ArrowLeft}>
               Back to Case
             </Button>
           </div>

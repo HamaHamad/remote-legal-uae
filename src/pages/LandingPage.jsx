@@ -750,7 +750,20 @@ export function LandingPage() {
   const [scrolled, setScrolled] = useState(false)
   const [locked, setLocked] = useState(true)
 
-  const c = COPY[lang] || COPY.en
+  // Deep-merge with English as fallback so missing properties in other
+  // languages don't crash the app (e.g. new pricing tiers, lawyers, faq)
+  const c =
+    lang === 'en'
+      ? COPY.en
+      : {
+          ...COPY.en,
+          ...COPY[lang],
+          hero: { ...COPY.en.hero, ...(COPY[lang]?.hero || {}) },
+          how: { ...COPY.en.how, ...(COPY[lang]?.how || {}) },
+          pricing: { ...COPY.en.pricing, ...(COPY[lang]?.pricing || {}) },
+          lawyers: COPY[lang]?.lawyers || COPY.en.lawyers,
+          faq: COPY[lang]?.faq || COPY.en.faq,
+        }
   const meta = LANG_META[lang] || LANG_META.en
   const isRTL = ['ar', 'ur'].includes(lang)
 

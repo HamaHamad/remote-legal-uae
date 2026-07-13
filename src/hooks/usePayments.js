@@ -8,9 +8,9 @@ import { supabase } from '@/lib/supabase'
  * (which keeps the Stripe secret key server-side).
  */
 export function usePayments() {
-  const [loading,       setLoading]       = useState(false)
-  const [error,         setError]         = useState(null)
-  const [redirecting,   setRedirecting]   = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
+  const [redirecting, setRedirecting] = useState(false)
 
   // ─── Start Stripe checkout ────────────────────────────────────
   const startCheckout = useCallback(async (caseId) => {
@@ -23,7 +23,7 @@ export function usePayments() {
 
       const { data, error: fnError } = await supabase.functions.invoke('create-checkout', {
         body: {
-          case_id:    caseId,
+          case_id: caseId,
           return_url: returnUrl,
         },
       })
@@ -36,7 +36,6 @@ export function usePayments() {
       window.location.href = data.url
 
       return { url: data.url, error: null }
-
     } catch (err) {
       const msg = err?.message || 'Failed to start checkout'
       setError(msg)
@@ -72,15 +71,19 @@ export function usePayments() {
 
   // ─── Fetch ALL payments for the current user ──────────────────
   const fetchUserPayments = useCallback(async () => {
-    const { data: { user } } = await supabase.auth.getUser()
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
     if (!user) return []
 
     const { data, error: dbErr } = await supabase
       .from('payments')
-      .select(`
+      .select(
+        `
         *,
         cases ( id, type, status )
-      `)
+      `,
+      )
       .eq('user_id', user.id)
       .order('created_at', { ascending: false })
 
@@ -89,15 +92,18 @@ export function usePayments() {
   }, [])
 
   // ─── Poll until unlock confirmed (used by PaymentSuccessPage) ─
-  const pollUntilUnlocked = useCallback(async (caseId, maxAttempts = 12) => {
-    for (let i = 0; i < maxAttempts; i++) {
-      const unlocked = await checkUnlocked(caseId)
-      if (unlocked) return true
-      // Wait 2.5s between polls
-      await new Promise(resolve => setTimeout(resolve, 2500))
-    }
-    return false // timeout after ~30s
-  }, [checkUnlocked])
+  const pollUntilUnlocked = useCallback(
+    async (caseId, maxAttempts = 12) => {
+      for (let i = 0; i < maxAttempts; i++) {
+        const unlocked = await checkUnlocked(caseId)
+        if (unlocked) return true
+        // Wait 2.5s between polls
+        await new Promise((resolve) => setTimeout(resolve, 2500))
+      }
+      return false // timeout after ~30s
+    },
+    [checkUnlocked],
+  )
 
   return {
     startCheckout,

@@ -2,9 +2,19 @@ import { NavLink, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { clsx } from 'clsx'
 import {
-  LayoutDashboard, FolderOpen, FileText, User,
-  Settings, LogOut, Users, BarChart2, Briefcase,
-  ClipboardList, Shield, ChevronRight, CheckCircle
+  LayoutDashboard,
+  FolderOpen,
+  FileText,
+  User,
+  Settings,
+  LogOut,
+  Users,
+  BarChart2,
+  Briefcase,
+  ClipboardList,
+  Shield,
+  ChevronRight,
+  CheckCircle,
 } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
 import { useRole } from '@/hooks/useRole'
@@ -14,27 +24,27 @@ import LanguageSwitcher from '@/components/LanguageSwitcher'
 // ─── Nav items per role ──────────────────────────────────────────
 const clientNav = (t) => [
   { label: t('nav.dashboard'), icon: LayoutDashboard, to: '/dashboard' },
-  { label: t('nav.cases'),     icon: FolderOpen,       to: '/dashboard/cases' },
-  { label: t('nav.documents'), icon: FileText,          to: '/dashboard/documents' },
+  { label: t('nav.cases'), icon: FolderOpen, to: '/dashboard/cases' },
+  { label: t('nav.documents'), icon: FileText, to: '/dashboard/documents' },
 ]
 
 const adminNav = (t) => [
-  { label: t('nav.admin'),     icon: Shield,           to: '/admin' },
-  { label: t('nav.allCases'),  icon: FolderOpen,       to: '/admin/cases' },
-  { label: t('nav.users'),     icon: Users,            to: '/admin/users' },
-  { label: t('nav.analytics'), icon: BarChart2,        to: '/admin/analytics' },
+  { label: t('nav.admin'), icon: Shield, to: '/admin' },
+  { label: t('nav.allCases'), icon: FolderOpen, to: '/admin/cases' },
+  { label: t('nav.users'), icon: Users, to: '/admin/users' },
+  { label: t('nav.analytics'), icon: BarChart2, to: '/admin/analytics' },
 ]
 
 const partnerNav = (t) => [
-  { label: t('nav.partner'),        icon: Briefcase,     to: '/partner' },
-  { label: t('nav.assignedCases'),  icon: ClipboardList, to: '/partner/cases' },
-  { label: 'My Tasks',              icon: CheckCircle,   to: '/partner/tasks' },
-  { label: t('nav.documents'),      icon: FileText,       to: '/partner/documents' },
-  { label: t('nav.reports'),        icon: BarChart2,      to: '/partner/reports' },
+  { label: t('nav.partner'), icon: Briefcase, to: '/partner' },
+  { label: t('nav.assignedCases'), icon: ClipboardList, to: '/partner/cases' },
+  { label: 'My Tasks', icon: CheckCircle, to: '/partner/tasks' },
+  { label: t('nav.documents'), icon: FileText, to: '/partner/documents' },
+  { label: t('nav.reports'), icon: BarChart2, to: '/partner/reports' },
 ]
 
 const bottomNav = (t) => [
-  { label: t('nav.profile'),  icon: User,     to: '/profile' },
+  { label: t('nav.profile'), icon: User, to: '/profile' },
   { label: t('nav.settings'), icon: Settings, to: '/settings' },
 ]
 
@@ -44,11 +54,7 @@ export function Sidebar({ onClose }) {
   const { isAdmin, isPartner, isClient } = useRole()
   const navigate = useNavigate()
 
-  const mainNav = isAdmin
-    ? adminNav(t)
-    : isPartner
-      ? partnerNav(t)
-      : clientNav(t)
+  const mainNav = isAdmin ? adminNav(t) : isPartner ? partnerNav(t) : clientNav(t)
 
   const handleSignOut = async () => {
     await signOut()
@@ -134,9 +140,7 @@ function NavItem({ label, icon: Icon, to, onClose }) {
       to={to}
       end
       onClick={onClose}
-      className={({ isActive }) =>
-        clsx('sidebar-nav-item', isActive && 'active')
-      }
+      className={({ isActive }) => clsx('sidebar-nav-item', isActive && 'active')}
     >
       <Icon size={16} className="shrink-0" />
       <span className="flex-1">{label}</span>
@@ -148,13 +152,23 @@ function NavItem({ label, icon: Icon, to, onClose }) {
 function ScalesLogo() {
   return (
     <svg width="18" height="18" viewBox="0 0 28 28" fill="none">
-      <path d="M14 3V25" stroke="#D99D18" strokeWidth="1.8" strokeLinecap="round"/>
-      <path d="M8 3H20" stroke="#D99D18" strokeWidth="1.8" strokeLinecap="round"/>
-      <path d="M14 3L5 11" stroke="#D99D18" strokeWidth="1.8" strokeLinecap="round"/>
-      <path d="M14 3L23 11" stroke="#D99D18" strokeWidth="1.8" strokeLinecap="round"/>
-      <path d="M3 14C3 14 4 18 8 18C12 18 13 14 13 14" stroke="#D99D18" strokeWidth="1.8" strokeLinecap="round"/>
-      <path d="M15 14C15 14 16 18 20 18C24 18 25 14 25 14" stroke="#D99D18" strokeWidth="1.8" strokeLinecap="round"/>
-      <path d="M10 25H18" stroke="#D99D18" strokeWidth="1.8" strokeLinecap="round"/>
+      <path d="M14 3V25" stroke="#D99D18" strokeWidth="1.8" strokeLinecap="round" />
+      <path d="M8 3H20" stroke="#D99D18" strokeWidth="1.8" strokeLinecap="round" />
+      <path d="M14 3L5 11" stroke="#D99D18" strokeWidth="1.8" strokeLinecap="round" />
+      <path d="M14 3L23 11" stroke="#D99D18" strokeWidth="1.8" strokeLinecap="round" />
+      <path
+        d="M3 14C3 14 4 18 8 18C12 18 13 14 13 14"
+        stroke="#D99D18"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+      />
+      <path
+        d="M15 14C15 14 16 18 20 18C24 18 25 14 25 14"
+        stroke="#D99D18"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+      />
+      <path d="M10 25H18" stroke="#D99D18" strokeWidth="1.8" strokeLinecap="round" />
     </svg>
   )
 }

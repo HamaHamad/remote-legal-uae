@@ -9,11 +9,11 @@ import ur from './locales/ur.json'
 import tl from './locales/tl.json'
 
 export const SUPPORTED_LANGUAGES = [
-  { code: 'en', label: 'English',    nativeLabel: 'English',    dir: 'ltr', flag: '🇬🇧' },
-  { code: 'ar', label: 'Arabic',     nativeLabel: 'العربية',    dir: 'rtl', flag: '🇦🇪' },
-  { code: 'hi', label: 'Hindi',      nativeLabel: 'हिन्दी',       dir: 'ltr', flag: '🇮🇳' },
-  { code: 'ur', label: 'Urdu',       nativeLabel: 'اردو',        dir: 'rtl', flag: '🇵🇰' },
-  { code: 'tl', label: 'Tagalog',    nativeLabel: 'Filipino',   dir: 'ltr', flag: '🇵🇭' },
+  { code: 'en', label: 'English', nativeLabel: 'English', dir: 'ltr', flag: '🇬🇧' },
+  { code: 'ar', label: 'Arabic', nativeLabel: 'العربية', dir: 'rtl', flag: '🇦🇪' },
+  { code: 'hi', label: 'Hindi', nativeLabel: 'हिन्दी', dir: 'ltr', flag: '🇮🇳' },
+  { code: 'ur', label: 'Urdu', nativeLabel: 'اردو', dir: 'rtl', flag: '🇵🇰' },
+  { code: 'tl', label: 'Tagalog', nativeLabel: 'Filipino', dir: 'ltr', flag: '🇵🇭' },
 ]
 
 export const RTL_LANGUAGES = ['ar', 'ur']

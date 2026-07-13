@@ -1,10 +1,22 @@
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import {
-  Briefcase, ClipboardList, CheckCircle, Clock,
-  ArrowRight, RefreshCw, FileCheck, TrendingUp,
-  Briefcase as BriefcaseIcon, Car, Users, Home, Scale,
-  HelpCircle, Brain, AlertCircle
+  Briefcase,
+  ClipboardList,
+  CheckCircle,
+  Clock,
+  ArrowRight,
+  RefreshCw,
+  FileCheck,
+  TrendingUp,
+  Briefcase as BriefcaseIcon,
+  Car,
+  Users,
+  Home,
+  Scale,
+  HelpCircle,
+  Brain,
+  AlertCircle,
 } from 'lucide-react'
 import { clsx } from 'clsx'
 import { useAuth } from '@/context/AuthContext'
@@ -15,24 +27,28 @@ import { RiskBadge } from '@/components/AICaseReport'
 import Button from '@/components/ui/Button'
 
 const TYPE_META = {
-  banking:    { icon: BriefcaseIcon, color: 'text-blue-400',   bg: 'bg-blue-500/10'   },
-  car:        { icon: Car,           color: 'text-orange-400', bg: 'bg-orange-500/10' },
-  employment: { icon: Users,         color: 'text-green-400',  bg: 'bg-green-500/10'  },
-  rental:     { icon: Home,          color: 'text-purple-400', bg: 'bg-purple-500/10' },
-  legal:      { icon: Scale,         color: 'text-gold-400',   bg: 'bg-gold-500/10'   },
-  other:      { icon: HelpCircle,    color: 'text-gray-400',   bg: 'bg-gray-500/10'   },
+  banking: { icon: BriefcaseIcon, color: 'text-blue-400', bg: 'bg-blue-500/10' },
+  car: { icon: Car, color: 'text-orange-400', bg: 'bg-orange-500/10' },
+  employment: { icon: Users, color: 'text-green-400', bg: 'bg-green-500/10' },
+  rental: { icon: Home, color: 'text-purple-400', bg: 'bg-purple-500/10' },
+  legal: { icon: Scale, color: 'text-gold-400', bg: 'bg-gold-500/10' },
+  other: { icon: HelpCircle, color: 'text-gray-400', bg: 'bg-gray-500/10' },
 }
 
 const STATUS_COLORS = {
-  pending:     'text-amber-400  bg-amber-500/10  border-amber-500/20',
+  pending: 'text-amber-400  bg-amber-500/10  border-amber-500/20',
   in_progress: 'text-blue-400   bg-blue-500/10   border-blue-500/20',
-  done:        'text-green-400  bg-green-500/10  border-green-500/20',
-  rejected:    'text-red-400    bg-red-500/10    border-red-500/20',
+  done: 'text-green-400  bg-green-500/10  border-green-500/20',
+  rejected: 'text-red-400    bg-red-500/10    border-red-500/20',
 }
 
 function formatDate(iso) {
   if (!iso) return '—'
-  return new Date(iso).toLocaleDateString('en-AE', { month: 'short', day: 'numeric', year: 'numeric' })
+  return new Date(iso).toLocaleDateString('en-AE', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  })
 }
 
 export function PartnerDashboard() {
@@ -41,13 +57,12 @@ export function PartnerDashboard() {
   const { tasks, assignedCases, stats, loading, error, fetchAll } = usePartner()
 
   const firstName = profile?.email?.split('@')[0] || ''
-  const pendingTasks    = tasks.filter(t => t.status === 'pending')
-  const inProgressTasks = tasks.filter(t => t.status === 'in_progress')
-  const recentCases     = assignedCases.slice(0, 5)
+  const pendingTasks = tasks.filter((t) => t.status === 'pending')
+  const inProgressTasks = tasks.filter((t) => t.status === 'in_progress')
+  const recentCases = assignedCases.slice(0, 5)
 
   return (
     <div className="max-w-5xl mx-auto space-y-8">
-
       {/* Header */}
       <div className="flex items-start justify-between animate-slide-up">
         <div>
@@ -79,15 +94,34 @@ export function PartnerDashboard() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 animate-slide-up-delay-1">
-        <StatCard label={t('partner.assignedCases')}   value={loading ? '—' : stats.assigned}   icon={ClipboardList} color="purple" />
-        <StatCard label="In Progress"                  value={loading ? '—' : stats.inProgress} icon={TrendingUp}    color="blue"   />
-        <StatCard label={t('partner.pendingDocuments')} value={loading ? '—' : stats.pending}   icon={Clock}         color="gold"   />
-        <StatCard label={t('partner.completedCases')}  value={loading ? '—' : stats.done}       icon={CheckCircle}   color="green"  />
+        <StatCard
+          label={t('partner.assignedCases')}
+          value={loading ? '—' : stats.assigned}
+          icon={ClipboardList}
+          color="purple"
+        />
+        <StatCard
+          label="In Progress"
+          value={loading ? '—' : stats.inProgress}
+          icon={TrendingUp}
+          color="blue"
+        />
+        <StatCard
+          label={t('partner.pendingDocuments')}
+          value={loading ? '—' : stats.pending}
+          icon={Clock}
+          color="gold"
+        />
+        <StatCard
+          label={t('partner.completedCases')}
+          value={loading ? '—' : stats.done}
+          icon={CheckCircle}
+          color="green"
+        />
       </div>
 
       {/* Main grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-slide-up-delay-2">
-
         {/* Pending Tasks */}
         <div>
           <div className="flex items-center justify-between mb-4">
@@ -116,7 +150,7 @@ export function PartnerDashboard() {
             </div>
           ) : (
             <div className="space-y-2">
-              {pendingTasks.slice(0, 4).map(task => (
+              {pendingTasks.slice(0, 4).map((task) => (
                 <TaskCard key={task.id} task={task} />
               ))}
             </div>
@@ -126,7 +160,9 @@ export function PartnerDashboard() {
         {/* In Progress Tasks */}
         <div>
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-display text-xl font-semibold text-[var(--text-primary)]">In Progress</h2>
+            <h2 className="font-display text-xl font-semibold text-[var(--text-primary)]">
+              In Progress
+            </h2>
             <Link to="/partner/tasks">
               <button className="text-xs text-purple-400 hover:text-purple-300 flex items-center gap-1">
                 View all <ArrowRight size={11} />
@@ -143,7 +179,7 @@ export function PartnerDashboard() {
             </div>
           ) : (
             <div className="space-y-2">
-              {inProgressTasks.slice(0, 4).map(task => (
+              {inProgressTasks.slice(0, 4).map((task) => (
                 <TaskCard key={task.id} task={task} />
               ))}
             </div>
@@ -178,7 +214,7 @@ export function PartnerDashboard() {
           </div>
         ) : (
           <div className="space-y-3">
-            {recentCases.map(c => (
+            {recentCases.map((c) => (
               <PartnerCaseCard key={c.id} caseItem={c} t={t} />
             ))}
           </div>
@@ -191,15 +227,22 @@ export function PartnerDashboard() {
 // ─── Task card ─────────────────────────────────────────────────────
 function TaskCard({ task }) {
   const statusCls = STATUS_COLORS[task.status] || STATUS_COLORS.pending
-  const caseType  = task.cases?.type || 'other'
-  const client    = task.cases?.users?.email || '—'
+  const caseType = task.cases?.type || 'other'
+  const client = task.cases?.users?.email || '—'
 
   return (
     <Link to="/partner/tasks">
       <div className="glass-panel rounded-xl p-4 hover:border-white/10 hover:bg-[var(--bg-elevated)] transition-all cursor-pointer group">
         <div className="flex items-start justify-between gap-3 mb-2">
-          <p className="text-sm font-semibold text-[var(--text-primary)] line-clamp-1">{task.title}</p>
-          <span className={clsx('inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium border shrink-0', statusCls)}>
+          <p className="text-sm font-semibold text-[var(--text-primary)] line-clamp-1">
+            {task.title}
+          </p>
+          <span
+            className={clsx(
+              'inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium border shrink-0',
+              statusCls,
+            )}
+          >
             {task.status.replace('_', ' ')}
           </span>
         </div>
@@ -221,14 +264,19 @@ function TaskCard({ task }) {
 // ─── Partner case card ─────────────────────────────────────────────
 function PartnerCaseCard({ caseItem, t }) {
   const typeKey = caseItem.type || 'other'
-  const meta    = TYPE_META[typeKey] || TYPE_META.other
-  const Icon    = meta.icon
-  const client  = caseItem.users?.email || '—'
+  const meta = TYPE_META[typeKey] || TYPE_META.other
+  const Icon = meta.icon
+  const client = caseItem.users?.email || '—'
 
   return (
     <Link to="/partner/cases">
       <div className="glass-panel rounded-xl p-4 hover:border-white/10 hover:bg-[var(--bg-elevated)] transition-all cursor-pointer group flex items-center gap-4">
-        <div className={clsx('w-10 h-10 rounded-xl flex items-center justify-center shrink-0', meta.bg)}>
+        <div
+          className={clsx(
+            'w-10 h-10 rounded-xl flex items-center justify-center shrink-0',
+            meta.bg,
+          )}
+        >
           <Icon size={18} className={meta.color} />
         </div>
         <div className="flex-1 min-w-0">
@@ -241,7 +289,10 @@ function PartnerCaseCard({ caseItem, t }) {
           {caseItem.ai_risk_level && <RiskBadge level={caseItem.ai_risk_level} />}
           <StatusBadge status={caseItem.status} />
         </div>
-        <ArrowRight size={14} className="text-[var(--text-muted)] opacity-0 group-hover:opacity-60 shrink-0" />
+        <ArrowRight
+          size={14}
+          className="text-[var(--text-muted)] opacity-0 group-hover:opacity-60 shrink-0"
+        />
       </div>
     </Link>
   )
@@ -250,7 +301,7 @@ function PartnerCaseCard({ caseItem, t }) {
 function TaskSkeleton() {
   return (
     <div className="space-y-2">
-      {[1,2,3].map(i => (
+      {[1, 2, 3].map((i) => (
         <div key={i} className="glass-panel rounded-xl p-4 animate-pulse">
           <div className="h-3.5 bg-white/5 rounded w-2/3 mb-2" />
           <div className="h-2.5 bg-white/5 rounded w-1/2" />
@@ -263,7 +314,7 @@ function TaskSkeleton() {
 function CaseSkeleton() {
   return (
     <div className="space-y-3">
-      {[1,2,3].map(i => (
+      {[1, 2, 3].map((i) => (
         <div key={i} className="glass-panel rounded-xl p-4 animate-pulse flex items-center gap-4">
           <div className="w-10 h-10 rounded-xl bg-white/5 shrink-0" />
           <div className="flex-1 space-y-2">

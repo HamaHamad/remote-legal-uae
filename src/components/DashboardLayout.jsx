@@ -29,10 +29,12 @@ export function DashboardLayout() {
         )}
 
         {/* Mobile Sidebar */}
-        <div className={clsx(
-          'lg:hidden fixed inset-y-0 start-0 z-40 transition-transform duration-300',
-          sidebarOpen ? 'translate-x-0' : '-translate-x-full [dir=rtl]:translate-x-full',
-        )}>
+        <div
+          className={clsx(
+            'lg:hidden fixed inset-y-0 start-0 z-40 transition-transform duration-300',
+            sidebarOpen ? 'translate-x-0' : '-translate-x-full [dir=rtl]:translate-x-full',
+          )}
+        >
           <Sidebar onClose={() => setSidebarOpen(false)} />
         </div>
 
@@ -48,9 +50,7 @@ export function DashboardLayout() {
               >
                 {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
               </button>
-              <span className="font-display text-lg font-semibold text-gold-400">
-                Remote Legal
-              </span>
+              <span className="font-display text-lg font-semibold text-gold-400">Remote Legal</span>
             </div>
             <NotificationBell />
           </header>
@@ -71,4 +71,3 @@ export function DashboardLayout() {
 }
 
 export default DashboardLayout
-

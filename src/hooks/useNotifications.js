@@ -5,8 +5,8 @@ import { useAuth } from '@/context/AuthContext'
 export function useNotifications() {
   const { user } = useAuth()
   const [notifications, setNotifications] = useState([])
-  const [unreadCount,   setUnreadCount]   = useState(0)
-  const [loading,       setLoading]       = useState(true)
+  const [unreadCount, setUnreadCount] = useState(0)
+  const [loading, setLoading] = useState(true)
   const channelRef = useRef(null)
 
   // ─── Fetch existing notifications ─────────────────────────────
@@ -21,7 +21,7 @@ export function useNotifications() {
 
     if (!error) {
       setNotifications(data || [])
-      setUnreadCount((data || []).filter(n => !n.is_read).length)
+      setUnreadCount((data || []).filter((n) => !n.is_read).length)
     }
     setLoading(false)
   }, [user])
@@ -38,16 +38,16 @@ export function useNotifications() {
       .on(
         'postgres_changes',
         {
-          event:  'INSERT',
+          event: 'INSERT',
           schema: 'public',
-          table:  'notifications',
+          table: 'notifications',
           filter: `user_id=eq.${user.id}`,
         },
         (payload) => {
           const newNotif = payload.new
-          setNotifications(prev => [newNotif, ...prev])
-          setUnreadCount(prev => prev + 1)
-        }
+          setNotifications((prev) => [newNotif, ...prev])
+          setUnreadCount((prev) => prev + 1)
+        },
       )
       .subscribe()
 
@@ -59,18 +59,19 @@ export function useNotifications() {
   }, [user, fetchNotifications])
 
   // ─── Mark one notification as read ────────────────────────────
-  const markRead = useCallback(async (id) => {
-    await supabase
-      .from('notifications')
-      .update({ is_read: true })
-      .eq('id', id)
-      .eq('user_id', user?.id)
+  const markRead = useCallback(
+    async (id) => {
+      await supabase
+        .from('notifications')
+        .update({ is_read: true })
+        .eq('id', id)
+        .eq('user_id', user?.id)
 
-    setNotifications(prev =>
-      prev.map(n => n.id === id ? { ...n, is_read: true } : n)
-    )
-    setUnreadCount(prev => Math.max(0, prev - 1))
-  }, [user])
+      setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, is_read: true } : n)))
+      setUnreadCount((prev) => Math.max(0, prev - 1))
+    },
+    [user],
+  )
 
   // ─── Mark all as read ─────────────────────────────────────────
   const markAllRead = useCallback(async () => {
@@ -81,7 +82,7 @@ export function useNotifications() {
       .eq('user_id', user.id)
       .eq('is_read', false)
 
-    setNotifications(prev => prev.map(n => ({ ...n, is_read: true })))
+    setNotifications((prev) => prev.map((n) => ({ ...n, is_read: true })))
     setUnreadCount(0)
   }, [user])
 

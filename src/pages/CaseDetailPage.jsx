@@ -2,9 +2,23 @@ import { useState, useEffect, useCallback } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import {
-  ArrowLeft, FolderOpen, FileText, Clock, RefreshCw,
-  Briefcase, Car, Users, Home, Scale, HelpCircle,
-  Calendar, Hash, AlertCircle, Brain, Sparkles, ChevronDown
+  ArrowLeft,
+  FolderOpen,
+  FileText,
+  Clock,
+  RefreshCw,
+  Briefcase,
+  Car,
+  Users,
+  Home,
+  Scale,
+  HelpCircle,
+  Calendar,
+  Hash,
+  AlertCircle,
+  Brain,
+  Sparkles,
+  ChevronDown,
 } from 'lucide-react'
 import { clsx } from 'clsx'
 import { supabase } from '@/lib/supabase'
@@ -19,26 +33,29 @@ import Button from '@/components/ui/Button'
 
 // ─── Type config ──────────────────────────────────────────────────
 const TYPE_META = {
-  banking:    { icon: Briefcase, color: 'text-blue-400',   bg: 'bg-blue-500/10'   },
-  car:        { icon: Car,       color: 'text-orange-400', bg: 'bg-orange-500/10' },
-  employment: { icon: Users,     color: 'text-green-400',  bg: 'bg-green-500/10'  },
-  rental:     { icon: Home,      color: 'text-purple-400', bg: 'bg-purple-500/10' },
-  legal:      { icon: Scale,     color: 'text-gold-400',   bg: 'bg-gold-500/10'   },
-  other:      { icon: HelpCircle,color: 'text-gray-400',   bg: 'bg-gray-500/10'   },
+  banking: { icon: Briefcase, color: 'text-blue-400', bg: 'bg-blue-500/10' },
+  car: { icon: Car, color: 'text-orange-400', bg: 'bg-orange-500/10' },
+  employment: { icon: Users, color: 'text-green-400', bg: 'bg-green-500/10' },
+  rental: { icon: Home, color: 'text-purple-400', bg: 'bg-purple-500/10' },
+  legal: { icon: Scale, color: 'text-gold-400', bg: 'bg-gold-500/10' },
+  other: { icon: HelpCircle, color: 'text-gray-400', bg: 'bg-gray-500/10' },
 }
 
 function formatDate(iso) {
   return new Date(iso).toLocaleDateString('en-AE', {
-    year: 'numeric', month: 'long', day: 'numeric',
-    hour: '2-digit', minute: '2-digit',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
   })
 }
 
 function formatBytes(b) {
   if (!b) return '—'
   if (b < 1024) return `${b} B`
-  if (b < 1048576) return `${(b/1024).toFixed(1)} KB`
-  return `${(b/1048576).toFixed(1)} MB`
+  if (b < 1048576) return `${(b / 1024).toFixed(1)} KB`
+  return `${(b / 1048576).toFixed(1)} MB`
 }
 
 // ─── Skeleton ─────────────────────────────────────────────────────
@@ -73,10 +90,16 @@ function DocItem({ doc, onDownload, downloading }) {
 
   return (
     <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border)] hover:border-white/10 transition-all group">
-      <div className={clsx(
-        'w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold shrink-0',
-        isPDF ? 'bg-red-500/15 text-red-400' : isImg ? 'bg-blue-500/15 text-blue-400' : 'bg-white/8 text-[var(--text-muted)]',
-      )}>
+      <div
+        className={clsx(
+          'w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold shrink-0',
+          isPDF
+            ? 'bg-red-500/15 text-red-400'
+            : isImg
+              ? 'bg-blue-500/15 text-blue-400'
+              : 'bg-white/8 text-[var(--text-muted)]',
+        )}
+      >
         {isPDF ? 'PDF' : isImg ? 'IMG' : 'DOC'}
       </div>
       <div className="flex-1 min-w-0">
@@ -88,7 +111,11 @@ function DocItem({ doc, onDownload, downloading }) {
         disabled={downloading}
         className="opacity-0 group-hover:opacity-100 text-[11px] text-gold-400 hover:text-gold-300 transition-all flex items-center gap-1"
       >
-        {downloading ? <span className="w-3 h-3 border border-gold-400/30 border-t-gold-400 rounded-full animate-spin" /> : 'Download'}
+        {downloading ? (
+          <span className="w-3 h-3 border border-gold-400/30 border-t-gold-400 rounded-full animate-spin" />
+        ) : (
+          'Download'
+        )}
       </button>
     </div>
   )
@@ -96,24 +123,24 @@ function DocItem({ doc, onDownload, downloading }) {
 
 // ─── Main page ─────────────────────────────────────────────────────
 export function CaseDetailPage() {
-  const { t }         = useTranslation()
-  const { caseId }    = useParams()
-  const navigate      = useNavigate()
-  const { user }      = useAuth()
+  const { t } = useTranslation()
+  const { caseId } = useParams()
+  const navigate = useNavigate()
+  const { user } = useAuth()
   const { fetchAIReport, fetchSteps } = useAI()
   const { fetchDocuments, getSignedUrl } = useDocuments()
   const { fetchCaseAnalyses } = useDocumentAnalysis()
 
-  const [caseData,  setCaseData]  = useState(null)
-  const [aiReport,  setAiReport]  = useState(null)
-  const [steps,     setSteps]     = useState([])
+  const [caseData, setCaseData] = useState(null)
+  const [aiReport, setAiReport] = useState(null)
+  const [steps, setSteps] = useState([])
   const [documents, setDocuments] = useState([])
   const [docAnalyses, setDocAnalyses] = useState([])
   const [selectedDocId, setSelectedDocId] = useState(null)
-  const [loading,   setLoading]   = useState(true)
-  const [error,     setError]     = useState(null)
-  const [dlId,      setDlId]      = useState(null)
-  const [polling,   setPolling]   = useState(false)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const [dlId, setDlId] = useState(null)
+  const [polling, setPolling] = useState(false)
 
   // ─── Fetch all data ──────────────────────────────────────────
   const loadAll = useCallback(async () => {
@@ -124,11 +151,13 @@ export function CaseDetailPage() {
       // Case + AI fields in one query
       const { data: cData, error: cErr } = await supabase
         .from('cases')
-        .select(`
+        .select(
+          `
           id, type, status, description, created_at, updated_at, user_id,
           ai_status, ai_summary, ai_risk_level, ai_estimated_cost,
           ai_estimated_time, ai_unlocked
-        `)
+        `,
+        )
         .eq('id', caseId)
         .single()
 
@@ -155,7 +184,6 @@ export function CaseDetailPage() {
       } else if (docsData.length > 0) {
         setSelectedDocId(docsData[0].id)
       }
-
     } catch (err) {
       setError(err.message)
     } finally {
@@ -177,7 +205,7 @@ export function CaseDetailPage() {
       if (!data) return
 
       setAiReport(data)
-      setCaseData(prev => prev ? { ...prev, ...data } : data)
+      setCaseData((prev) => (prev ? { ...prev, ...data } : data))
 
       if (data.ai_status === 'done' || data.ai_status === 'failed') {
         clearInterval(interval)
@@ -188,7 +216,10 @@ export function CaseDetailPage() {
       }
     }, 3000) // poll every 3s
 
-    return () => { clearInterval(interval); setPolling(false) }
+    return () => {
+      clearInterval(interval)
+      setPolling(false)
+    }
   }, [aiReport?.ai_status, caseId, fetchAIReport, fetchSteps])
 
   // ─── Download ────────────────────────────────────────────────
@@ -197,7 +228,9 @@ export function CaseDetailPage() {
     const url = await getSignedUrl(doc.storage_path, 60)
     if (url) {
       const a = document.createElement('a')
-      a.href = url; a.download = doc.file_name; a.click()
+      a.href = url
+      a.download = doc.file_name
+      a.click()
     }
     setDlId(null)
   }
@@ -211,20 +244,21 @@ export function CaseDetailPage() {
           <AlertCircle size={32} className="text-red-400 mb-4" />
           <p className="text-sm font-medium text-[var(--text-primary)] mb-1">Could not load case</p>
           <p className="text-xs text-[var(--text-muted)] mb-5">{error}</p>
-          <Button variant="secondary" onClick={() => navigate(-1)} icon={ArrowLeft}>Go Back</Button>
+          <Button variant="secondary" onClick={() => navigate(-1)} icon={ArrowLeft}>
+            Go Back
+          </Button>
         </div>
       </div>
     )
   }
 
   const typeKey = caseData?.type || 'other'
-  const meta    = TYPE_META[typeKey] || TYPE_META.other
-  const Icon    = meta.icon
+  const meta = TYPE_META[typeKey] || TYPE_META.other
+  const Icon = meta.icon
   const typeLabel = t(`case.types.${typeKey}`, { defaultValue: typeKey })
 
   return (
     <div className="max-w-4xl mx-auto space-y-6 animate-fade-in">
-
       {/* ── Breadcrumb + Back ──────────────────────────────────── */}
       <div className="flex items-center gap-3 animate-slide-up">
         <button
@@ -236,13 +270,18 @@ export function CaseDetailPage() {
         </button>
         <span className="text-[var(--text-muted)] opacity-40">/</span>
         <span className="text-xs text-[var(--text-secondary)] font-mono">
-          #{caseData.id.slice(0,8).toUpperCase()}
+          #{caseData.id.slice(0, 8).toUpperCase()}
         </span>
       </div>
 
       {/* ── Case Header ────────────────────────────────────────── */}
       <div className="flex flex-col sm:flex-row sm:items-start gap-4 animate-slide-up-delay-1">
-        <div className={clsx('w-14 h-14 rounded-2xl flex items-center justify-center shrink-0', meta.bg)}>
+        <div
+          className={clsx(
+            'w-14 h-14 rounded-2xl flex items-center justify-center shrink-0',
+            meta.bg,
+          )}
+        >
           <Icon size={26} className={meta.color} />
         </div>
         <div className="flex-1">
@@ -258,7 +297,7 @@ export function CaseDetailPage() {
           <div className="flex flex-wrap items-center gap-4 text-xs text-[var(--text-muted)]">
             <span className="flex items-center gap-1">
               <Hash size={11} />
-              {caseData.id.slice(0,8).toUpperCase()}
+              {caseData.id.slice(0, 8).toUpperCase()}
             </span>
             <span className="flex items-center gap-1">
               <Calendar size={11} />
@@ -276,10 +315,8 @@ export function CaseDetailPage() {
 
       {/* ── Main grid ──────────────────────────────────────────── */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-slide-up-delay-2">
-
         {/* Left: description + AI report + Document Intelligence */}
         <div className="lg:col-span-2 space-y-5">
-
           {/* Description */}
           {caseData.description && (
             <div className="glass-panel rounded-2xl p-5">
@@ -300,11 +337,7 @@ export function CaseDetailPage() {
                 AI Case Analysis
               </p>
             </div>
-            <AICaseReport
-              caseData={aiReport}
-              steps={steps}
-              onUnlockRequest={() => {}}
-            />
+            <AICaseReport caseData={aiReport} steps={steps} onUnlockRequest={() => {}} />
           </div>
 
           {/* Document Intelligence */}
@@ -320,8 +353,8 @@ export function CaseDetailPage() {
               {/* Document selector tabs */}
               {documents.length > 1 && (
                 <div className="flex gap-2 mb-4 flex-wrap">
-                  {documents.map(doc => {
-                    const hasAnalysis = docAnalyses.some(a => a.document_id === doc.id)
+                  {documents.map((doc) => {
+                    const hasAnalysis = docAnalyses.some((a) => a.document_id === doc.id)
                     return (
                       <button
                         key={doc.id}
@@ -335,7 +368,9 @@ export function CaseDetailPage() {
                       >
                         <FileText size={11} />
                         <span className="max-w-[120px] truncate">{doc.file_name}</span>
-                        {hasAnalysis && <span className="w-1.5 h-1.5 rounded-full bg-green-400 shrink-0" />}
+                        {hasAnalysis && (
+                          <span className="w-1.5 h-1.5 rounded-full bg-green-400 shrink-0" />
+                        )}
                       </button>
                     )
                   })}
@@ -343,31 +378,32 @@ export function CaseDetailPage() {
               )}
 
               {/* Panel for selected document */}
-              {selectedDocId && (() => {
-                const selectedDoc = documents.find(d => d.id === selectedDocId)
-                const existingAnalysis = docAnalyses.find(a => a.document_id === selectedDocId) || null
-                if (!selectedDoc) return null
-                return (
-                  <DocumentIntelligencePanel
-                    key={selectedDocId}
-                    document={{
-                      id:           selectedDoc.id,
-                      file_name:    selectedDoc.file_name,
-                      storage_path: selectedDoc.storage_path,
-                      mime_type:    selectedDoc.mime_type,
-                      case_id:      caseId,
-                    }}
-                    initialAnalysis={existingAnalysis}
-                  />
-                )
-              })()}
+              {selectedDocId &&
+                (() => {
+                  const selectedDoc = documents.find((d) => d.id === selectedDocId)
+                  const existingAnalysis =
+                    docAnalyses.find((a) => a.document_id === selectedDocId) || null
+                  if (!selectedDoc) return null
+                  return (
+                    <DocumentIntelligencePanel
+                      key={selectedDocId}
+                      document={{
+                        id: selectedDoc.id,
+                        file_name: selectedDoc.file_name,
+                        storage_path: selectedDoc.storage_path,
+                        mime_type: selectedDoc.mime_type,
+                        case_id: caseId,
+                      }}
+                      initialAnalysis={existingAnalysis}
+                    />
+                  )
+                })()}
             </div>
           )}
         </div>
 
         {/* Right: meta + documents */}
         <div className="space-y-5">
-
           {/* Case info */}
           <div className="glass-panel rounded-2xl p-4 space-y-3">
             <p className="text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-widest">
@@ -392,7 +428,9 @@ export function CaseDetailPage() {
             )}
             {aiReport?.ai_estimated_time && (
               <InfoRow label="Est. Time">
-                <span className="text-xs text-[var(--text-secondary)]">{aiReport.ai_estimated_time}</span>
+                <span className="text-xs text-[var(--text-secondary)]">
+                  {aiReport.ai_estimated_time}
+                </span>
               </InfoRow>
             )}
             <InfoRow label="Opened">
@@ -420,7 +458,7 @@ export function CaseDetailPage() {
               </div>
             ) : (
               <div className="space-y-2">
-                {documents.map(doc => (
+                {documents.map((doc) => (
                   <DocItem
                     key={doc.id}
                     doc={doc}

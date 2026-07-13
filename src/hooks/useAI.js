@@ -6,9 +6,9 @@ import { supabase } from '@/lib/supabase'
  * polls the cases table until ai_status transitions to 'done' or 'failed'.
  */
 export function useAI() {
-  const [analyzing,  setAnalyzing]  = useState(false)
-  const [aiError,    setAiError]    = useState(null)
-  const [aiProgress, setAiProgress] = useState('')   // status label for UI
+  const [analyzing, setAnalyzing] = useState(false)
+  const [aiError, setAiError] = useState(null)
+  const [aiProgress, setAiProgress] = useState('') // status label for UI
 
   // ─── Invoke edge function + poll for result ───────────────────
   const analyzeCase = useCallback(async ({ caseId, caseType, description }) => {
@@ -20,8 +20,8 @@ export function useAI() {
       // Call the Supabase Edge Function
       const { error: fnError } = await supabase.functions.invoke('analyze-case', {
         body: {
-          case_id:     caseId,
-          case_type:   caseType,
+          case_id: caseId,
+          case_type: caseType,
           description: description || '',
         },
       })
@@ -33,10 +33,7 @@ export function useAI() {
         setAiProgress('')
 
         // Update DB status to failed
-        await supabase
-          .from('cases')
-          .update({ ai_status: 'failed' })
-          .eq('id', caseId)
+        await supabase.from('cases').update({ ai_status: 'failed' }).eq('id', caseId)
 
         return { success: false, error: fnError.message }
       }
@@ -44,7 +41,6 @@ export function useAI() {
       setAiProgress('Analysis complete ✓')
       setAnalyzing(false)
       return { success: true, error: null }
-
     } catch (err) {
       const msg = err?.message || 'Unexpected error during AI analysis'
       setAiError(msg)
@@ -58,7 +54,8 @@ export function useAI() {
   const fetchAIReport = useCallback(async (caseId) => {
     const { data, error } = await supabase
       .from('cases')
-      .select(`
+      .select(
+        `
         id,
         ai_status,
         ai_summary,
@@ -66,7 +63,8 @@ export function useAI() {
         ai_estimated_cost,
         ai_estimated_time,
         ai_unlocked
-      `)
+      `,
+      )
       .eq('id', caseId)
       .single()
 

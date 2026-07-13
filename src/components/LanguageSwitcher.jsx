@@ -13,8 +13,8 @@ export function LanguageSwitcher({ compact = false }) {
 
   // Normalize: 'en-GB' → 'en', 'ar-AE' → 'ar', etc.
   const normalizedLang = i18n.language?.split('-')[0] || 'en'
-  const currentLang = SUPPORTED_LANGUAGES.find(l => l.code === normalizedLang)
-    || SUPPORTED_LANGUAGES[0]
+  const currentLang =
+    SUPPORTED_LANGUAGES.find((l) => l.code === normalizedLang) || SUPPORTED_LANGUAGES[0]
 
   useEffect(() => {
     const handler = (e) => {
@@ -33,7 +33,7 @@ export function LanguageSwitcher({ compact = false }) {
     <div ref={ref} className="relative">
       <button
         type="button"
-        onClick={() => setOpen(v => !v)}
+        onClick={() => setOpen((v) => !v)}
         className={clsx(
           'flex items-center gap-2 rounded-lg border border-[var(--border)]',
           'bg-[var(--bg-elevated)] hover:bg-[var(--bg-card)]',
@@ -90,15 +90,15 @@ export function LanguageSwitcher({ compact = false }) {
                   <div className="flex flex-col items-start">
                     <span className="font-medium leading-tight">{lang.nativeLabel}</span>
                     {lang.nativeLabel !== lang.label && (
-                      <span className="text-xs text-[var(--text-muted)] leading-tight">{lang.label}</span>
+                      <span className="text-xs text-[var(--text-muted)] leading-tight">
+                        {lang.label}
+                      </span>
                     )}
                   </div>
                   {lang.dir === 'rtl' && (
                     <span className="ms-auto text-xs text-[var(--text-muted)]">RTL</span>
                   )}
-                  {isActive && (
-                    <Check size={14} className="ms-auto text-gold-400" />
-                  )}
+                  {isActive && <Check size={14} className="ms-auto text-gold-400" />}
                 </button>
               )
             })}

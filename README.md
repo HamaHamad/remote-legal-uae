@@ -1,4 +1,5 @@
 # Remote Legal Case Orchestrator — UAE
+
 ### Phase 1: Foundation
 
 > A production-grade SaaS platform for remote legal case management in the UAE, built for multilingual audiences including Arabic (RTL), Hindi, Urdu, and Filipino.
@@ -77,6 +78,7 @@ supabase/
 3. Click **Run**
 
 This creates:
+
 - `users` table (with profile data + role)
 - `cases` table (core case entity)
 - `documents` table (file metadata)
@@ -92,6 +94,7 @@ cp .env.example .env.local
 ```
 
 Edit `.env.local`:
+
 ```env
 VITE_SUPABASE_URL=https://YOUR_PROJECT_ID.supabase.co
 VITE_SUPABASE_ANON_KEY=your-anon-public-key
@@ -145,7 +148,7 @@ Session  → Persisted in localStorage as 'rlco-auth-token'
 ## 🌐 Languages & RTL
 
 | Code | Language | Direction |
-|------|----------|-----------|
+| ---- | -------- | --------- |
 | `en` | English  | LTR       |
 | `ar` | Arabic   | **RTL**   |
 | `hi` | Hindi    | LTR       |
@@ -158,13 +161,14 @@ RTL switching applies `dir="rtl"` to `<html>` and uses the **Noto Naskh Arabic**
 
 ## 🛡️ Role System
 
-| Role      | Access Path | Permissions |
-|-----------|-------------|-------------|
-| `client`  | `/dashboard` | Own cases only |
+| Role      | Access Path  | Permissions         |
+| --------- | ------------ | ------------------- |
+| `client`  | `/dashboard` | Own cases only      |
 | `admin`   | `/admin`     | All data, all users |
 | `partner` | `/partner`   | Assigned cases only |
 
 Routes are protected at two levels:
+
 1. **React Router** — `ProtectedRoute` component redirects unauthenticated users
 2. **Supabase RLS** — database enforces access at the query level regardless of client
 
@@ -188,6 +192,7 @@ npm run build
 ```
 
 Output goes to `dist/`. Deploy to any static host:
+
 - **Vercel**: `npx vercel --prod`
 - **Netlify**: Drag and drop `dist/`
 - **Cloudflare Pages**: Connect GitHub repo
@@ -210,13 +215,13 @@ Output goes to `dist/`. Deploy to any static host:
 
 ## 🧰 Tech Stack
 
-| Layer       | Technology         |
-|-------------|--------------------|
-| Frontend    | React 18 + Vite 5  |
-| Routing     | React Router v6    |
-| Styling     | Tailwind CSS v3    |
-| Auth + DB   | Supabase           |
-| i18n        | react-i18next      |
-| State       | React Context + Zustand (ready) |
-| Icons       | Lucide React       |
-| Fonts       | Cormorant Garamond + DM Sans + Noto Naskh Arabic |
+| Layer     | Technology                                       |
+| --------- | ------------------------------------------------ |
+| Frontend  | React 18 + Vite 5                                |
+| Routing   | React Router v6                                  |
+| Styling   | Tailwind CSS v3                                  |
+| Auth + DB | Supabase                                         |
+| i18n      | react-i18next                                    |
+| State     | React Context + Zustand (ready)                  |
+| Icons     | Lucide React                                     |
+| Fonts     | Cormorant Garamond + DM Sans + Noto Naskh Arabic |

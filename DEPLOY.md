@@ -1,6 +1,7 @@
 # 🚀 Remote Legal Case Orchestrator — Production Deployment Guide
 
 ## Prerequisites
+
 - Supabase account (free tier is fine to start)
 - Vercel account (free tier)
 - Stripe account (free to create, test mode available)
@@ -30,6 +31,7 @@ supabase/migration_phase6.sql     ← Phase 6: Notifications + Analytics
 ## Step 2 — Configure Supabase
 
 ### Authentication Settings
+
 1. **Supabase → Authentication → Providers → Email**
    - Confirm email: **OFF** (or ON if you want email verification)
    - Minimum password length: **6**
@@ -41,12 +43,15 @@ supabase/migration_phase6.sql     ← Phase 6: Notifications + Analytics
    - Also add: `http://localhost:5173/**`
 
 ### Storage Buckets
+
 1. **Supabase → Storage** — verify `case-documents` bucket exists
    - If not: create it, set to **Private**
 
 ### Create Your Admin Account
+
 1. Sign up at your live site
 2. Run in SQL Editor:
+
 ```sql
 INSERT INTO public.users (id, email, role, language)
 SELECT id, email, 'admin', 'en'
@@ -60,32 +65,35 @@ ON CONFLICT (id) DO UPDATE SET role = 'admin';
 
 In **Supabase → Edge Functions → Create new function**, deploy 3 functions:
 
-| Function name       | File                                              |
-|---------------------|---------------------------------------------------|
-| `analyze-case`      | `supabase/functions/analyze-case/index.ts`        |
-| `create-checkout`   | `supabase/functions/create-checkout/index.ts`     |
-| `stripe-webhook`    | `supabase/functions/stripe-webhook/index.ts`      |
+| Function name     | File                                          |
+| ----------------- | --------------------------------------------- |
+| `analyze-case`    | `supabase/functions/analyze-case/index.ts`    |
+| `create-checkout` | `supabase/functions/create-checkout/index.ts` |
+| `stripe-webhook`  | `supabase/functions/stripe-webhook/index.ts`  |
 
 For each: paste the code → rename → click **Deploy function**
 
 ### Add Secrets (Supabase → Edge Functions → Secrets)
 
-| Secret name              | Where to find it                                        |
-|--------------------------|---------------------------------------------------------|
-| `OPENAI_API_KEY`         | platform.openai.com → API keys                         |
-| `STRIPE_SECRET_KEY`      | Stripe Dashboard → Developers → API Keys → Secret key  |
-| `STRIPE_WEBHOOK_SECRET`  | Stripe Dashboard → Webhooks → (see step below)         |
+| Secret name             | Where to find it                                      |
+| ----------------------- | ----------------------------------------------------- |
+| `OPENAI_API_KEY`        | platform.openai.com → API keys                        |
+| `STRIPE_SECRET_KEY`     | Stripe Dashboard → Developers → API Keys → Secret key |
+| `STRIPE_WEBHOOK_SECRET` | Stripe Dashboard → Webhooks → (see step below)        |
 
 ---
 
 ## Step 4 — Configure Stripe
 
 ### Create Webhook Endpoint
+
 1. **Stripe Dashboard → Developers → Webhooks → Add endpoint**
 2. Endpoint URL:
+
    ```
    https://YOUR_PROJECT_REF.supabase.co/functions/v1/stripe-webhook
    ```
+
    Find your project ref in: Supabase → Project Settings → General → Reference ID
 
 3. Select events:
@@ -100,20 +108,22 @@ For each: paste the code → rename → click **Deploy function**
 ## Step 5 — Deploy to Vercel
 
 ### Push to GitHub
+
 1. Open **GitHub Desktop** → your project folder
 2. Commit all changes
 3. Push to main
 
 ### Import to Vercel
+
 1. [vercel.com/new](https://vercel.com/new) → Import your GitHub repo
 2. Framework: **Vite** (auto-detected)
 3. **Add Environment Variables:**
 
-| Variable                   | Value                                         |
-|---------------------------|-----------------------------------------------|
-| `VITE_SUPABASE_URL`        | `https://xxxx.supabase.co`                   |
-| `VITE_SUPABASE_ANON_KEY`   | `eyJ...` (anon/public key)                   |
-| `VITE_STRIPE_PUBLISHABLE_KEY` | `pk_test_...` or `pk_live_...`             |
+| Variable                      | Value                          |
+| ----------------------------- | ------------------------------ |
+| `VITE_SUPABASE_URL`           | `https://xxxx.supabase.co`     |
+| `VITE_SUPABASE_ANON_KEY`      | `eyJ...` (anon/public key)     |
+| `VITE_STRIPE_PUBLISHABLE_KEY` | `pk_test_...` or `pk_live_...` |
 
 4. Click **Deploy**
 
@@ -122,9 +132,11 @@ For each: paste the code → rename → click **Deploy function**
 ## Step 6 — Enable Realtime (for notifications)
 
 In **Supabase → Database → Replication**:
+
 - Find `notifications` table → enable **INSERT** replication
 
 Or run in SQL Editor:
+
 ```sql
 ALTER PUBLICATION supabase_realtime ADD TABLE public.notifications;
 ```
@@ -176,6 +188,7 @@ Browser (React + Vite)
 ## Going Live Checklist
 
 Before switching to Stripe live mode:
+
 - [ ] Test full case creation → AI analysis → payment → unlock flow
 - [ ] Test email confirmation flow (if enabled)
 - [ ] Test partner assignment and task upload

@@ -13,8 +13,10 @@ export function LoadingScreen({ configError = false }) {
             Supabase environment variables are missing. The app cannot connect to the database.
           </p>
           <div className="glass-panel rounded-xl p-4 text-start space-y-2 mb-5">
-            <p className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-widest mb-2">Required in Vercel Settings → Environment Variables</p>
-            {['VITE_SUPABASE_URL', 'VITE_SUPABASE_ANON_KEY'].map(v => (
+            <p className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-widest mb-2">
+              Required in Vercel Settings → Environment Variables
+            </p>
+            {['VITE_SUPABASE_URL', 'VITE_SUPABASE_ANON_KEY'].map((v) => (
               <div key={v} className="flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-red-400 shrink-0" />
                 <code className="text-xs text-red-400 font-mono">{v}</code>
@@ -57,13 +59,23 @@ export function LoadingScreen({ configError = false }) {
 function ScalesIcon() {
   return (
     <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M14 3V25" stroke="#D99D18" strokeWidth="1.5" strokeLinecap="round"/>
-      <path d="M8 3H20" stroke="#D99D18" strokeWidth="1.5" strokeLinecap="round"/>
-      <path d="M14 3L5 11" stroke="#D99D18" strokeWidth="1.5" strokeLinecap="round"/>
-      <path d="M14 3L23 11" stroke="#D99D18" strokeWidth="1.5" strokeLinecap="round"/>
-      <path d="M3 14C3 14 4 18 8 18C12 18 13 14 13 14" stroke="#D99D18" strokeWidth="1.5" strokeLinecap="round"/>
-      <path d="M15 14C15 14 16 18 20 18C24 18 25 14 25 14" stroke="#D99D18" strokeWidth="1.5" strokeLinecap="round"/>
-      <path d="M10 25H18" stroke="#D99D18" strokeWidth="1.5" strokeLinecap="round"/>
+      <path d="M14 3V25" stroke="#D99D18" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M8 3H20" stroke="#D99D18" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M14 3L5 11" stroke="#D99D18" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M14 3L23 11" stroke="#D99D18" strokeWidth="1.5" strokeLinecap="round" />
+      <path
+        d="M3 14C3 14 4 18 8 18C12 18 13 14 13 14"
+        stroke="#D99D18"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+      <path
+        d="M15 14C15 14 16 18 20 18C24 18 25 14 25 14"
+        stroke="#D99D18"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+      <path d="M10 25H18" stroke="#D99D18" strokeWidth="1.5" strokeLinecap="round" />
     </svg>
   )
 }

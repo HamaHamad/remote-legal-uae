@@ -1,8 +1,16 @@
 import { useState, useRef, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
-  Upload, Brain, CheckCircle, ArrowRight, Loader2,
-  FileText, X, AlertTriangle, Sparkles, FolderOpen
+  Upload,
+  Brain,
+  CheckCircle,
+  ArrowRight,
+  Loader2,
+  FileText,
+  X,
+  AlertTriangle,
+  Sparkles,
+  FolderOpen,
 } from 'lucide-react'
 import { clsx } from 'clsx'
 import { supabase } from '@/lib/supabase'
@@ -14,10 +22,10 @@ import Button from '@/components/ui/Button'
 import { LegalDisclaimer } from '@/components/LegalDisclaimer'
 
 const STAGES = [
-  { id: 'uploading',  label: 'Uploading document…'         },
-  { id: 'analysing',  label: 'AI is reading document…'     },
-  { id: 'creating',   label: 'Building your case…'         },
-  { id: 'done',       label: 'Case created successfully!'   },
+  { id: 'uploading', label: 'Uploading document…' },
+  { id: 'analysing', label: 'AI is reading document…' },
+  { id: 'creating', label: 'Building your case…' },
+  { id: 'done', label: 'Case created successfully!' },
 ]
 
 function formatBytes(b) {
@@ -28,22 +36,22 @@ function formatBytes(b) {
 
 export function AutoCaseBuilder({ onClose, onCaseCreated }) {
   const { user, profile } = useAuth()
-  const navigate           = useNavigate()
+  const navigate = useNavigate()
   const { uploadDocuments } = useDocuments()
-  const { createCase }      = useCases()
+  const { createCase } = useCases()
   const { analyzeDocument, pollUntilDone } = useDocumentAnalysis()
 
   const inputRef = useRef(null)
 
-  const [file,      setFile]      = useState(null)
-  const [dragging,  setDragging]  = useState(false)
-  const [running,   setRunning]   = useState(false)
-  const [stage,     setStage]     = useState(-1)   // index into STAGES
-  const [error,     setError]     = useState(null)
-  const [result,    setResult]    = useState(null)  // { caseId, analysis }
+  const [file, setFile] = useState(null)
+  const [dragging, setDragging] = useState(false)
+  const [running, setRunning] = useState(false)
+  const [stage, setStage] = useState(-1) // index into STAGES
+  const [error, setError] = useState(null)
+  const [result, setResult] = useState(null) // { caseId, analysis }
 
   const ALLOWED_EXTS = '.pdf,.jpg,.jpeg,.png,.webp,.doc,.docx'
-  const MAX_SIZE_MB  = 50
+  const MAX_SIZE_MB = 50
 
   const handleFile = (f) => {
     if (!f) return
@@ -74,7 +82,7 @@ export function AutoCaseBuilder({ onClose, onCaseCreated }) {
       // We need a case_id to attach the document to Storage path
       // Create a temporary 'other' case first
       const { data: tempCase, error: caseErr } = await createCase({
-        type:        'other',
+        type: 'other',
         description: `Auto-created from document: ${file.name}`,
       })
       if (caseErr) throw new Error(caseErr)
@@ -89,10 +97,10 @@ export function AutoCaseBuilder({ onClose, onCaseCreated }) {
       // ── Stage 2: Analyse document ─────────────────────────────
       setStage(1)
       const { error: analyzeErr } = await analyzeDocument({
-        documentId:  uploadedDoc.id,
-        caseId:      tempCase.id,
+        documentId: uploadedDoc.id,
+        caseId: tempCase.id,
         storagePath: uploadedDoc.storage_path,
-        mimeType:    uploadedDoc.mime_type || file.type,
+        mimeType: uploadedDoc.mime_type || file.type,
       })
       if (analyzeErr) throw new Error(analyzeErr)
 
@@ -103,20 +111,22 @@ export function AutoCaseBuilder({ onClose, onCaseCreated }) {
       // ── Stage 3: Update case with AI-detected type ────────────
       setStage(2)
 
-      const validTypes = ['banking','car','employment','rental','legal','visa','other']
-      const detectedType = analysis?.suggested_case_type && validTypes.includes(analysis.suggested_case_type)
-        ? analysis.suggested_case_type
-        : 'legal'
+      const validTypes = ['banking', 'car', 'employment', 'rental', 'legal', 'visa', 'other']
+      const detectedType =
+        analysis?.suggested_case_type && validTypes.includes(analysis.suggested_case_type)
+          ? analysis.suggested_case_type
+          : 'legal'
 
-      const detectedDesc = analysis?.suggested_description
-        || analysis?.summary
-        || `Case opened from document: ${file.name}`
+      const detectedDesc =
+        analysis?.suggested_description ||
+        analysis?.summary ||
+        `Case opened from document: ${file.name}`
 
       // Update the case with AI-detected values
       await supabase
         .from('cases')
         .update({
-          type:        detectedType,
+          type: detectedType,
           description: detectedDesc,
         })
         .eq('id', tempCase.id)
@@ -125,7 +135,6 @@ export function AutoCaseBuilder({ onClose, onCaseCreated }) {
       setStage(3)
       setResult({ caseId: tempCase.id, analysis })
       onCaseCreated?.()
-
     } catch (err) {
       setError(err.message || 'Something went wrong')
       setStage(-1)
@@ -177,7 +186,8 @@ export function AutoCaseBuilder({ onClose, onCaseCreated }) {
         {ai.risks?.length > 0 && (
           <div className="w-full max-w-sm mb-5 p-3 rounded-xl bg-red-500/8 border border-red-500/20 text-start">
             <p className="text-xs text-red-400 font-semibold flex items-center gap-1.5 mb-1">
-              <AlertTriangle size={12} /> {ai.risks.length} risk{ai.risks.length !== 1 ? 's' : ''} found
+              <AlertTriangle size={12} /> {ai.risks.length} risk{ai.risks.length !== 1 ? 's' : ''}{' '}
+              found
             </p>
             <p className="text-xs text-red-300/80">{ai.risks[0]}</p>
           </div>
@@ -221,7 +231,10 @@ export function AutoCaseBuilder({ onClose, onCaseCreated }) {
       {!file && !running && (
         <div
           onDrop={handleDrop}
-          onDragOver={e => { e.preventDefault(); setDragging(true) }}
+          onDragOver={(e) => {
+            e.preventDefault()
+            setDragging(true)
+          }}
           onDragLeave={() => setDragging(false)}
           onClick={() => inputRef.current?.click()}
           className={clsx(
@@ -236,23 +249,29 @@ export function AutoCaseBuilder({ onClose, onCaseCreated }) {
             type="file"
             className="hidden"
             accept={ALLOWED_EXTS}
-            onChange={e => handleFile(e.target.files[0])}
+            onChange={(e) => handleFile(e.target.files[0])}
           />
-          <div className={clsx(
-            'w-14 h-14 rounded-xl mx-auto mb-4 flex items-center justify-center transition-all',
-            dragging ? 'bg-gold-500/20 text-gold-400' : 'bg-white/5 text-[var(--text-muted)]',
-          )}>
+          <div
+            className={clsx(
+              'w-14 h-14 rounded-xl mx-auto mb-4 flex items-center justify-center transition-all',
+              dragging ? 'bg-gold-500/20 text-gold-400' : 'bg-white/5 text-[var(--text-muted)]',
+            )}
+          >
             <Upload size={24} />
           </div>
           <p className="text-sm font-medium text-[var(--text-primary)] mb-1">
             {dragging ? 'Drop to analyse' : 'Drop your document here'}
           </p>
           <p className="text-xs text-[var(--text-muted)] mb-4">
-            or <span className="text-gold-400 underline underline-offset-2">browse from device</span>
+            or{' '}
+            <span className="text-gold-400 underline underline-offset-2">browse from device</span>
           </p>
           <div className="flex items-center justify-center gap-2 flex-wrap">
-            {['PDF', 'JPG', 'PNG', 'DOCX'].map(ext => (
-              <span key={ext} className="text-[10px] px-2 py-0.5 rounded bg-white/4 border border-white/8 text-[var(--text-muted)] uppercase tracking-wider">
+            {['PDF', 'JPG', 'PNG', 'DOCX'].map((ext) => (
+              <span
+                key={ext}
+                className="text-[10px] px-2 py-0.5 rounded bg-white/4 border border-white/8 text-[var(--text-muted)] uppercase tracking-wider"
+              >
                 {ext}
               </span>
             ))}
@@ -284,25 +303,34 @@ export function AutoCaseBuilder({ onClose, onCaseCreated }) {
         <div className="mb-5 space-y-3">
           {STAGES.map((s, i) => (
             <div key={s.id} className="flex items-center gap-3">
-              <div className={clsx(
-                'w-6 h-6 rounded-full flex items-center justify-center shrink-0 transition-all duration-300',
-                i < stage   ? 'bg-green-500/15 border border-green-500/30 text-green-400' :
-                i === stage ? 'bg-gold-500/15  border border-gold-500/30  text-gold-400' :
-                              'bg-white/5      border border-[var(--border)] text-[var(--text-muted)]',
-              )}>
-                {i < stage
-                  ? <CheckCircle size={12} />
-                  : i === stage
-                    ? <Loader2 size={11} className="animate-spin" />
-                    : <span className="w-1.5 h-1.5 rounded-full bg-current opacity-30" />
-                }
+              <div
+                className={clsx(
+                  'w-6 h-6 rounded-full flex items-center justify-center shrink-0 transition-all duration-300',
+                  i < stage
+                    ? 'bg-green-500/15 border border-green-500/30 text-green-400'
+                    : i === stage
+                      ? 'bg-gold-500/15  border border-gold-500/30  text-gold-400'
+                      : 'bg-white/5      border border-[var(--border)] text-[var(--text-muted)]',
+                )}
+              >
+                {i < stage ? (
+                  <CheckCircle size={12} />
+                ) : i === stage ? (
+                  <Loader2 size={11} className="animate-spin" />
+                ) : (
+                  <span className="w-1.5 h-1.5 rounded-full bg-current opacity-30" />
+                )}
               </div>
-              <span className={clsx(
-                'text-sm',
-                i === stage ? 'text-[var(--text-primary)] font-medium' :
-                i < stage   ? 'text-[var(--text-muted)]' :
-                              'text-[var(--text-muted)] opacity-50',
-              )}>
+              <span
+                className={clsx(
+                  'text-sm',
+                  i === stage
+                    ? 'text-[var(--text-primary)] font-medium'
+                    : i < stage
+                      ? 'text-[var(--text-muted)]'
+                      : 'text-[var(--text-muted)] opacity-50',
+                )}
+              >
                 {s.label}
               </span>
             </div>
@@ -322,11 +350,14 @@ export function AutoCaseBuilder({ onClose, onCaseCreated }) {
       {!file && !running && (
         <div className="mb-5 grid grid-cols-3 gap-3">
           {[
-            { icon: Upload,  label: 'Upload',   desc: 'Any legal document' },
-            { icon: Brain,   label: 'AI reads',  desc: 'Extracts all data' },
+            { icon: Upload, label: 'Upload', desc: 'Any legal document' },
+            { icon: Brain, label: 'AI reads', desc: 'Extracts all data' },
             { icon: FolderOpen, label: 'Case made', desc: 'Pre-filled & ready' },
-          ].map(item => (
-            <div key={item.label} className="flex flex-col items-center text-center p-3 rounded-xl bg-white/2 border border-white/5">
+          ].map((item) => (
+            <div
+              key={item.label}
+              className="flex flex-col items-center text-center p-3 rounded-xl bg-white/2 border border-white/5"
+            >
               <item.icon size={18} className="text-gold-400/60 mb-1.5" />
               <p className="text-xs font-semibold text-[var(--text-secondary)]">{item.label}</p>
               <p className="text-[10px] text-[var(--text-muted)]">{item.desc}</p>

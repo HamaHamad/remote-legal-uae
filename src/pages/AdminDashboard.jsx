@@ -1,9 +1,19 @@
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import {
-  Users, FolderOpen, UserCheck, Clock,
-  Shield, CheckCircle, Server, Database, Globe,
-  ArrowRight, ChevronRight, RefreshCw, Brain
+  Users,
+  FolderOpen,
+  UserCheck,
+  Clock,
+  Shield,
+  CheckCircle,
+  Server,
+  Database,
+  Globe,
+  ArrowRight,
+  ChevronRight,
+  RefreshCw,
+  Brain,
 } from 'lucide-react'
 import { clsx } from 'clsx'
 import { useAdmin } from '@/hooks/useAdmin'
@@ -13,14 +23,18 @@ import { RiskBadge } from '@/components/AICaseReport'
 import Button from '@/components/ui/Button'
 
 const SYSTEM_CHECKS = [
-  { label: 'Database',     icon: Database },
-  { label: 'Auth Service', icon: Shield   },
-  { label: 'Storage',      icon: Server   },
-  { label: 'CDN',          icon: Globe    },
+  { label: 'Database', icon: Database },
+  { label: 'Auth Service', icon: Shield },
+  { label: 'Storage', icon: Server },
+  { label: 'CDN', icon: Globe },
 ]
 
 function formatDate(iso) {
-  return new Date(iso).toLocaleDateString('en-AE', { month: 'short', day: 'numeric', year: 'numeric' })
+  return new Date(iso).toLocaleDateString('en-AE', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  })
 }
 
 export function AdminDashboard() {
@@ -32,7 +46,6 @@ export function AdminDashboard() {
 
   return (
     <div className="max-w-6xl mx-auto space-y-8">
-
       {/* Header */}
       <div className="flex items-start justify-between animate-slide-up">
         <div>
@@ -88,7 +101,6 @@ export function AdminDashboard() {
 
       {/* Main grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-slide-up-delay-2">
-
         {/* Recent Cases — 2 cols */}
         <div className="lg:col-span-2 space-y-4">
           <SectionHeader title={t('admin.caseManagement')}>
@@ -105,7 +117,7 @@ export function AdminDashboard() {
             <EmptyState message="No cases yet" />
           ) : (
             <div className="space-y-2">
-              {recentCases.map(c => (
+              {recentCases.map((c) => (
                 <CaseRow key={c.id} caseItem={c} t={t} />
               ))}
             </div>
@@ -158,14 +170,21 @@ export function AdminDashboard() {
               <UserSkeleton />
             ) : (
               <div className="space-y-2">
-                {recentUsers.map(user => (
-                  <div key={user.id} className="flex items-center gap-3 px-3 py-2.5 rounded-xl glass-panel hover:border-white/10 transition-all">
+                {recentUsers.map((user) => (
+                  <div
+                    key={user.id}
+                    className="flex items-center gap-3 px-3 py-2.5 rounded-xl glass-panel hover:border-white/10 transition-all"
+                  >
                     <div className="w-7 h-7 rounded-full bg-gold-500/10 border border-gold-500/20 flex items-center justify-center text-gold-400 text-xs font-semibold shrink-0">
                       {(user.email || '?')[0].toUpperCase()}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-xs font-medium text-[var(--text-primary)] truncate">{user.email}</p>
-                      <p className="text-[10px] text-[var(--text-muted)]">{formatDate(user.created_at)}</p>
+                      <p className="text-xs font-medium text-[var(--text-primary)] truncate">
+                        {user.email}
+                      </p>
+                      <p className="text-[10px] text-[var(--text-muted)]">
+                        {formatDate(user.created_at)}
+                      </p>
                     </div>
                     <RoleBadge role={user.role} />
                   </div>
@@ -191,8 +210,11 @@ export function AdminDashboard() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-[var(--border)]">
-                  {['Email', 'Role', 'Joined', ''].map(h => (
-                    <th key={h} className="text-start px-4 py-3 text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">
+                  {['Email', 'Role', 'Joined', ''].map((h) => (
+                    <th
+                      key={h}
+                      className="text-start px-4 py-3 text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider"
+                    >
                       {h}
                     </th>
                   ))}
@@ -200,28 +222,43 @@ export function AdminDashboard() {
               </thead>
               <tbody className="divide-y divide-[var(--border)]">
                 {loading ? (
-                  <tr><td colSpan={4} className="px-4 py-8 text-center text-[var(--text-muted)] text-sm">Loading…</td></tr>
-                ) : users.slice(0, 8).map(user => (
-                  <tr key={user.id} className="hover:bg-white/2 transition-colors group">
-                    <td className="px-4 py-3">
-                      <div className="flex items-center gap-2.5">
-                        <div className="w-7 h-7 rounded-full bg-white/5 flex items-center justify-center text-xs font-medium text-[var(--text-secondary)] shrink-0">
-                          {(user.email || '?')[0].toUpperCase()}
-                        </div>
-                        <span className="text-[var(--text-primary)] truncate max-w-[200px]">{user.email}</span>
-                      </div>
-                    </td>
-                    <td className="px-4 py-3"><RoleBadge role={user.role} /></td>
-                    <td className="px-4 py-3 text-[var(--text-muted)] text-xs">{formatDate(user.created_at)}</td>
-                    <td className="px-4 py-3 text-end">
-                      <Link to="/admin/users">
-                        <button className="text-xs text-[var(--text-muted)] hover:text-gold-400 transition-colors opacity-0 group-hover:opacity-100">
-                          Manage →
-                        </button>
-                      </Link>
+                  <tr>
+                    <td
+                      colSpan={4}
+                      className="px-4 py-8 text-center text-[var(--text-muted)] text-sm"
+                    >
+                      Loading…
                     </td>
                   </tr>
-                ))}
+                ) : (
+                  users.slice(0, 8).map((user) => (
+                    <tr key={user.id} className="hover:bg-white/2 transition-colors group">
+                      <td className="px-4 py-3">
+                        <div className="flex items-center gap-2.5">
+                          <div className="w-7 h-7 rounded-full bg-white/5 flex items-center justify-center text-xs font-medium text-[var(--text-secondary)] shrink-0">
+                            {(user.email || '?')[0].toUpperCase()}
+                          </div>
+                          <span className="text-[var(--text-primary)] truncate max-w-[200px]">
+                            {user.email}
+                          </span>
+                        </div>
+                      </td>
+                      <td className="px-4 py-3">
+                        <RoleBadge role={user.role} />
+                      </td>
+                      <td className="px-4 py-3 text-[var(--text-muted)] text-xs">
+                        {formatDate(user.created_at)}
+                      </td>
+                      <td className="px-4 py-3 text-end">
+                        <Link to="/admin/users">
+                          <button className="text-xs text-[var(--text-muted)] hover:text-gold-400 transition-colors opacity-0 group-hover:opacity-100">
+                            Manage →
+                          </button>
+                        </Link>
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>
@@ -234,7 +271,7 @@ export function AdminDashboard() {
 // ─── Case row ──────────────────────────────────────────────────────
 function CaseRow({ caseItem, t }) {
   const clientEmail = caseItem.users?.email || '—'
-  const typeLabel   = t(`case.types.${caseItem.type}`, { defaultValue: caseItem.type })
+  const typeLabel = t(`case.types.${caseItem.type}`, { defaultValue: caseItem.type })
 
   return (
     <Link to={`/admin/cases`}>
@@ -252,7 +289,10 @@ function CaseRow({ caseItem, t }) {
           {caseItem.ai_risk_level && <RiskBadge level={caseItem.ai_risk_level} />}
           <StatusBadge status={caseItem.status} />
         </div>
-        <ArrowRight size={13} className="text-[var(--text-muted)] opacity-0 group-hover:opacity-100 shrink-0" />
+        <ArrowRight
+          size={13}
+          className="text-[var(--text-muted)] opacity-0 group-hover:opacity-100 shrink-0"
+        />
       </div>
     </Link>
   )
@@ -278,8 +318,11 @@ function EmptyState({ message }) {
 function CaseSkeleton() {
   return (
     <div className="space-y-2">
-      {[1,2,3,4].map(i => (
-        <div key={i} className="flex items-center gap-4 px-4 py-3 rounded-xl glass-panel animate-pulse">
+      {[1, 2, 3, 4].map((i) => (
+        <div
+          key={i}
+          className="flex items-center gap-4 px-4 py-3 rounded-xl glass-panel animate-pulse"
+        >
           <div className="w-7 h-7 rounded-md bg-white/5 shrink-0" />
           <div className="flex-1 space-y-1.5">
             <div className="h-3 bg-white/5 rounded w-1/3" />
@@ -295,8 +338,11 @@ function CaseSkeleton() {
 function UserSkeleton() {
   return (
     <div className="space-y-2">
-      {[1,2,3].map(i => (
-        <div key={i} className="flex items-center gap-3 px-3 py-2.5 rounded-xl glass-panel animate-pulse">
+      {[1, 2, 3].map((i) => (
+        <div
+          key={i}
+          className="flex items-center gap-3 px-3 py-2.5 rounded-xl glass-panel animate-pulse"
+        >
           <div className="w-7 h-7 rounded-full bg-white/5 shrink-0" />
           <div className="flex-1 h-3 bg-white/5 rounded" />
           <div className="h-4 bg-white/5 rounded-full w-14" />

@@ -1,9 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
       fontFamily: {
@@ -14,7 +11,7 @@ export default {
       },
       colors: {
         gold: {
-          50:  '#fdf9ed',
+          50: '#fdf9ed',
           100: '#faf0cc',
           200: '#f5de94',
           300: '#f0ca5a',
@@ -27,7 +24,7 @@ export default {
           950: '#3c1f09',
         },
         navy: {
-          50:  '#f0f4ff',
+          50: '#f0f4ff',
           100: '#dce6ff',
           200: '#c0d0ff',
           300: '#94afff',
@@ -41,21 +38,23 @@ export default {
         },
         slate: {
           950: '#0a0c14',
-        }
+        },
       },
       backgroundImage: {
-        'grid-pattern': "linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)",
-        'gold-shimmer': 'linear-gradient(135deg, #d99d18 0%, #f0ca5a 40%, #d99d18 60%, #bc7a10 100%)',
+        'grid-pattern':
+          'linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)',
+        'gold-shimmer':
+          'linear-gradient(135deg, #d99d18 0%, #f0ca5a 40%, #d99d18 60%, #bc7a10 100%)',
       },
       backgroundSize: {
-        'grid': '40px 40px',
+        grid: '40px 40px',
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-out',
         'slide-up': 'slideUp 0.5s ease-out',
         'slide-in-right': 'slideInRight 0.4s ease-out',
         'pulse-gold': 'pulseGold 2s ease-in-out infinite',
-        'shimmer': 'shimmer 2s linear infinite',
+        shimmer: 'shimmer 2s linear infinite',
       },
       keyframes: {
         fadeIn: {
@@ -80,11 +79,11 @@ export default {
         },
       },
       boxShadow: {
-        'gold': '0 0 30px rgba(217, 157, 24, 0.15)',
+        gold: '0 0 30px rgba(217, 157, 24, 0.15)',
         'gold-sm': '0 0 12px rgba(217, 157, 24, 0.1)',
-        'panel': '0 4px 24px rgba(0,0,0,0.4)',
-        'card': '0 2px 16px rgba(0,0,0,0.3)',
-      }
+        panel: '0 4px 24px rgba(0,0,0,0.4)',
+        card: '0 2px 16px rgba(0,0,0,0.3)',
+      },
     },
   },
   plugins: [],

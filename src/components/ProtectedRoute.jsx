@@ -40,4 +40,3 @@ export function PublicRoute({ children }) {
 }
 
 export default ProtectedRoute
-

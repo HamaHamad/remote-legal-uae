@@ -8,19 +8,19 @@ export function useRole() {
   const { role, isAdmin, isPartner, isClient, profile } = useAuth()
 
   const can = {
-    viewAllCases:    isAdmin,
-    manageUsers:     isAdmin,
-    viewAnalytics:   isAdmin,
-    viewAssigned:    isPartner || isAdmin,
-    createCase:      isClient,
-    viewOwnCases:    isClient || isAdmin,
-    accessAdmin:     isAdmin,
-    accessPartner:   isPartner || isAdmin,
+    viewAllCases: isAdmin,
+    manageUsers: isAdmin,
+    viewAnalytics: isAdmin,
+    viewAssigned: isPartner || isAdmin,
+    createCase: isClient,
+    viewOwnCases: isClient || isAdmin,
+    accessAdmin: isAdmin,
+    accessPartner: isPartner || isAdmin,
     accessDashboard: isClient || isAdmin,
   }
 
   const dashboardPath = () => {
-    if (isAdmin)   return '/admin'
+    if (isAdmin) return '/admin'
     if (isPartner) return '/partner'
     return '/dashboard'
   }

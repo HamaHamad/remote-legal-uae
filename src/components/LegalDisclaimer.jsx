@@ -7,9 +7,7 @@ const STORAGE_KEY = 'rlco-disclaimer-dismissed'
 
 export function LegalDisclaimer({ variant = 'banner' }) {
   const { i18n } = useTranslation()
-  const [dismissed, setDismissed] = useState(
-    () => localStorage.getItem(STORAGE_KEY) === 'true'
-  )
+  const [dismissed, setDismissed] = useState(() => localStorage.getItem(STORAGE_KEY) === 'true')
 
   const dismiss = () => {
     localStorage.setItem(STORAGE_KEY, 'true')
@@ -22,10 +20,10 @@ export function LegalDisclaimer({ variant = 'banner' }) {
       <div className="flex items-start gap-3 p-3.5 rounded-xl bg-amber-500/6 border border-amber-500/20">
         <Scale size={15} className="text-amber-400 shrink-0 mt-0.5" />
         <p className="text-xs text-amber-400/90 leading-relaxed">
-          <strong className="font-semibold">Legal Disclaimer:</strong>{' '}
-          This platform provides AI-assisted case organisation and coordination only.
-          It does <strong>not</strong> provide legal advice, legal representation,
-          or guaranteed outcomes. Always consult a qualified UAE legal professional.
+          <strong className="font-semibold">Legal Disclaimer:</strong> This platform provides
+          AI-assisted case organisation and coordination only. It does <strong>not</strong> provide
+          legal advice, legal representation, or guaranteed outcomes. Always consult a qualified UAE
+          legal professional.
         </p>
       </div>
     )
@@ -35,17 +33,18 @@ export function LegalDisclaimer({ variant = 'banner' }) {
   if (dismissed) return null
 
   return (
-    <div className={clsx(
-      'w-full bg-amber-500/8 border-b border-amber-500/20',
-      'px-4 py-2.5 flex items-center justify-between gap-3',
-    )}>
+    <div
+      className={clsx(
+        'w-full bg-amber-500/8 border-b border-amber-500/20',
+        'px-4 py-2.5 flex items-center justify-between gap-3',
+      )}
+    >
       <div className="flex items-center gap-2.5 min-w-0">
         <Scale size={13} className="text-amber-400 shrink-0" />
         <p className="text-[11px] text-amber-400/90 leading-relaxed">
-          <strong className="font-semibold">Disclaimer:</strong>{' '}
-          This platform provides AI-assisted case organisation only and does{' '}
-          <strong>not</strong> constitute legal advice. Consult a licensed UAE attorney
-          for legal representation.
+          <strong className="font-semibold">Disclaimer:</strong> This platform provides AI-assisted
+          case organisation only and does <strong>not</strong> constitute legal advice. Consult a
+          licensed UAE attorney for legal representation.
         </p>
       </div>
       <button

@@ -9,23 +9,40 @@ import LanguageSwitcher from '@/components/LanguageSwitcher'
 
 function ScalesLogo() {
   return (
-    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-      <path d="M12 3v18M3 9l9-6 9 6M5 9l-2 6h4L5 9zM19 9l-2 6h4l-2-6z" strokeLinecap="round" strokeLinejoin="round"/>
+    <svg
+      width="26"
+      height="26"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+    >
+      <path
+        d="M12 3v18M3 9l9-6 9 6M5 9l-2 6h4L5 9zM19 9l-2 6h4l-2-6z"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   )
 }
 
 export function ForgotPasswordPage() {
   const { t } = useTranslation()
-  const [email,   setEmail]   = useState('')
-  const [sent,    setSent]    = useState(false)
+  const [email, setEmail] = useState('')
+  const [sent, setSent] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [error,   setError]   = useState('')
+  const [error, setError] = useState('')
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if (!email.trim()) { setError('Email is required'); return }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setError('Please enter a valid email'); return }
+    if (!email.trim()) {
+      setError('Email is required')
+      return
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError('Please enter a valid email')
+      return
+    }
 
     setLoading(true)
     setError('')
@@ -110,7 +127,6 @@ export function ForgotPasswordPage() {
 
       <div className="flex-1 flex items-center justify-center px-4 py-10">
         <div className="w-full max-w-sm animate-slide-up">
-
           <div className="text-center mb-7">
             <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gold-500/10 border border-gold-500/20 mb-5">
               <Mail size={24} className="text-gold-400" />
@@ -135,7 +151,7 @@ export function ForgotPasswordPage() {
               label="Email Address"
               type="email"
               value={email}
-              onChange={e => setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com"
               icon={Mail}
               autoFocus

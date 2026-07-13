@@ -11,48 +11,45 @@ import { useAuth } from '@/context/AuthContext'
  */
 export function useDocumentAnalysis() {
   const { user, profile } = useAuth()
-  const [analyzing,  setAnalyzing]  = useState(false)
-  const [error,      setError]      = useState(null)
-  const [progress,   setProgress]   = useState('')
+  const [analyzing, setAnalyzing] = useState(false)
+  const [error, setError] = useState(null)
+  const [progress, setProgress] = useState('')
 
   // ─── Trigger analysis for a document ──────────────────────────
-  const analyzeDocument = useCallback(async ({
-    documentId,
-    caseId,
-    storagePath,
-    mimeType,
-  }) => {
-    if (!user) return { error: 'Not authenticated' }
+  const analyzeDocument = useCallback(
+    async ({ documentId, caseId, storagePath, mimeType }) => {
+      if (!user) return { error: 'Not authenticated' }
 
-    setAnalyzing(true)
-    setError(null)
-    setProgress('Sending to AI engine…')
+      setAnalyzing(true)
+      setError(null)
+      setProgress('Sending to AI engine…')
 
-    try {
-      const { data, error: fnErr } = await supabase.functions.invoke('analyze-document', {
-        body: {
-          document_id:   documentId,
-          case_id:       caseId || null,
-          storage_path:  storagePath,
-          mime_type:     mimeType,
-          user_language: profile?.language || 'en',
-        },
-      })
+      try {
+        const { data, error: fnErr } = await supabase.functions.invoke('analyze-document', {
+          body: {
+            document_id: documentId,
+            case_id: caseId || null,
+            storage_path: storagePath,
+            mime_type: mimeType,
+            user_language: profile?.language || 'en',
+          },
+        })
 
-      if (fnErr) throw new Error(fnErr.message)
+        if (fnErr) throw new Error(fnErr.message)
 
-      setProgress('Analysis complete ✓')
-      setAnalyzing(false)
-      return { data, error: null }
-
-    } catch (err) {
-      const msg = err?.message || 'Analysis failed'
-      setError(msg)
-      setProgress('')
-      setAnalyzing(false)
-      return { data: null, error: msg }
-    }
-  }, [user, profile])
+        setProgress('Analysis complete ✓')
+        setAnalyzing(false)
+        return { data, error: null }
+      } catch (err) {
+        const msg = err?.message || 'Analysis failed'
+        setError(msg)
+        setProgress('')
+        setAnalyzing(false)
+        return { data: null, error: msg }
+      }
+    },
+    [user, profile],
+  )
 
   // ─── Fetch analysis for a specific document ────────────────────
   const fetchAnalysis = useCallback(async (documentId) => {
@@ -74,10 +71,12 @@ export function useDocumentAnalysis() {
 
     const { data, error: dbErr } = await supabase
       .from('document_analysis')
-      .select(`
+      .select(
+        `
         *,
         documents ( id, file_name, mime_type, file_size, storage_path )
-      `)
+      `,
+      )
       .eq('case_id', caseId)
       .eq('status', 'done')
       .order('created_at', { ascending: false })
@@ -87,22 +86,23 @@ export function useDocumentAnalysis() {
   }, [])
 
   // ─── Poll until analysis completes ────────────────────────────
-  const pollUntilDone = useCallback(async (documentId, maxAttempts = 20) => {
-    for (let i = 0; i < maxAttempts; i++) {
-      const analysis = await fetchAnalysis(documentId)
-      if (analysis?.status === 'done')    return { data: analysis, error: null }
-      if (analysis?.status === 'failed')  return { data: null, error: analysis.error_message || 'Analysis failed' }
-      await new Promise(r => setTimeout(r, 2000))
-    }
-    return { data: null, error: 'Analysis timed out' }
-  }, [fetchAnalysis])
+  const pollUntilDone = useCallback(
+    async (documentId, maxAttempts = 20) => {
+      for (let i = 0; i < maxAttempts; i++) {
+        const analysis = await fetchAnalysis(documentId)
+        if (analysis?.status === 'done') return { data: analysis, error: null }
+        if (analysis?.status === 'failed')
+          return { data: null, error: analysis.error_message || 'Analysis failed' }
+        await new Promise((r) => setTimeout(r, 2000))
+      }
+      return { data: null, error: 'Analysis timed out' }
+    },
+    [fetchAnalysis],
+  )
 
   // ─── Delete analysis (re-analyze) ─────────────────────────────
   const deleteAnalysis = useCallback(async (documentId) => {
-    await supabase
-      .from('document_analysis')
-      .delete()
-      .eq('document_id', documentId)
+    await supabase.from('document_analysis').delete().eq('document_id', documentId)
   }, [])
 
   return {

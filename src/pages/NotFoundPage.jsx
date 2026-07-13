@@ -8,11 +8,8 @@ export function NotFoundPage() {
   const { t } = useTranslation()
   const { profile } = useAuth()
 
-  const dashboardPath = profile?.role === 'admin'
-    ? '/admin'
-    : profile?.role === 'partner'
-      ? '/partner'
-      : '/dashboard'
+  const dashboardPath =
+    profile?.role === 'admin' ? '/admin' : profile?.role === 'partner' ? '/partner' : '/dashboard'
 
   return (
     <div className="min-h-screen auth-bg flex items-center justify-center px-4">
