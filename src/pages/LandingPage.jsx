@@ -740,217 +740,12 @@ function LockIcon() {
   )
 }
 
-
-// ─── Design tokens ──────────────────────────────────────────────────
-const T = {
-  paper: '#F7F4EC',
-  paperRaised: '#FFFFFF',
-  ink: '#181611',
-  inkSoft: '#635C4F',
-  inkFaint: '#9B927F',
-  line: '#DDD5C2',
-  lineStrong: '#C7BC9F',
-  accent: '#204B3B',
-  accentSoft: 'rgba(32,75,59,0.08)',
-  accentSoft2: 'rgba(32,75,59,0.14)',
-  brick: '#A23B2E',
-  brickSoft: 'rgba(162,59,46,0.09)',
-  wa: '#25D366',
-}
-
-// ─── Line-icon set (replaces emoji for a quieter, legal-document feel) ──
-function Icon({ token, size = 18, className = '', style }) {
-  const s = { width: size, height: size, style }
-  const common = { fill: 'none', stroke: 'currentColor', strokeWidth: 1.6, strokeLinecap: 'round', strokeLinejoin: 'round' }
-  switch (token) {
-    case 'bank':
-      return (
-        <svg {...s} {...common} viewBox="0 0 24 24" className={className}>
-          <path d="M3 9.5 12 4l9 5.5" />
-          <path d="M4.5 9.5v9M9 9.5v9M15 9.5v9M19.5 9.5v9" />
-          <path d="M3 20.5h18" />
-        </svg>
-      )
-    case 'car':
-      return (
-        <svg {...s} {...common} viewBox="0 0 24 24" className={className}>
-          <path d="M4 16.5 5.6 11a2 2 0 011.9-1.4h9a2 2 0 011.9 1.4l1.6 5.5" />
-          <rect x="3" y="16.5" width="18" height="4" rx="1.2" />
-          <circle cx="7.5" cy="18.5" r=".6" fill="currentColor" stroke="none" />
-          <circle cx="16.5" cy="18.5" r=".6" fill="currentColor" stroke="none" />
-        </svg>
-      )
-    case 'scale':
-      return (
-        <svg {...s} {...common} viewBox="0 0 24 24" className={className}>
-          <path d="M12 3v18M8 21h8" />
-          <path d="M5 6h6M13 6h6" />
-          <path d="M2.5 10 5 6l2.5 4a2.6 2.6 0 01-5 0Z" />
-          <path d="M16.5 10 19 6l2.5 4a2.6 2.6 0 01-5 0Z" />
-        </svg>
-      )
-    case 'briefcase':
-      return (
-        <svg {...s} {...common} viewBox="0 0 24 24" className={className}>
-          <rect x="3" y="7.5" width="18" height="12" rx="1.5" />
-          <path d="M8.5 7.5V6a2 2 0 012-2h3a2 2 0 012 2v1.5" />
-          <path d="M3 12.5h18" />
-        </svg>
-      )
-    case 'check':
-      return (
-        <svg {...s} {...common} viewBox="0 0 24 24" className={className}>
-          <path d="M4 12.5 9.5 18 20 6.5" />
-        </svg>
-      )
-    case 'lock':
-      return (
-        <svg {...s} {...common} viewBox="0 0 24 24" className={className}>
-          <rect x="4.5" y="10.5" width="15" height="10" rx="1.8" />
-          <path d="M8 10.5V7.5a4 4 0 018 0v3" />
-        </svg>
-      )
-    case 'eye-off':
-      return (
-        <svg {...s} {...common} viewBox="0 0 24 24" className={className}>
-          <path d="M3 3l18 18" />
-          <path d="M10.6 5.2A10.6 10.6 0 0112 5c5 0 8.7 3.4 10 7-.5 1.4-1.4 2.9-2.6 4.1M6.6 6.6C4.4 8 2.9 9.9 2 12c1.3 3.6 5 7 10 7 1.4 0 2.7-.3 3.9-.8" />
-          <path d="M9.9 10a3 3 0 004.2 4.2" />
-        </svg>
-      )
-    case 'globe':
-      return (
-        <svg {...s} {...common} viewBox="0 0 24 24" className={className}>
-          <circle cx="12" cy="12" r="8.5" />
-          <path d="M3.5 12h17M12 3.5c2.2 2.3 3.4 5.2 3.4 8.5s-1.2 6.2-3.4 8.5c-2.2-2.3-3.4-5.2-3.4-8.5s1.2-6.2 3.4-8.5z" />
-        </svg>
-      )
-    case 'shield':
-      return (
-        <svg {...s} {...common} viewBox="0 0 24 24" className={className}>
-          <path d="M12 3.5 19 6v6c0 4.4-3 7.7-7 8.5-4-.8-7-4.1-7-8.5V6z" />
-          <path d="M9 12l2 2 4-4" />
-        </svg>
-      )
-    case 'handshake':
-      return (
-        <svg {...s} {...common} viewBox="0 0 24 24" className={className}>
-          <path d="M2.5 12.5 6 9l3 2.2M21.5 12.5 18 9l-3 2.2" />
-          <path d="M9 11.2l2.4 2.2a1.5 1.5 0 002.1-2.1L11 8.7 9 10.5l-3-2.2-3.5 3.2 3 2.6 2 1.8a2 2 0 002.8 0" />
-          <path d="M15 11.2l-2.4 2.2" />
-        </svg>
-      )
-    case 'gov':
-      return (
-        <svg {...s} {...common} viewBox="0 0 24 24" className={className}>
-          <path d="M3 9.5 12 4l9 5.5" />
-          <path d="M5 9.5v9M19 9.5v9M3 20.5h18" />
-          <path d="M12 8v3" />
-        </svg>
-      )
-    case 'doc':
-      return (
-        <svg {...s} {...common} viewBox="0 0 24 24" className={className}>
-          <path d="M6.5 2.5h8L19 7v14a1 1 0 01-1 1H6.5a1 1 0 01-1-1v-17a1 1 0 011-1z" />
-          <path d="M14 2.5V7h4.5" />
-          <path d="M8.5 12h7M8.5 15h7M8.5 18h4" />
-        </svg>
-      )
-    case 'warn':
-      return (
-        <svg {...s} {...common} viewBox="0 0 24 24" className={className}>
-          <path d="M12 3.5 21.5 20h-19z" />
-          <path d="M12 9.5v5M12 17h.01" />
-        </svg>
-      )
-    case 'search':
-      return (
-        <svg {...s} {...common} viewBox="0 0 24 24" className={className}>
-          <circle cx="10.5" cy="10.5" r="6.5" />
-          <path d="M20 20l-4.8-4.8" />
-        </svg>
-      )
-    case 'arrow':
-      return (
-        <svg {...s} {...common} viewBox="0 0 24 24" className={className}>
-          <path d="M4 12h15M13 6l6 6-6 6" />
-        </svg>
-      )
-    case 'stamp':
-      return (
-        <svg {...s} {...common} viewBox="0 0 24 24" className={className}>
-          <circle cx="12" cy="10" r="6.2" />
-          <path d="M8.4 10.3l2.2 2.2 4.4-4.6" />
-          <path d="M7 20.5h10M9 16.5l-1.4 4M15 16.5l1.4 4" />
-        </svg>
-      )
-    default:
-      return null
-  }
-}
-
-// Map the emoji used inside COPY content to the new line-icon tokens,
-// so translated data stays untouched but renders with the new icon set.
-const EMOJI_TOKEN = {
-  '🏦': 'bank',
-  '🚗': 'car',
-  '⚖️': 'scale',
-  '💼': 'briefcase',
-  '✓': 'check',
-  '✅': 'check',
-  '🔒': 'lock',
-  '🕵️': 'eye-off',
-  '🌍': 'globe',
-  '🤝': 'handshake',
-  '🏛️': 'gov',
-  '📄': 'doc',
-  '⚠️': 'warn',
-  '⚠': 'warn',
-}
-function GlyphIcon({ emoji, size = 18, className = '', style }) {
-  const token = EMOJI_TOKEN[emoji]
-  if (!token) return <span className={className} style={style}>{emoji}</span>
-  return <Icon token={token} size={size} className={className} style={style} />
-}
-
-// ─── Docket / case-file decorative card — the page's signature motif ──
-function DocketCard({ className = '' }) {
-  return (
-    <div
-      className={clsx('relative rounded-[4px] border overflow-hidden', className)}
-      style={{ borderColor: T.line, background: T.paperRaised }}
-    >
-      <div className="absolute -top-px left-6 w-16 h-2 rounded-b-[3px]" style={{ background: T.accent }} />
-      <div className="p-5 sm:p-6">
-        <div className="flex items-center justify-between mb-4">
-          <span className="font-mono text-[10px] tracking-[0.18em] uppercase" style={{ color: T.inkFaint }}>
-            File 2026-EXP-0184
-          </span>
-          <span
-            className="font-mono text-[10px] tracking-[0.18em] uppercase px-2 py-1 rounded-sm"
-            style={{ color: T.accent, background: T.accentSoft }}
-          >
-            Status: Reviewed
-          </span>
-        </div>
-        <div className="space-y-2.5">
-          <div className="h-2.5 rounded-sm" style={{ background: T.line, width: '92%' }} />
-          <div className="h-2.5 rounded-sm" style={{ background: T.line, width: '78%' }} />
-          <div className="h-2.5 rounded-sm" style={{ background: T.line, width: '85%' }} />
-          <div className="h-2.5 rounded-sm" style={{ background: T.accentSoft2, width: '60%' }} />
-          <div className="h-2.5 rounded-sm" style={{ background: T.line, width: '70%' }} />
-        </div>
-      </div>
-    </div>
-  )
-}
-
 // ─── Main Landing Page ────────────────────────────────────────────
 export function LandingPage() {
   const navigate = useNavigate()
 
   const [lang, setLangState] = useState(() => localStorage.getItem('resolve-lang') || 'en')
-  const [selected, setSelected] = useState(null)
+  const [selected, setSelected] = useState(null) // situation card
   const [langOpen, setLangOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [locked, setLocked] = useState(true)
@@ -959,6 +754,7 @@ export function LandingPage() {
   const meta = LANG_META[lang] || LANG_META.en
   const isRTL = ['ar', 'ur'].includes(lang)
 
+  // Update html dir for RTL
   useEffect(() => {
     document.documentElement.dir = meta.dir
     document.documentElement.lang = lang
@@ -968,12 +764,14 @@ export function LandingPage() {
     }
   }, [lang, meta.dir])
 
+  // Sticky bar trigger
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 500)
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  // Close lang dropdown on outside click
   const langRef = useRef(null)
   useEffect(() => {
     const handler = (e) => {
@@ -999,71 +797,168 @@ export function LandingPage() {
     setTimeout(() => navigate(`/signup?caseType=${id}`), 400)
   }
 
-  // shared style helpers
-  const eyebrow = 'font-mono text-[10px] tracking-[0.22em] uppercase'
-  const serif = 'font-display'
-
   return (
-    <div
-      className={clsx('min-h-screen font-sans overflow-x-hidden', isRTL && 'font-sans')}
-      style={{ background: T.paper, color: T.ink }}
-    >
+    <div className="min-h-screen bg-hy-base text-hy-primary font-sans overflow-x-hidden">
+      {/* ── Harvey.ai inspired style (embedded) ── */}
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
-        .font-display { font-family: 'Fraunces', ui-serif, Georgia, serif; }
-        .font-sans { font-family: 'Inter', ui-sans-serif, system-ui, sans-serif; }
-        .font-mono { font-family: 'IBM Plex Mono', ui-monospace, monospace; }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
-        @keyframes scanline { 0% { transform: translateY(-100%); } 100% { transform: translateY(420%); } }
-        details > summary::-webkit-details-marker { display: none; }
+        :root {
+          --hy-base: #0d0b09;
+          --hy-elevated: #15130f;
+          --hy-card: #1a1714;
+          --hy-subtle: #26231d;
+          --hy-hover: #38352e;
+          --hy-primary: #f5f3ef;
+          --hy-secondary: #c9c6bb;
+          --hy-muted: #7d786b;
+          --hy-subtle-text: #979285;
+          --hy-border: #38352e;
+          --hy-border-strong: #4a463d;
+          --hy-accent: #c4903e;
+          --hy-accent-hover: #d4a05a;
+          --hy-accent-soft: rgba(196,144,62,0.10);
+          --hy-shadow: 0 8px 32px rgba(0,0,0,0.5);
+          --hy-shadow-lg: 0 20px 60px rgba(0,0,0,0.6);
+          --hy-radius: 10px;
+          --hy-radius-lg: 16px;
+          --hy-radius-full: 9999px;
+          --hy-font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+          --hy-font-display: 'Instrument Serif', 'Inter', serif;
+          --hy-transition: 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .bg-hy-base { background: var(--hy-base); }
+        .bg-hy-elevated { background: var(--hy-elevated); }
+        .bg-hy-card { background: var(--hy-card); }
+        .bg-hy-subtle { background: var(--hy-subtle); }
+        .bg-hy-accent { background: var(--hy-accent); }
+        .bg-hy-accent-soft { background: var(--hy-accent-soft); }
+        .text-hy-primary { color: var(--hy-primary); }
+        .text-hy-secondary { color: var(--hy-secondary); }
+        .text-hy-muted { color: var(--hy-muted); }
+        .text-hy-subtle { color: var(--hy-subtle-text); }
+        .text-hy-accent { color: var(--hy-accent); }
+        .border-hy-border { border-color: var(--hy-border); }
+        .border-hy-border-strong { border-color: var(--hy-border-strong); }
+        .border-hy-accent { border-color: var(--hy-accent); }
+        .shadow-hy { box-shadow: var(--hy-shadow); }
+        .shadow-hy-lg { box-shadow: var(--hy-shadow-lg); }
+        .font-body { font-family: var(--hy-font-body); }
+        .font-display { font-family: var(--hy-font-display); }
+
+        /* subtle grain */
+        .grain {
+          position: fixed;
+          inset: 0;
+          pointer-events: none;
+          z-index: 9999;
+          opacity: 0.025;
+          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+          background-repeat: repeat;
+          background-size: 256px 256px;
+        }
+
+        .glow-orb {
+          position: absolute;
+          border-radius: 50%;
+          filter: blur(120px);
+          pointer-events: none;
+          opacity: 0.12;
+        }
+        .glow-orb--a {
+          width: 600px;
+          height: 600px;
+          top: -20%;
+          right: -10%;
+          background: radial-gradient(circle, var(--hy-accent) 0%, transparent 70%);
+        }
+        .glow-orb--b {
+          width: 400px;
+          height: 400px;
+          bottom: -20%;
+          left: -10%;
+          background: radial-gradient(circle, rgba(196,144,62,0.15) 0%, transparent 70%);
+        }
+
+        .eyebrow {
+          display: inline-flex;
+          align-items: center;
+          gap: 10px;
+          font-size: 11px;
+          font-weight: 600;
+          letter-spacing: 0.10em;
+          text-transform: uppercase;
+          color: var(--hy-accent);
+        }
+        .eyebrow::before {
+          content: '';
+          display: inline-block;
+          width: 24px;
+          height: 1.5px;
+          background: var(--hy-accent);
+          border-radius: 2px;
+        }
+
+        /* Floating WhatsApp pulse */
+        @keyframes float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-6px); }
+        }
+        .whatsapp-float {
+          animation: float 3s ease-in-out infinite;
+        }
+
+        /* Smooth transitions */
+        .transition-hy {
+          transition: var(--hy-transition);
+        }
+        .hover-lift:hover {
+          transform: translateY(-2px);
+        }
+        .hover-glow:hover {
+          box-shadow: 0 0 30px rgba(196,144,62,0.12);
+        }
       `}</style>
 
-      {/* ── NAVBAR ─────────────────────────────────────────────── */}
-      <nav
-        className="fixed top-0 inset-x-0 z-50 backdrop-blur-xl border-b"
-        style={{ background: 'rgba(247,244,236,0.92)', borderColor: T.line }}
-      >
+      {/* ── Grain overlay ── */}
+      <div className="grain" aria-hidden="true" />
+
+      {/* ─── NAVBAR ─────────────────────────────────────────────── */}
+      <nav className="fixed top-0 inset-x-0 z-50 bg-hy-base/90 backdrop-blur-xl border-b border-hy-border">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+          {/* Logo */}
           <div className="flex items-center gap-2.5 shrink-0">
-            <div
-              className="w-8 h-8 rounded-[3px] flex items-center justify-center font-display font-semibold text-sm"
-              style={{ background: T.ink, color: T.paper }}
-            >
-              E
+            <div className="w-8 h-8 rounded-lg bg-hy-accent flex items-center justify-center text-hy-base font-bold text-sm shadow-lg">
+              R
             </div>
-            <span className={clsx(serif, 'font-semibold text-lg tracking-tight')} style={{ color: T.ink }}>
+            <span className="font-semibold text-hy-primary text-lg tracking-tight font-display">
               {c.nav.brand}
             </span>
           </div>
 
+          {/* Right nav */}
           <div className="flex items-center gap-2 sm:gap-3">
+            {/* Language switcher */}
             <div className="relative" ref={langRef}>
               <button
                 onClick={() => setLangOpen((v) => !v)}
-                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-[3px] border text-sm transition-all"
-                style={{ borderColor: T.line, color: T.inkSoft }}
+                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-hy-border text-hy-muted hover:text-hy-primary hover:border-hy-border-strong transition-all text-sm"
               >
                 <span>{meta.flag}</span>
-                <span className="hidden sm:inline font-mono text-xs">{meta.label}</span>
-                <span className="text-[9px]">▾</span>
+                <span className="hidden sm:inline">{meta.label}</span>
+                <span className="text-xs">▾</span>
               </button>
               {langOpen && (
-                <div
-                  className="absolute top-full mt-2 end-0 w-44 rounded-[4px] p-1.5 shadow-2xl z-50 border"
-                  style={{ background: T.paperRaised, borderColor: T.line }}
-                >
+                <div className="absolute top-full mt-2 end-0 w-44 bg-hy-elevated border border-hy-border rounded-xl p-1.5 shadow-hy z-50">
                   {Object.entries(LANG_META).map(([code, m]) => (
                     <button
                       key={code}
                       onClick={() => setLang(code)}
                       className={clsx(
-                        'w-full flex items-center gap-2.5 px-3 py-2 rounded-[3px] text-sm transition-all text-start',
-                      )}
-                      style={
+                        'w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-all text-start',
                         lang === code
-                          ? { background: T.accentSoft, color: T.accent }
-                          : { color: T.inkSoft }
-                      }
+                          ? 'bg-hy-accent-soft text-hy-primary'
+                          : 'text-hy-muted hover:bg-white/5 hover:text-hy-primary',
+                      )}
                     >
                       <span>{m.flag}</span>
                       <span>
@@ -1085,16 +980,14 @@ export function LandingPage() {
 
             <button
               onClick={() => navigate('/login')}
-              className="hidden sm:block px-3 py-1.5 text-sm border rounded-[3px] transition-all"
-              style={{ borderColor: T.line, color: T.inkSoft }}
+              className="hidden sm:block px-3 py-1.5 text-sm text-hy-muted hover:text-hy-primary border border-hy-border hover:border-hy-border-strong rounded-lg transition-all"
             >
               {c.nav.login}
             </button>
 
             <button
               onClick={() => handleCTA()}
-              className="px-3 sm:px-4 py-1.5 text-sm font-semibold rounded-[3px] transition-all hover:-translate-y-0.5"
-              style={{ background: T.ink, color: T.paper }}
+              className="px-3 sm:px-4 py-1.5 text-sm font-semibold bg-hy-accent text-hy-base rounded-lg hover:bg-hy-accent-hover hover:shadow-lg transition-all"
             >
               {c.nav.start}
             </button>
@@ -1102,207 +995,169 @@ export function LandingPage() {
         </div>
       </nav>
 
-      {/* ── HERO ───────────────────────────────────────────────── */}
-      <section className="relative pt-28 pb-20 sm:pt-36 sm:pb-28 px-4">
-        <div className="max-w-6xl mx-auto">
-          {/* docket header bar */}
+      {/* ─── HERO ───────────────────────────────────────────────── */}
+      <section className="relative pt-24 pb-16 sm:pt-32 sm:pb-24 px-4 overflow-hidden">
+        {/* Glow orbs */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="glow-orb glow-orb--a" />
+          <div className="glow-orb glow-orb--b" />
+          <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-hy-accent/30 to-transparent" />
           <div
-            className="hidden sm:flex items-center justify-between max-w-4xl mx-auto mb-10 pb-3 border-b"
-            style={{ borderColor: T.line }}
-          >
-            <span className={eyebrow} style={{ color: T.inkFaint }}>
-              {c.hero.badge}
-            </span>
-            <span className={eyebrow} style={{ color: T.inkFaint }}>
-              UAE · Remote Intake
-            </span>
+            className="absolute inset-0 opacity-[0.025]"
+            style={{
+              backgroundImage:
+                'linear-gradient(rgba(245,240,232,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(245,240,232,0.5) 1px, transparent 1px)',
+              backgroundSize: '50px 50px',
+            }}
+          />
+        </div>
+
+        <div className="max-w-4xl mx-auto text-center relative z-10">
+          {/* Trust badge */}
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-hy-accent/30 bg-hy-accent-soft text-hy-accent text-xs font-semibold uppercase tracking-widest mb-6">
+            <span className="w-1.5 h-1.5 rounded-full bg-hy-accent animate-pulse" />
+            {c.hero.badge}
           </div>
 
-          <div className="max-w-4xl mx-auto text-center relative z-10">
-            <div className="sm:hidden inline-flex items-center gap-2 mb-6">
-              <span className="w-1.5 h-1.5 rounded-full" style={{ background: T.accent }} />
-              <span className={eyebrow} style={{ color: T.inkFaint }}>{c.hero.badge}</span>
-            </div>
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-display font-semibold text-hy-primary leading-tight mb-6 tracking-tight">
+            {c.hero.headline}
+          </h1>
 
-            <h1
-              className={clsx(serif, 'font-semibold leading-[1.08] mb-6 tracking-tight text-4xl sm:text-6xl lg:text-7xl')}
-              style={{ color: T.ink }}
+          <p className="text-base sm:text-xl text-hy-secondary max-w-2xl mx-auto leading-relaxed">
+            {c.hero.sub}
+          </p>
+
+          {/* CTAs */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-8">
+            <button
+              onClick={() => handleCTA()}
+              className="w-full sm:w-auto px-8 py-4 rounded-xl font-bold text-lg bg-hy-accent text-hy-base shadow-lg shadow-black/20 hover:bg-hy-accent-hover hover:-translate-y-0.5 transition-all"
             >
-              {c.hero.headline}
-            </h1>
-
-            <p className="text-base sm:text-xl mb-10 max-w-2xl mx-auto leading-relaxed" style={{ color: T.inkSoft }}>
-              {c.hero.sub}
-            </p>
-
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-10">
-              <button
-                onClick={() => handleCTA()}
-                className="w-full sm:w-auto px-8 py-4 rounded-[3px] font-semibold text-base transition-all hover:-translate-y-0.5"
-                style={{ background: T.ink, color: T.paper }}
-              >
-                {c.hero.cta1}
-              </button>
-              <button
-                onClick={() => handleCTA('analyze')}
-                className="w-full sm:w-auto px-8 py-4 rounded-[3px] font-medium text-base border transition-all inline-flex items-center justify-center gap-2"
-                style={{ borderColor: T.lineStrong, color: T.ink }}
-              >
-                {c.hero.cta2}
-                <Icon token="arrow" size={15} />
-              </button>
-            </div>
-
-            <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-8">
-              {c.hero.trust.map((t, i) => (
-                <div key={i} className="flex items-center gap-2 text-sm" style={{ color: T.inkSoft }}>
-                  <Icon token="check" size={14} className="shrink-0" style={{ color: T.accent }} />
-                  <span>{t}</span>
-                </div>
-              ))}
-            </div>
+              {c.hero.cta1}
+            </button>
+            <button
+              onClick={() => handleCTA('analyze')}
+              className="w-full sm:w-auto px-8 py-4 rounded-xl font-semibold text-base border border-hy-border text-hy-secondary hover:border-hy-accent hover:text-hy-primary transition-all"
+            >
+              {c.hero.cta2}
+            </button>
           </div>
 
-          {/* signature docket card */}
-          <div className="max-w-md mx-auto mt-14">
-            <DocketCard />
+          {/* Micro-trust */}
+          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 mt-8">
+            {c.hero.trust.map((t, i) => (
+              <div key={i} className="flex items-center gap-2 text-sm text-hy-muted">
+                <span className="text-hy-accent font-bold">✓</span>
+                <span>{t}</span>
+              </div>
+            ))}
           </div>
 
-          {/* hero disclaimer */}
-          <div
-            className="mt-10 max-w-xl mx-auto p-4 rounded-[3px] border flex items-start gap-2.5"
-            style={{ background: T.paperRaised, borderColor: T.line }}
-          >
-            <Icon token="scale" size={15} className="shrink-0 mt-0.5" style={{ color: T.inkFaint }} />
-            <p className="text-[11px] text-center leading-relaxed" style={{ color: T.inkFaint }}>
+          {/* Hero disclaimer */}
+          <div className="mt-8 inline-flex items-start gap-2 max-w-xl mx-auto p-3 rounded-xl bg-white/[0.02] border border-hy-border">
+            <span className="text-sm shrink-0 mt-0.5">⚖️</span>
+            <p className="text-[11px] text-hy-subtle-text text-center leading-relaxed">
               {c.hero.disclaimer}
             </p>
           </div>
         </div>
       </section>
 
-      {/* ── SITUATION SELECTOR ──────────────────────────────────── */}
-      <section className="py-14 px-4 border-y" style={{ borderColor: T.line, background: T.paperRaised }}>
-        <div className="max-w-4xl mx-auto">
-          <p className={clsx(serif, 'text-center text-xl sm:text-2xl font-semibold mb-8')} style={{ color: T.ink }}>
+      {/* ─── SITUATION SELECTOR ──────────────────────────────────── */}
+      <section className="py-12 px-4 bg-hy-subtle">
+        <div className="max-w-3xl mx-auto">
+          <p className="text-center text-lg font-semibold text-hy-primary mb-6">
             {c.selector.title}
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            {c.selector.items.map((item, i) => (
+            {c.selector.items.map((item) => (
               <button
                 key={item.id}
                 onClick={() => handleSituationSelect(item.id)}
-                className="group relative flex flex-col items-center gap-2.5 p-5 rounded-[4px] border-2 text-center transition-all duration-200 hover:-translate-y-1 overflow-hidden"
-                style={
+                className={clsx(
+                  'group flex flex-col items-center gap-2 p-4 rounded-2xl border-2 text-center transition-all duration-200 hover:-translate-y-1',
                   selected === item.id
-                    ? { borderColor: T.accent, background: T.accentSoft }
-                    : { borderColor: T.line, background: T.paper }
-                }
-              >
-                <span
-                  className="absolute -top-px left-4 w-8 h-1.5 rounded-b-[2px] opacity-0 group-hover:opacity-100 transition-opacity"
-                  style={{ background: T.accent }}
-                />
-                <span className="font-mono text-[9px] tracking-widest" style={{ color: T.inkFaint }}>
-                  {String(i + 1).padStart(2, '0')}
-                </span>
-                <Icon token={item.icon ? EMOJI_TOKEN[item.icon] : undefined} size={24} style={{ color: T.ink }} />
-                <span className="font-semibold text-sm" style={{ color: T.ink }}>{item.label}</span>
-                <span className="text-xs" style={{ color: T.inkFaint }}>{item.desc}</span>
-                {selected === item.id && (
-                  <span className="absolute top-2 right-2" style={{ color: T.accent }}>
-                    <Icon token="check" size={14} />
-                  </span>
+                    ? 'border-hy-accent bg-hy-accent-soft shadow-lg shadow-hy-accent/20'
+                    : 'border-hy-border bg-hy-base/50 hover:border-hy-accent/50 hover:bg-hy-accent-soft/20',
                 )}
+              >
+                <span className="text-3xl">{item.icon}</span>
+                <span className="font-semibold text-sm text-hy-primary">{item.label}</span>
+                <span className="text-xs text-hy-muted">{item.desc}</span>
               </button>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── SOCIAL PROOF STRIP ──────────────────────────────────── */}
-      <section className="py-6 px-4" style={{ background: T.paper }}>
-        <div className="max-w-4xl mx-auto flex flex-wrap items-center justify-center gap-x-10 gap-y-3 divide-x" style={{ color: T.inkSoft }}>
+      {/* ─── SOCIAL PROOF STRIP ──────────────────────────────────── */}
+      <section className="py-6 px-4 border-y border-hy-border bg-hy-base">
+        <div className="max-w-4xl mx-auto flex flex-wrap items-center justify-center gap-6 sm:gap-10">
           {c.proof.items.map((item, i) => (
-            <div key={i} className={clsx('flex items-center gap-2 text-sm', i > 0 && 'ps-10')}>
-              <GlyphIcon emoji={item.icon} size={15} className="shrink-0" style={{ color: T.accent }} />
+            <div key={i} className="flex items-center gap-2 text-sm text-hy-muted">
+              <span className="text-hy-accent font-bold text-lg">{item.icon}</span>
               <span>{item.text}</span>
             </div>
           ))}
         </div>
       </section>
 
-      {/* ── AI PREVIEW (LOCKED / REDACTED) ──────────────────────── */}
-      <section className="py-20 sm:py-28 px-4" style={{ background: T.paperRaised }}>
+      {/* ─── AI PREVIEW (LOCKED) ──────────────────────────────────── */}
+      <section className="py-16 sm:py-24 px-4 bg-hy-subtle">
         <div className="max-w-2xl mx-auto">
-          <p className={clsx(eyebrow, 'text-center mb-3')} style={{ color: T.inkFaint }}>
+          <p className="text-[10px] font-bold tracking-widest uppercase text-hy-muted text-center mb-2">
             AI Analysis
           </p>
-          <h2 className={clsx(serif, 'text-2xl sm:text-3xl font-semibold text-center mb-2')} style={{ color: T.ink }}>
+          <h2 className="text-2xl sm:text-3xl font-display font-semibold text-hy-primary text-center mb-2">
             {c.aiPreview.title}
           </h2>
-          <p className="text-center mb-9" style={{ color: T.inkSoft }}>{c.aiPreview.sub}</p>
+          <p className="text-center text-hy-muted mb-8">{c.aiPreview.sub}</p>
 
-          <div className="flex flex-col gap-2 mb-7">
+          {/* Bullets (visible) */}
+          <div className="flex flex-col gap-2 mb-6">
             {c.aiPreview.bullets.map((b, i) => (
               <div
                 key={i}
-                className="flex items-center gap-3 px-4 py-3 rounded-[3px] border"
-                style={{ background: T.paper, borderColor: T.line }}
+                className="flex items-center gap-3 px-4 py-3 rounded-xl bg-hy-base/80 border border-hy-border"
               >
-                <span
-                  className="w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold shrink-0 font-mono"
-                  style={{ background: T.accentSoft, color: T.accent }}
-                >
+                <span className="w-5 h-5 rounded-full bg-hy-accent-soft border border-hy-accent/30 text-hy-accent flex items-center justify-center text-xs font-bold shrink-0">
                   {i + 1}
                 </span>
-                <span className="text-sm" style={{ color: T.inkSoft }}>{b}</span>
+                <span className="text-sm text-hy-secondary">{b}</span>
               </div>
             ))}
           </div>
 
-          <div className="relative rounded-[4px] overflow-hidden border" style={{ borderColor: T.lineStrong }}>
-            <div className={clsx('p-6 space-y-1', locked && 'select-none pointer-events-none')}>
+          {/* Locked blurred content */}
+          <div className="relative rounded-2xl overflow-hidden border border-hy-accent/20">
+            {/* Blurred steps */}
+            <div
+              className={clsx('p-6 space-y-3', locked && 'blur-sm select-none pointer-events-none')}
+            >
               {c.aiPreview.blurItems.map((item, i) => (
-                <div key={i} className="flex items-start gap-3 py-2.5 border-b last:border-0" style={{ borderColor: T.line }}>
-                  <span
-                    className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5 font-mono"
-                    style={{ background: T.accentSoft, color: T.accent }}
-                  >
+                <div
+                  key={i}
+                  className="flex items-start gap-3 text-sm text-hy-muted py-2 border-b border-hy-border last:border-0"
+                >
+                  <span className="w-6 h-6 rounded-full bg-hy-accent-soft border border-hy-accent/20 text-hy-accent flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
                     {i + 1}
                   </span>
-                  {/* redaction bar rather than blur — reads as document, not a paywall trick */}
-                  <span
-                    className="h-3.5 rounded-sm flex-1 mt-1"
-                    style={{ background: T.ink, opacity: 0.86, maxWidth: `${72 - i * 6}%` }}
-                  />
+                  <span>{item}</span>
                 </div>
               ))}
             </div>
 
+            {/* Overlay */}
             {locked && (
-              <div
-                className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center"
-                style={{ background: 'rgba(247,244,236,0.9)', backdropFilter: 'blur(2px)' }}
-              >
-                <div
-                  className="absolute top-4 right-4 rotate-[8deg] font-mono text-[10px] tracking-[0.2em] uppercase px-2 py-1 border rounded-sm"
-                  style={{ borderColor: T.brick, color: T.brick }}
-                >
-                  Redacted
+              <div className="absolute inset-0 flex flex-col items-center justify-center bg-hy-base/75 backdrop-blur-md p-6 text-center">
+                <div className="w-12 h-12 rounded-full bg-hy-accent-soft border border-hy-accent/30 flex items-center justify-center mb-4">
+                  <LockIcon />
                 </div>
-                <div
-                  className="w-12 h-12 rounded-full border flex items-center justify-center mb-4"
-                  style={{ borderColor: T.lineStrong, background: T.paperRaised }}
-                >
-                  <Icon token="lock" size={20} style={{ color: T.ink }} />
-                </div>
-                <p className={clsx(serif, 'font-semibold text-lg mb-1')} style={{ color: T.ink }}>{c.aiPreview.lockTitle}</p>
-                <p className="text-sm mb-5 max-w-xs" style={{ color: T.inkSoft }}>{c.aiPreview.lockSub}</p>
+                <p className="font-bold text-hy-primary text-lg mb-1">{c.aiPreview.lockTitle}</p>
+                <p className="text-sm text-hy-muted mb-5 max-w-xs">{c.aiPreview.lockSub}</p>
                 <button
                   onClick={() => handleCTA()}
-                  className="px-6 py-3 rounded-[3px] font-semibold text-sm transition-all hover:-translate-y-0.5"
-                  style={{ background: T.ink, color: T.paper }}
+                  className="px-6 py-3 rounded-xl font-bold text-sm bg-hy-accent text-hy-base hover:bg-hy-accent-hover hover:-translate-y-0.5 transition-all"
                 >
                   {c.aiPreview.lockCta}
                 </button>
@@ -1312,47 +1167,44 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* ── DOCUMENT AI ─────────────────────────────────────────── */}
-      <section className="py-20 sm:py-28 px-4" style={{ background: T.paper }}>
+      {/* ─── DOCUMENT AI ─────────────────────────────────────────── */}
+      <section className="py-16 sm:py-24 px-4 bg-hy-base">
         <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
-            <p className={clsx(eyebrow, 'mb-4')} style={{ color: T.accent }}>{c.docAI.badge}</p>
-            <h2 className={clsx(serif, 'text-2xl sm:text-3xl font-semibold mb-4 leading-snug')} style={{ color: T.ink }}>
+            <div className="inline-block px-3 py-1 rounded-full bg-hy-accent-soft border border-hy-accent/30 text-hy-accent text-xs font-bold uppercase tracking-widest mb-4">
+              {c.docAI.badge}
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-display font-semibold text-hy-primary mb-4 leading-snug">
               {c.docAI.title}
             </h2>
-            <p className="mb-6 leading-relaxed" style={{ color: T.inkSoft }}>{c.docAI.sub}</p>
-            <ul className="space-y-2.5 mb-8">
+            <p className="text-hy-muted mb-6 leading-relaxed">{c.docAI.sub}</p>
+            <ul className="space-y-2 mb-8">
               {c.docAI.items.map((item, i) => (
-                <li key={i} className="flex items-center gap-2.5 text-sm" style={{ color: T.inkSoft }}>
-                  <Icon token="arrow" size={14} style={{ color: T.accent }} />
+                <li key={i} className="flex items-center gap-2.5 text-sm text-hy-secondary">
+                  <span className="text-hy-accent">→</span>
                   <span>{item}</span>
                 </li>
               ))}
             </ul>
             <button
               onClick={() => handleCTA()}
-              className="w-full sm:w-auto px-6 py-3.5 rounded-[3px] font-semibold text-sm border transition-all inline-flex items-center gap-2"
-              style={{ borderColor: T.lineStrong, color: T.ink, background: T.paperRaised }}
+              className="w-full sm:w-auto px-6 py-3.5 rounded-xl font-bold text-sm bg-hy-subtle border border-hy-border-strong text-hy-primary hover:bg-hy-hover hover:border-hy-accent/50 transition-all"
             >
-              <Icon token="doc" size={16} />
-              {c.docAI.cta}
+              📄 {c.docAI.cta}
             </button>
           </div>
 
           {/* Doc card mockup */}
-          <div className="relative rounded-[4px] p-6 border overflow-hidden" style={{ background: T.paperRaised, borderColor: T.line }}>
-            <div
-              className="absolute left-0 right-0 h-16 pointer-events-none"
-              style={{ background: 'linear-gradient(180deg, transparent, rgba(32,75,59,0.10), transparent)', animation: 'scanline 3.2s linear infinite' }}
-            />
-            <div className="flex items-center gap-3 mb-5 pb-4 border-b" style={{ borderColor: T.line }}>
-              <div className="w-9 h-9 rounded-[3px] flex items-center justify-center" style={{ background: T.accentSoft }}>
-                <Icon token="doc" size={18} style={{ color: T.accent }} />
+          <div className="bg-hy-card border border-hy-border rounded-2xl p-6 relative overflow-hidden shadow-hy">
+            <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-hy-accent/20 to-transparent" />
+            <div className="flex items-center gap-3 mb-5 pb-4 border-b border-hy-border">
+              <div className="w-9 h-9 rounded-lg bg-hy-accent-soft border border-hy-accent/20 flex items-center justify-center text-xl">
+                📄
               </div>
               <div>
-                <p className="text-sm font-medium" style={{ color: T.ink }}>bank_statement_oct.pdf</p>
-                <p className="text-[11px] flex items-center gap-1.5" style={{ color: T.accent }}>
-                  <span className="w-1.5 h-1.5 rounded-full" style={{ background: T.accent }} />
+                <p className="text-sm font-medium text-hy-primary">bank_statement_oct.pdf</p>
+                <p className="text-[11px] text-hy-accent flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-hy-accent animate-pulse" />
                   AI Analysis Complete
                 </p>
               </div>
@@ -1361,22 +1213,30 @@ export function LandingPage() {
               { label: 'Document Type', value: 'Bank Statement' },
               { label: 'Total Exposure', value: 'AED 48,500', gold: true },
               { label: 'Outstanding Loan', value: 'AED 32,200' },
-              { label: 'Risk Level', value: 'HIGH', red: true },
+              { label: 'Risk Level', value: '⚠️ HIGH', red: true },
               { label: 'Next Step', value: 'File formal dispute within 14 days', small: true },
             ].map((row, i) => (
-              <div key={i} className={clsx('flex justify-between items-start gap-3 py-2.5', i < 4 && 'border-b')} style={{ borderColor: T.line }}>
-                <span className="font-mono text-[10px] font-medium uppercase tracking-widest" style={{ color: T.inkFaint }}>
+              <div
+                key={i}
+                className={clsx(
+                  'flex justify-between items-start gap-3 py-2.5',
+                  i < 4 && 'border-b border-hy-border',
+                )}
+              >
+                <span className="text-[10px] font-bold uppercase tracking-widest text-hy-muted">
                   {row.label}
                 </span>
                 <span
-                  className={clsx('text-end', row.gold && 'font-semibold text-sm', row.small && 'text-[11px] max-w-[150px]')}
-                  style={
-                    row.red
-                      ? { color: T.brick, fontSize: 11, fontWeight: 700, background: T.brickSoft, padding: '2px 8px', borderRadius: 999 }
-                      : row.gold
-                        ? { color: T.accent }
-                        : { color: T.inkSoft, fontSize: row.small ? 11 : 14 }
-                  }
+                  className={clsx(
+                    'text-end',
+                    row.gold
+                      ? 'text-hy-primary font-semibold text-sm'
+                      : row.red
+                        ? 'text-red-400 text-xs font-bold bg-red-500/10 border border-red-500/20 px-2 py-0.5 rounded-full'
+                        : row.small
+                          ? 'text-[11px] text-hy-primary max-w-[150px]'
+                          : 'text-sm text-hy-secondary',
+                  )}
                 >
                   {row.value}
                 </span>
@@ -1386,225 +1246,217 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* ── HOW IT WORKS ────────────────────────────────────────── */}
-      <section className="py-20 sm:py-28 px-4 border-y" style={{ borderColor: T.line, background: T.paperRaised }}>
+      {/* ─── HOW IT WORKS ────────────────────────────────────────── */}
+      <section className="py-16 sm:py-24 px-4 bg-hy-subtle">
         <div className="max-w-4xl mx-auto">
-          <h2 className={clsx(serif, 'text-2xl sm:text-3xl font-semibold text-center mb-2')} style={{ color: T.ink }}>
+          <h2 className="text-2xl sm:text-3xl font-display font-semibold text-hy-primary text-center mb-2">
             {c.how.title}
           </h2>
-          <p className="text-center mb-14 max-w-xl mx-auto" style={{ color: T.inkSoft }}>{c.how.subtitle}</p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <p className="text-center text-hy-muted mb-12 max-w-xl mx-auto">{c.how.subtitle}</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {c.how.steps.map((step, i) => (
               <div key={i} className="relative">
                 {i < c.how.steps.length - 1 && (
-                  <div
-                    className="hidden lg:block absolute top-6 start-[calc(50%+30px)] end-[-calc(50%-30px)] h-px"
-                    style={{ background: T.lineStrong }}
-                  />
+                  <div className="hidden lg:block absolute top-7 start-[calc(50%+28px)] end-[-calc(50%-28px)] h-px bg-gradient-to-r from-hy-accent/30 to-transparent" />
                 )}
                 <div className="flex flex-col items-center text-center">
-                  <div
-                    className={clsx(serif, 'w-12 h-12 rounded-full border flex items-center justify-center mb-4 font-semibold text-lg')}
-                    style={{ borderColor: T.lineStrong, background: T.paper, color: T.ink }}
-                  >
+                  <div className="w-14 h-14 rounded-full border-2 border-hy-accent/50 bg-hy-base flex items-center justify-center mb-4 font-display font-semibold text-xl text-hy-primary shadow-[0_0_20px_rgba(196,144,62,0.08)]">
                     {step.num}
                   </div>
-                  <p className="font-semibold mb-2" style={{ color: T.ink }}>{step.title}</p>
-                  <p className="text-sm leading-relaxed" style={{ color: T.inkSoft }}>{step.desc}</p>
+                  <p className="font-semibold text-hy-primary mb-2">{step.title}</p>
+                  <p className="text-sm text-hy-muted leading-relaxed">{step.desc}</p>
                 </div>
               </div>
             ))}
           </div>
-          {c.how.callout && (
-            <div className="mt-12 p-5 rounded-[4px] border text-center" style={{ background: T.accentSoft, borderColor: T.accentSoft2 }}>
-              <p className="text-sm" style={{ color: T.ink }}>
-                <strong>{c.how.callout}</strong>
-              </p>
-            </div>
-          )}
+          <div className="mt-10 p-5 rounded-2xl bg-hy-accent-soft border border-hy-accent/20 text-center">
+            <p className="text-sm text-hy-secondary">
+              <strong className="text-hy-primary">{c.how.callout}</strong>
+            </p>
+          </div>
         </div>
       </section>
 
-      {/* ── EXECUTION / PROFESSIONALS ───────────────────────────── */}
-      <section className="py-20 sm:py-28 px-4" style={{ background: T.paper }}>
+      {/* ─── EXECUTION / TRUST ───────────────────────────────────── */}
+      <section className="py-16 sm:py-24 px-4 bg-hy-base">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className={clsx(serif, 'text-2xl sm:text-3xl font-semibold mb-2')} style={{ color: T.ink }}>
+          <h2 className="text-2xl sm:text-3xl font-display font-semibold text-hy-primary mb-2">
             {c.execution.title}
           </h2>
-          <p className="mb-14" style={{ color: T.inkSoft }}>{c.execution.sub}</p>
+          <p className="text-hy-muted mb-12">{c.execution.sub}</p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
             {c.execution.roles.map((role, i) => (
               <div
                 key={i}
-                className="relative text-start rounded-[4px] p-6 border transition-all hover:-translate-y-1 overflow-hidden"
-                style={{ background: T.paperRaised, borderColor: T.line }}
+                className="bg-hy-card border border-hy-border rounded-2xl p-6 hover:border-hy-accent/30 transition-all hover:-translate-y-1 shadow-hy"
               >
-                <span className="absolute -top-px left-6 w-10 h-1.5 rounded-b-[2px]" style={{ background: T.accent }} />
-                <Icon token={EMOJI_TOKEN[role.icon]} size={26} className="mb-4" style={{ color: T.ink }} />
-                <p className="font-bold mb-2" style={{ color: T.ink }}>{role.title}</p>
-                <p className="text-sm" style={{ color: T.inkSoft }}>{role.desc}</p>
+                <div className="text-3xl mb-4">{role.icon}</div>
+                <p className="font-bold text-hy-primary mb-2">{role.title}</p>
+                <p className="text-sm text-hy-muted">{role.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── PRICING ─────────────────────────────────────────────── */}
-      <section className="py-20 sm:py-28 px-4 border-y" style={{ borderColor: T.line, background: T.paperRaised }}>
+      {/* ─── PRICING ─────────────────────────────────────────────── */}
+      <section className="py-16 sm:py-24 px-4 bg-hy-subtle">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-14">
-            <p className={clsx(eyebrow, 'mb-4')} style={{ color: T.accent }}>{c.pricing.badge}</p>
-            <h2 className={clsx(serif, 'text-3xl sm:text-4xl font-semibold mb-2')} style={{ color: T.ink }}>
+          <div className="text-center mb-12">
+            <div className="inline-block px-3 py-1 rounded-full bg-hy-accent-soft border border-hy-accent/30 text-hy-accent text-xs font-bold uppercase tracking-widest mb-4">
+              {c.pricing.badge}
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-display font-semibold text-hy-primary mb-2">
               {c.pricing.title}
             </h2>
-            <p className="max-w-xl mx-auto" style={{ color: T.inkSoft }}>{c.pricing.subtitle}</p>
+            <p className="text-hy-muted max-w-xl mx-auto">{c.pricing.subtitle}</p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {c.pricing.tiers.map((tier) => {
-              const dark = tier.highlighted
-              return (
-                <div
-                  key={tier.id}
-                  className="relative rounded-[4px] p-5 border flex flex-col transition-all"
-                  style={
-                    dark
-                      ? { background: T.ink, borderColor: T.ink, color: T.paper }
-                      : { background: T.paper, borderColor: T.line, color: T.ink }
-                  }
-                >
-                  {dark && (
-                    <div
-                      className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider"
-                      style={{ background: T.accent, color: T.paper }}
-                    >
-                      {c.pricing.popularLabel}
-                    </div>
-                  )}
-                  <h3 className="text-sm font-semibold mb-1">{tier.name}</h3>
-                  <p className="text-xs mb-4 min-h-[2.5rem]" style={{ color: dark ? 'rgba(247,244,236,0.6)' : T.inkFaint }}>
-                    {tier.desc}
-                  </p>
-                  <div className="mb-4">
-                    <p className={clsx(serif, 'text-3xl font-semibold')}>{tier.price ? tier.price : 'Free'}</p>
-                    <p className="text-[11px] mt-0.5" style={{ color: dark ? 'rgba(247,244,236,0.5)' : T.inkFaint }}>
-                      {tier.priceLabel}
-                    </p>
+            {c.pricing.tiers.map((tier) => (
+              <div
+                key={tier.id}
+                className={clsx(
+                  'relative rounded-2xl p-5 border transition-all flex flex-col',
+                  tier.highlighted
+                    ? 'bg-gradient-to-b from-hy-accent/10 to-transparent border-hy-accent/40 shadow-hy shadow-hy-accent/10'
+                    : 'bg-hy-card/50 border-hy-border hover:border-hy-accent/30',
+                )}
+              >
+                {tier.highlighted && (
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-hy-accent text-hy-base text-[10px] font-black uppercase tracking-wider">
+                    {c.pricing.popularLabel}
                   </div>
-                  <ul className="space-y-2 mb-5 flex-1">
-                    {tier.features.map((f, i) => (
-                      <li key={i} className="flex items-start gap-2 text-xs" style={{ color: dark ? 'rgba(247,244,236,0.75)' : T.inkSoft }}>
-                        <Icon token="check" size={12} className="shrink-0 mt-0.5" style={{ color: dark ? T.paper : T.accent }} />
-                        <span className="leading-relaxed">{f}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <button
-                    onClick={() => handleCTA()}
-                    className="w-full py-2.5 rounded-[3px] font-semibold text-sm transition-all hover:-translate-y-0.5"
-                    style={
-                      dark
-                        ? { background: T.paper, color: T.ink }
-                        : { border: `1px solid ${T.lineStrong}`, color: T.ink }
-                    }
-                  >
-                    {tier.cta}
-                  </button>
+                )}
+                <h3 className="text-sm font-semibold text-hy-primary mb-1">{tier.name}</h3>
+                <p className="text-xs text-hy-muted mb-4 min-h-[2.5rem]">{tier.desc}</p>
+                <div className="mb-4">
+                  {tier.price ? (
+                    <>
+                      <p className="text-3xl font-display font-semibold text-hy-primary">
+                        {tier.price}
+                      </p>
+                      <p className="text-[11px] text-hy-muted mt-0.5">{tier.priceLabel}</p>
+                    </>
+                  ) : (
+                    <>
+                      <p className="text-3xl font-bold text-hy-secondary">Free</p>
+                      <p className="text-[11px] text-hy-muted mt-0.5">{tier.priceLabel}</p>
+                    </>
+                  )}
                 </div>
-              )
-            })}
+                <ul className="space-y-2 mb-5 flex-1">
+                  {tier.features.map((f, i) => (
+                    <li key={i} className="flex items-start gap-2 text-xs text-hy-muted">
+                      <span className="text-hy-accent shrink-0 mt-0.5">✓</span>
+                      <span className="leading-relaxed">{f}</span>
+                    </li>
+                  ))}
+                </ul>
+                <button
+                  onClick={() => handleCTA()}
+                  className={clsx(
+                    'w-full py-2.5 rounded-lg font-bold text-sm transition-all',
+                    tier.highlighted
+                      ? 'bg-hy-accent text-hy-base hover:bg-hy-accent-hover hover:-translate-y-0.5 shadow-lg shadow-hy-accent/20'
+                      : 'border border-hy-border text-hy-secondary hover:border-hy-accent hover:text-hy-primary',
+                  )}
+                >
+                  {tier.cta}
+                </button>
+              </div>
+            ))}
           </div>
 
-          <div className="mt-8 max-w-3xl mx-auto p-5 rounded-[4px] border" style={{ background: T.paper, borderColor: T.line }}>
-            <h4 className="text-sm font-semibold mb-2 flex items-center gap-2" style={{ color: T.ink }}>
-              <Icon token="lock" size={14} style={{ color: T.accent }} />
+          {/* Monetization transparency */}
+          <div className="mt-8 max-w-3xl mx-auto p-5 rounded-2xl bg-hy-base/50 border border-hy-border">
+            <h4 className="text-sm font-semibold text-hy-primary mb-2 flex items-center gap-2">
+              <span className="text-hy-accent">🔒</span>
               {c.pricing.monetizationTitle}
             </h4>
-            <p className="text-xs leading-relaxed mb-3" style={{ color: T.inkSoft }}>{c.pricing.monetizationText}</p>
-            <div className="flex items-start gap-2 p-3 rounded-[3px] border" style={{ background: T.accentSoft, borderColor: T.accentSoft2 }}>
-              <Icon token="warn" size={14} className="shrink-0 mt-0.5" style={{ color: T.accent }} />
-              <p className="text-[11px] leading-relaxed" style={{ color: T.ink }}>{c.pricing.monetizationNote}</p>
+            <p className="text-xs text-hy-muted leading-relaxed mb-3">
+              {c.pricing.monetizationText}
+            </p>
+            <div className="flex items-start gap-2 p-3 rounded-lg bg-hy-accent-soft border border-hy-accent/10">
+              <span className="text-sm shrink-0 mt-0.5">⚠️</span>
+              <p className="text-[11px] text-hy-muted leading-relaxed">
+                {c.pricing.monetizationNote}
+              </p>
             </div>
           </div>
 
-          {c.pricing.disclaimer && (
-            <div className="mt-6 text-center">
-              <p className="text-[11px] max-w-xl mx-auto leading-relaxed" style={{ color: T.inkFaint }}>
-                {c.pricing.disclaimer}
-              </p>
-            </div>
-          )}
+          {/* Pricing disclaimer */}
+          <div className="mt-6 text-center">
+            <p className="text-[11px] text-hy-subtle-text max-w-xl mx-auto leading-relaxed">
+              {c.pricing.disclaimer}
+            </p>
+          </div>
         </div>
       </section>
 
-      {/* ── WHATSAPP ────────────────────────────────────────────── */}
-      <section className="py-20 sm:py-28 px-4" style={{ background: T.paper }}>
+      {/* ─── WHATSAPP ────────────────────────────────────────────── */}
+      <section className="py-16 sm:py-24 px-4 bg-gradient-to-br from-hy-base via-hy-subtle to-hy-base">
         <div className="max-w-lg mx-auto text-center">
-          <div
-            className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5"
-            style={{ background: 'rgba(37,211,102,0.1)', border: '1px solid rgba(37,211,102,0.3)', color: T.wa }}
-          >
+          <div className="w-16 h-16 rounded-2xl bg-[#25D366]/10 border border-[#25D366]/30 flex items-center justify-center mx-auto mb-5 text-[#25D366]">
             <WAIcon size={28} />
           </div>
-          <h2 className={clsx(serif, 'text-2xl sm:text-3xl font-semibold mb-2')} style={{ color: T.ink }}>
+          <h2 className="text-2xl sm:text-3xl font-display font-semibold text-hy-primary mb-2">
             {c.whatsapp.title}
           </h2>
-          <p className="mb-6" style={{ color: T.inkSoft }}>{c.whatsapp.sub}</p>
+          <p className="text-hy-muted mb-6">{c.whatsapp.sub}</p>
           <a
             href={WA_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 px-8 py-4 rounded-[3px] font-bold text-base transition-all hover:-translate-y-0.5"
-            style={{ background: T.wa, color: '#0B2015' }}
+            className="inline-flex items-center gap-3 px-8 py-4 rounded-xl font-bold text-base bg-[#25D366] text-hy-base shadow-lg shadow-black/20 hover:shadow-green-500/35 hover:-translate-y-0.5 transition-all"
           >
             <WAIcon size={22} />
             {c.whatsapp.cta}
           </a>
-          <p className="text-xs mt-4" style={{ color: T.inkFaint }}>{c.whatsapp.note}</p>
+          <p className="text-xs text-hy-muted mt-4">{c.whatsapp.note}</p>
         </div>
       </section>
 
-      {/* ── FOR LAWYERS ─────────────────────────────────────────── */}
-      <section className="py-20 sm:py-28 px-4 border-y" style={{ borderColor: T.line, background: T.paperRaised }}>
+      {/* ─── FOR LAWYERS ─────────────────────────────────────────── */}
+      <section className="py-16 sm:py-24 px-4 bg-hy-base">
         <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-14">
-            <p className={clsx(eyebrow, 'mb-4 inline-flex items-center gap-2')} style={{ color: T.accent }}>
-              <Icon token="gov" size={13} />
-              {c.lawyers.badge}
-            </p>
-            <h2 className={clsx(serif, 'text-2xl sm:text-3xl font-semibold mb-2')} style={{ color: T.ink }}>
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-hy-accent-soft border border-hy-accent/20 text-hy-accent text-xs font-bold uppercase tracking-widest mb-4">
+              🏛️ {c.lawyers.badge}
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-display font-semibold text-hy-primary mb-2">
               {c.lawyers.title}
             </h2>
-            <p className="max-w-xl mx-auto" style={{ color: T.inkSoft }}>{c.lawyers.sub}</p>
+            <p className="text-hy-muted max-w-xl mx-auto">{c.lawyers.sub}</p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
-            <div className="relative rounded-[4px] p-5 border overflow-hidden" style={{ background: T.paper, borderColor: T.line }}>
-              <span className="absolute -top-px left-5 w-8 h-1.5 rounded-b-[2px]" style={{ background: T.accent }} />
-              <h3 className="text-sm font-semibold mb-4 flex items-center gap-2" style={{ color: T.ink }}>
-                <Icon token="check" size={14} style={{ color: T.accent }} />
+            {/* What we send */}
+            <div className="bg-hy-card border border-hy-border rounded-2xl p-5 shadow-hy">
+              <h3 className="text-sm font-semibold text-hy-primary mb-4 flex items-center gap-2">
+                <span className="text-hy-accent">✓</span>
                 {c.lawyers.sendTitle}
               </h3>
               <ul className="space-y-3">
                 {c.lawyers.sendItems.map((item, i) => (
-                  <li key={i} className="flex items-start gap-2.5 text-sm" style={{ color: T.inkSoft }}>
-                    <Icon token="check" size={13} className="shrink-0 mt-1" style={{ color: T.accent }} />
+                  <li key={i} className="flex items-start gap-2.5 text-sm text-hy-muted">
+                    <span className="text-hy-accent shrink-0 mt-0.5">✓</span>
                     <span className="leading-relaxed">{item}</span>
                   </li>
                 ))}
               </ul>
             </div>
 
-            <div className="relative rounded-[4px] p-5 border overflow-hidden" style={{ background: T.paper, borderColor: T.line }}>
-              <span className="absolute -top-px left-5 w-8 h-1.5 rounded-b-[2px]" style={{ background: T.brick }} />
-              <h3 className="text-sm font-semibold mb-4 flex items-center gap-2" style={{ color: T.ink }}>
-                <Icon token="warn" size={14} style={{ color: T.brick }} />
+            {/* What we don't do */}
+            <div className="bg-hy-card border border-hy-border rounded-2xl p-5 shadow-hy">
+              <h3 className="text-sm font-semibold text-hy-primary mb-4 flex items-center gap-2">
+                <span className="text-red-400">⚠</span>
                 {c.lawyers.dontTitle}
               </h3>
               <ul className="space-y-3">
                 {c.lawyers.dontItems.map((item, i) => (
-                  <li key={i} className="flex items-start gap-2.5 text-sm" style={{ color: T.inkSoft }}>
-                    <span className="shrink-0 mt-1 text-xs" style={{ color: T.brick }}>✕</span>
+                  <li key={i} className="flex items-start gap-2.5 text-sm text-hy-muted">
+                    <span className="text-red-400/70 shrink-0 mt-0.5 text-xs">✕</span>
                     <span className="leading-relaxed">{item}</span>
                   </li>
                 ))}
@@ -1612,108 +1464,127 @@ export function LandingPage() {
             </div>
           </div>
 
-          <div className="p-5 rounded-[4px] mb-6 border" style={{ background: T.accentSoft, borderColor: T.accentSoft2 }}>
+          {/* Compliance note */}
+          <div className="p-5 rounded-2xl bg-hy-accent-soft border border-hy-accent/20 mb-6">
             <div className="flex items-start gap-3">
-              <Icon token="scale" size={17} className="shrink-0" style={{ color: T.accent }} />
+              <span className="text-lg shrink-0">⚖️</span>
               <div>
-                <p className="text-sm font-semibold mb-1" style={{ color: T.ink }}>{c.lawyers.complianceLabel}</p>
-                <p className="text-xs leading-relaxed" style={{ color: T.inkSoft }}>{c.lawyers.complianceText}</p>
+                <p className="text-sm font-semibold text-hy-primary mb-1">
+                  {c.lawyers.complianceLabel}
+                </p>
+                <p className="text-xs text-hy-muted leading-relaxed">
+                  {c.lawyers.complianceText}
+                </p>
               </div>
             </div>
           </div>
 
+          {/* Onboarding */}
           <div className="text-center">
-            <p className="text-sm mb-4 max-w-lg mx-auto" style={{ color: T.inkSoft }}>{c.lawyers.onboardingText}</p>
+            <p className="text-sm text-hy-muted mb-4 max-w-lg mx-auto">
+              {c.lawyers.onboardingText}
+            </p>
             <a
               href="mailto:partners@expatuae.kafeely.com"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-[3px] font-semibold text-sm border transition-all"
-              style={{ borderColor: T.lineStrong, color: T.ink }}
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm border border-hy-accent/40 text-hy-accent hover:bg-hy-accent-soft transition-all"
             >
-              {c.lawyers.applyCta}
-              <Icon token="arrow" size={14} />
+              {c.lawyers.applyCta} →
             </a>
           </div>
         </div>
       </section>
 
-      {/* ── FAQ ────────────────────────────────────────────────── */}
-      <section className="py-20 sm:py-28 px-4" style={{ background: T.paper }}>
+      {/* ─── FAQ ────────────────────────────────────────────────── */}
+      <section className="py-16 sm:py-24 px-4 bg-hy-subtle">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-12">
-            <p className={eyebrow} style={{ color: T.accent }}>{c.faq.badge}</p>
-            <h2 className={clsx(serif, 'text-2xl sm:text-3xl font-semibold mt-2')} style={{ color: T.ink }}>
+            <p className="text-[10px] font-bold tracking-widest uppercase text-hy-muted mb-2">
+              {c.faq.badge}
+            </p>
+            <h2 className="text-2xl sm:text-3xl font-display font-semibold text-hy-primary">
               {c.faq.title}
             </h2>
           </div>
-          <div>
+          <div className="space-y-3">
             {c.faq.items.map((faq, i) => (
-              <details key={i} className="group border-b" style={{ borderColor: T.line }}>
-                <summary className="flex items-center justify-between gap-3 py-5 cursor-pointer text-sm font-medium list-none" style={{ color: T.ink }}>
-                  <span className="flex items-baseline gap-3">
-                    <span className="font-mono text-xs" style={{ color: T.inkFaint }}>{String(i + 1).padStart(2, '0')}</span>
-                    {faq.q}
+              <details
+                key={i}
+                className="group bg-hy-base/50 border border-hy-border rounded-xl overflow-hidden"
+              >
+                <summary className="flex items-center justify-between gap-3 p-4 cursor-pointer text-sm font-medium text-hy-primary hover:bg-white/[0.02] transition-colors list-none">
+                  {faq.q}
+                  <span className="text-hy-muted shrink-0 group-open:rotate-180 transition-transform">
+                    ▾
                   </span>
-                  <span className="shrink-0 group-open:rotate-45 transition-transform text-lg font-light" style={{ color: T.inkFaint }}>+</span>
                 </summary>
-                <div className="pb-5 ps-8 text-sm leading-relaxed" style={{ color: T.inkSoft }}>{faq.a}</div>
+                <div className="px-4 pb-4 text-sm text-hy-muted leading-relaxed">{faq.a}</div>
               </details>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── TRUST ───────────────────────────────────────────────── */}
-      <section className="py-12 px-4 border-y" style={{ borderColor: T.line, background: T.paperRaised }}>
+      {/* ─── TRUST ───────────────────────────────────────────────── */}
+      <section className="py-12 px-4 bg-hy-subtle border-t border-hy-border">
         <div className="max-w-3xl mx-auto">
-          <p className={clsx(eyebrow, 'text-center mb-6')} style={{ color: T.inkFaint }}>{c.trust.title}</p>
+          <p className="text-center text-sm font-semibold text-hy-muted uppercase tracking-widest mb-6">
+            {c.trust.title}
+          </p>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {c.trust.items.map((item, i) => (
-              <div key={i} className="flex flex-col items-center gap-2 p-4 rounded-[3px] border text-center" style={{ borderColor: T.line, background: T.paper }}>
-                <GlyphIcon emoji={item.icon} size={20} style={{ color: T.accent }} />
-                <span className="text-xs leading-tight" style={{ color: T.inkSoft }}>{item.text}</span>
+              <div
+                key={i}
+                className="flex flex-col items-center gap-2 p-4 rounded-xl bg-hy-base/60 border border-hy-border text-center"
+              >
+                <span className="text-2xl">{item.icon}</span>
+                <span className="text-xs text-hy-muted leading-tight">{item.text}</span>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── FOOTER ──────────────────────────────────────────────── */}
-      <footer className="py-10 px-4" style={{ background: T.ink, color: T.paper }}>
+      {/* ─── FOOTER ──────────────────────────────────────────────── */}
+      <footer className="py-10 px-4 bg-hy-base border-t border-hy-border">
         <div className="max-w-4xl mx-auto">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 mb-6">
             <div className="flex items-center gap-2.5">
-              <div className="w-7 h-7 rounded-[3px] flex items-center justify-center font-display font-bold text-xs" style={{ background: T.paper, color: T.ink }}>
-                E
+              <div className="w-7 h-7 rounded-lg bg-hy-accent flex items-center justify-center text-hy-base font-bold text-xs">
+                R
               </div>
-              <span className="font-semibold">{c.nav.brand}</span>
+              <span className="font-semibold text-hy-primary font-display">{c.nav.brand}</span>
             </div>
             <div className="flex gap-5">
               {c.footer.links.map((l, i) => (
-                <a key={i} href="#" className="text-sm transition-colors" style={{ color: 'rgba(247,244,236,0.4)' }}>
+                <a
+                  key={i}
+                  href="#"
+                  className="text-sm text-hy-muted hover:text-hy-secondary transition-colors"
+                >
                   {l}
                 </a>
               ))}
             </div>
           </div>
-          <div className="flex items-start gap-3 p-4 rounded-[3px]" style={{ background: 'rgba(247,244,236,0.06)', border: '1px solid rgba(247,244,236,0.12)' }}>
-            <Icon token="scale" size={15} className="shrink-0" style={{ color: 'rgba(247,244,236,0.5)' }} />
-            <p className="text-xs leading-relaxed" style={{ color: 'rgba(247,244,236,0.45)' }}>{c.footer.disclaimer}</p>
+          {/* Disclaimer */}
+          <div className="flex items-start gap-3 p-4 rounded-xl bg-hy-accent-soft border border-hy-accent/15">
+            <span className="text-lg shrink-0">⚖️</span>
+            <p className="text-xs text-hy-muted leading-relaxed">{c.footer.disclaimer}</p>
           </div>
-          <p className="text-center text-xs mt-6" style={{ color: 'rgba(247,244,236,0.25)' }}>
-            © 2026 {c.nav.brand}. All rights reserved.
+          <p className="text-center text-xs text-hy-subtle-text mt-6">
+            © 2026 ExpatUAE. All rights reserved.
           </p>
         </div>
       </footer>
 
-      {/* ── STICKY BOTTOM BAR ───────────────────────────────────── */}
+      {/* ─── STICKY BOTTOM BAR ───────────────────────────────────── */}
       <div
         className={clsx(
-          'fixed bottom-0 inset-x-0 z-40 backdrop-blur-xl border-t px-4 py-3 flex items-center justify-between gap-3 transition-transform duration-500',
+          'fixed bottom-0 inset-x-0 z-40 bg-hy-base/96 backdrop-blur-xl border-t border-hy-border px-4 py-3 flex items-center justify-between gap-3 transition-transform duration-500',
           scrolled ? 'translate-y-0' : 'translate-y-full',
         )}
-        style={{ background: 'rgba(24,22,17,0.96)', borderColor: 'rgba(247,244,236,0.1)' }}
       >
-        <p className="text-sm hidden sm:block" style={{ color: 'rgba(247,244,236,0.55)' }}>
+        <p className="text-sm text-hy-muted hidden sm:block">
           Not sure where to start? Try the free assessment.
         </p>
         <div className="flex items-center gap-2 ms-auto">
@@ -1721,34 +1592,31 @@ export function LandingPage() {
             href={WA_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1.5 px-3 py-2 rounded-[3px] text-sm font-medium transition-all"
-            style={{ background: 'rgba(37,211,102,0.12)', color: T.wa, border: '1px solid rgba(37,211,102,0.3)' }}
+            className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-[#25D366]/10 text-[#25D366] border border-[#25D366]/25 text-sm font-medium hover:bg-[#25D366]/20 transition-all"
           >
             <WAIcon size={15} />
             <span className="hidden sm:inline">WhatsApp</span>
           </a>
           <button
             onClick={() => handleCTA()}
-            className="px-5 py-2.5 rounded-[3px] font-bold text-sm transition-all hover:-translate-y-0.5"
-            style={{ background: T.paper, color: T.ink }}
+            className="px-5 py-2.5 rounded-lg font-bold text-sm bg-hy-accent text-hy-base shadow-lg shadow-black/20 hover:bg-hy-accent-hover hover:-translate-y-0.5 transition-all"
           >
             {c.sticky}
           </button>
         </div>
       </div>
 
-      {/* ── FLOATING WHATSAPP ───────────────────────────────────── */}
+      {/* ─── FLOATING WHATSAPP ───────────────────────────────────── */}
       <a
         href={WA_URL}
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Chat on WhatsApp"
         className={clsx(
-          'fixed z-50 w-14 h-14 rounded-full flex items-center justify-center text-white shadow-2xl hover:scale-110 transition-all',
+          'fixed z-50 w-14 h-14 rounded-full bg-[#25D366] flex items-center justify-center text-white shadow-2xl shadow-green-500/30 hover:scale-110 transition-all whatsapp-float',
           scrolled ? 'bottom-20' : 'bottom-6',
           isRTL ? 'left-4 sm:left-6' : 'right-4 sm:right-6',
         )}
-        style={{ background: T.wa, animation: 'float 3s ease-in-out infinite' }}
       >
         <WAIcon size={26} />
       </a>
