@@ -26,7 +26,11 @@ export const supabase = createClient(
     auth: {
       persistSession: true,
       autoRefreshToken: true,
-      detectSessionInUrl: false, // ← off: prevents URL hash parse hanging
+      // detectSessionInUrl must stay true (the default) so that
+      // password-reset links (which embed the token in the URL hash)
+      // and magic-link / OAuth callbacks are auto-detected.
+      // The stale-lock issue that previously motivated setting this to
+      // false is mitigated by the localStorage cleanup code above.
       storageKey: 'rlco-session-v2', // ← new key: avoids stale lock
       flowType: 'implicit',
     },

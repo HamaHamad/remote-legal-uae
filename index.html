@@ -41,7 +41,9 @@
       property="og:description"
       content="Professional remote legal case management platform for UAE. Secure, multilingual, and efficient."
     />
+    <!-- TODO: Add og-image.png to public/ and uncomment:
     <meta property="og:image" content="https://remote-legal-uae.vercel.app/og-image.png" />
+    -->
     <meta property="og:locale" content="en" />
     <meta property="og:locale:alternate" content="ar" />
     <meta property="og:locale:alternate" content="hi" />
@@ -50,14 +52,16 @@
     <meta property="og:site_name" content="Remote Legal UAE" />
 
     <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:card" content="summary" />
     <meta name="twitter:url" content="https://remote-legal-uae.vercel.app/" />
     <meta name="twitter:title" content="Remote Legal Case Orchestrator — UAE" />
     <meta
       name="twitter:description"
       content="Professional remote legal case management platform for UAE. Secure, multilingual, and efficient."
     />
+    <!-- TODO: Add og-image.png to public/ and uncomment:
     <meta name="twitter:image" content="https://remote-legal-uae.vercel.app/og-image.png" />
+    -->
 
     <!-- hreflang — declares Arabic/Urdu as RTL alternates -->
     <link rel="alternate" hreflang="en" href="https://remote-legal-uae.vercel.app/" />
@@ -67,18 +71,15 @@
     <link rel="alternate" hreflang="tl" href="https://remote-legal-uae.vercel.app/?lang=tl" />
     <link rel="alternate" hreflang="x-default" href="https://remote-legal-uae.vercel.app/" />
 
-    <!-- Google Fonts -->
+    <!-- Google Fonts — app-wide (always loaded) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Noto+Naskh+Arabic:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Noto+Naskh+Arabic:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
-    <!-- Landing-page-only type system (scoped via .lp — see src/pages/LandingPage.css) -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&family=Markazi+Text:wght@400;500;600;700&family=Noto+Kufi+Arabic:wght@400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;600;700&family=Noto+Serif+Devanagari:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <!-- Non-Latin landing-page fonts (lazy-loaded on demand — see LandingPage.jsx loadLpFonts()) -->
+    <!-- Arabic: Markazi Text, Noto Kufi Arabic | Urdu: Noto Nastaliq Urdu | Hindi: Noto Serif/Sans Devanagari -->
 
     <!-- Structured data: organization -->
     <script type="application/ld+json">

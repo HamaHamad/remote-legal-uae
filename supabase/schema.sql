@@ -51,6 +51,10 @@ create trigger users_updated_at
   for each row execute function public.set_updated_at();
 
 -- ─── Trigger: auto-create user profile on signup ─────────────────
+-- SECURITY: role is hardcoded to 'client'. Admin/partner roles are
+-- granted ONLY via the set_user_role() RPC (see migration_phase0_security.sql).
+-- The client-supplied raw_user_meta_data->>'role' is intentionally IGNORED
+-- to prevent self-service privilege escalation.
 create or replace function public.handle_new_user()
 returns trigger language plpgsql security definer set search_path = public as $$
 begin
@@ -59,13 +63,21 @@ begin
     new.id,
     new.email,
     coalesce(new.raw_user_meta_data ->> 'full_name', ''),
-    coalesce((new.raw_user_meta_data ->> 'role')::user_role, 'client'),
-    'en'
+    'client',
+    coalesce(
+      nullif(new.raw_user_meta_data ->> 'language', ''),
+      'en'
+    )::app_language
   )
-  on conflict (id) do nothing;
+  on conflict (id) do update
+    set email     = excluded.email,
+        full_name = coalesce(excluded.full_name, public.users.full_name);
   return new;
 end;
 $$;
+
+comment on function public.handle_new_user() is
+  'Auto-create a client profile on signup. Role is hardcoded to ''client'' — admins/partners are promoted via set_user_role() RPC.';
 
 create trigger on_auth_user_created
   after insert on auth.users
@@ -157,13 +169,13 @@ alter table public.case_activities enable row level security;
 
 -- ─── Helper function: get current user role ───────────────────────
 create or replace function public.current_user_role()
-returns user_role language sql stable security definer as $$
+returns user_role language sql stable security definer set search_path = public as $$
   select role from public.users where id = auth.uid()
 $$;
 
 -- ─── Helper function: is admin ────────────────────────────────────
 create or replace function public.is_admin()
-returns boolean language sql stable security definer as $$
+returns boolean language sql stable security definer set search_path = public as $$
   select exists (
     select 1 from public.users
     where id = auth.uid() and role = 'admin'
@@ -172,7 +184,7 @@ $$;
 
 -- ─── Helper function: is partner ─────────────────────────────────
 create or replace function public.is_partner()
-returns boolean language sql stable security definer as $$
+returns boolean language sql stable security definer set search_path = public as $$
   select exists (
     select 1 from public.users
     where id = auth.uid() and role = 'partner'
@@ -312,7 +324,15 @@ create policy "activities_insert"
 -- update public.users set role = 'admin' where email = 'your-admin@example.com';
 
 -- ============================================================
--- VIEWS (convenience)
+-- SECURE VIEW: cases_with_users
+-- NOTE: PostgreSQL views do NOT inherit RLS from their underlying
+-- tables. This view joins cases + users, so querying it via the
+-- anon or authenticated role could leak data if not handled carefully.
+--
+-- For admin use, this is fine (admins can see everything).
+-- For client/partner use, ALWAYS query the `cases` table directly
+-- (which has RLS) and join user data in application code, OR use
+-- the get_cases_with_users() function below which enforces ownership.
 -- ============================================================
 
 create or replace view public.cases_with_users as
@@ -325,6 +345,53 @@ create or replace view public.cases_with_users as
   from public.cases c
   left join public.users u on u.id = c.user_id
   left join public.users p on p.id = c.assigned_to;
+
+-- Security warning comment (visible in Supabase dashboard)
+comment on view public.cases_with_users is
+  'WARNING: This view bypasses RLS. Admins may query it directly. Clients/partners should use get_cases_with_users() or query the cases table directly.';
+
+-- Secure alternative: function-based access with ownership enforcement
+create or replace function public.get_cases_with_users()
+returns table (
+  id             uuid,
+  user_id        uuid,
+  assigned_to    uuid,
+  type           case_type,
+  status         case_status,
+  title          text,
+  description    text,
+  priority       smallint,
+  internal_notes text,
+  resolved_at    timestamptz,
+  created_at     timestamptz,
+  updated_at     timestamptz,
+  client_email   text,
+  client_name    text,
+  partner_email  text,
+  partner_name   text
+)
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select
+    c.*,
+    u.email         as client_email,
+    u.full_name     as client_name,
+    p.email         as partner_email,
+    p.full_name     as partner_name
+  from public.cases c
+  left join public.users u on u.id = c.user_id
+  left join public.users p on p.id = c.assigned_to
+  where
+    c.user_id = auth.uid()
+    or public.is_admin()
+    or (public.is_partner() and c.assigned_to = auth.uid())
+$$;
+
+comment on function public.get_cases_with_users() is
+  'RLS-safe alternative to cases_with_users view. Enforces ownership: clients see own cases, partners see assigned, admins see all.';
 
 -- ============================================================
 -- DONE

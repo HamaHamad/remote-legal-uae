@@ -188,7 +188,7 @@ function wrapEmailHTML(bodyHtml: string, subject: string): string {
                 This platform provides AI-assisted case organisation and coordination only.
                 It does NOT provide legal advice or guaranteed outcomes.<br><br>
                 You received this email because you have an account on ResolveUAE.
-                <a href="https://remote-legal-uae.vercel.app/settings" style="color:#c9992e;">Manage notifications</a>
+                <a href="${Deno.env.get('SITE_URL') || 'https://remote-legal-uae.vercel.app'}/settings" style="color:#c9992e;">Manage notifications</a>
               </p>
             </td>
           </tr>

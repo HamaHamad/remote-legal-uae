@@ -455,7 +455,7 @@ DECLARE
 BEGIN
   IF NEW.ai_status = 'done' AND OLD.ai_status IS DISTINCT FROM NEW.ai_status THEN
     SELECT email INTO client_email FROM public.users WHERE id = NEW.user_id;
-    case_url := 'https://remote-legal-uae.vercel.app/dashboard/cases/' || NEW.id;
+    case_url := public.site_url() || '/dashboard/cases/' || NEW.id;
     INSERT INTO public.email_queue (to_email, subject, body_html, body_text)
     VALUES (
       client_email,
@@ -488,7 +488,7 @@ BEGIN
     SELECT u.email INTO client_email
     FROM public.users u
     WHERE u.id = NEW.user_id;
-    case_url   := 'https://remote-legal-uae.vercel.app/dashboard/cases/' || NEW.case_id;
+    case_url   := public.site_url() || '/dashboard/cases/' || NEW.case_id;
     amount_aed := 'AED ' || (NEW.amount::float / 100)::text;
     INSERT INTO public.email_queue (to_email, subject, body_html, body_text)
     VALUES (
@@ -520,7 +520,7 @@ BEGIN
   IF NEW.assigned_to IS NOT NULL AND
      (OLD.assigned_to IS NULL OR OLD.assigned_to IS DISTINCT FROM NEW.assigned_to) THEN
     SELECT email INTO client_email FROM public.users WHERE id = NEW.user_id;
-    case_url := 'https://remote-legal-uae.vercel.app/dashboard/cases/' || NEW.id;
+    case_url := public.site_url() || '/dashboard/cases/' || NEW.id;
     INSERT INTO public.email_queue (to_email, subject, body_html, body_text)
     VALUES (
       client_email,

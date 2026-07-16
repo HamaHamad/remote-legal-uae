@@ -82,13 +82,9 @@ CREATE POLICY "storage_delete_own"
     )
   );
 
--- ─── 3. Transactional email function ─────────────────────────────
--- Supabase sends emails via the built-in SMTP.
--- We use pg_net (available on Supabase) to call the Edge Function
--- OR use a simple notification + Supabase Dashboard email settings.
---
--- For now: create a helper that logs email events to a queue table,
--- which a cron job or edge function can process.
+-- ─── 3. Email queue table ────────────────────────────────────────
+-- Logs email events to a queue table, which a cron job or edge
+-- function (send-emails) processes.
 
 CREATE TABLE IF NOT EXISTS public.email_queue (
   id          uuid        PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -110,18 +106,46 @@ CREATE POLICY "email_queue_admin"
   ON public.email_queue FOR ALL
   USING (public.is_admin());
 
--- ─── 4. Auto-email trigger: AI report ready ───────────────────────
+-- ─── 4. Centralized site URL ─────────────────────────────────────
+-- Instead of hardcoding the production domain in every email trigger,
+-- read it from this config table. Change the value when you switch
+-- to a custom domain or staging environment:
+--   UPDATE app_config SET value='https://your-domain.com' WHERE key='site_url';
+CREATE TABLE IF NOT EXISTS public.app_config (
+  key   text PRIMARY KEY,
+  value text NOT NULL
+);
+
+INSERT INTO public.app_config (key, value)
+VALUES ('site_url', 'https://remote-legal-uae.vercel.app')
+ON CONFLICT (key) DO NOTHING;
+
+CREATE OR REPLACE FUNCTION public.site_url()
+RETURNS text
+LANGUAGE sql
+STABLE
+SECURITY DEFINER
+SET search_path = public
+AS $$
+  SELECT value FROM public.app_config WHERE key = 'site_url';
+$$;
+
+COMMENT ON FUNCTION public.site_url() IS
+  'Returns the configurable site URL. Used by email triggers to build links. Update via: UPDATE app_config SET value=''https://your-domain.com'' WHERE key=''site_url'';';
+
+ALTER TABLE public.app_config ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "app_config_admin" ON public.app_config FOR ALL USING (public.is_admin());
+
+-- ─── 5. Auto-email trigger: AI report ready ───────────────────────
 CREATE OR REPLACE FUNCTION public.email_on_ai_ready()
-RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER AS $$
+RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
 DECLARE
   client_email text;
   case_url     text;
 BEGIN
   IF NEW.ai_status = 'done' AND OLD.ai_status != 'done' THEN
-    -- Get client email
     SELECT email INTO client_email FROM public.users WHERE id = NEW.user_id;
-
-    case_url := 'https://remote-legal-uae.vercel.app/dashboard/cases/' || NEW.id;
+    case_url := public.site_url() || '/dashboard/cases/' || NEW.id;
 
     INSERT INTO public.email_queue (to_email, subject, body_html, body_text)
     VALUES (
@@ -144,9 +168,9 @@ CREATE TRIGGER email_ai_ready
   AFTER UPDATE OF ai_status ON public.cases
   FOR EACH ROW EXECUTE FUNCTION public.email_on_ai_ready();
 
--- ─── 5. Auto-email trigger: Payment successful ────────────────────
+-- ─── 6. Auto-email trigger: Payment successful ────────────────────
 CREATE OR REPLACE FUNCTION public.email_on_payment_success()
-RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER AS $$
+RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
 DECLARE
   client_email text;
   case_url     text;
@@ -157,7 +181,7 @@ BEGIN
     FROM public.users u
     WHERE u.id = NEW.user_id;
 
-    case_url   := 'https://remote-legal-uae.vercel.app/dashboard/cases/' || NEW.case_id;
+    case_url   := public.site_url() || '/dashboard/cases/' || NEW.case_id;
     amount_aed := 'AED ' || (NEW.amount::float / 100)::text;
 
     INSERT INTO public.email_queue (to_email, subject, body_html, body_text)
@@ -181,9 +205,9 @@ CREATE TRIGGER email_payment_success
   AFTER UPDATE OF status ON public.payments
   FOR EACH ROW EXECUTE FUNCTION public.email_on_payment_success();
 
--- ─── 6. Auto-email trigger: Case assigned to partner ─────────────
+-- ─── 7. Auto-email trigger: Case assigned to partner ─────────────
 CREATE OR REPLACE FUNCTION public.email_on_case_assigned_to_client()
-RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER AS $$
+RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
 DECLARE
   client_email text;
   case_url     text;
@@ -192,7 +216,7 @@ BEGIN
      (OLD.assigned_to IS NULL OR OLD.assigned_to != NEW.assigned_to) THEN
 
     SELECT email INTO client_email FROM public.users WHERE id = NEW.user_id;
-    case_url := 'https://remote-legal-uae.vercel.app/dashboard/cases/' || NEW.id;
+    case_url := public.site_url() || '/dashboard/cases/' || NEW.id;
 
     INSERT INTO public.email_queue (to_email, subject, body_html, body_text)
     VALUES (
@@ -214,14 +238,6 @@ CREATE TRIGGER email_case_assigned
   AFTER UPDATE OF assigned_to ON public.cases
   FOR EACH ROW EXECUTE FUNCTION public.email_on_case_assigned_to_client();
 
--- ─── 7. Verification ─────────────────────────────────────────────
--- SELECT * FROM public.email_queue ORDER BY created_at DESC LIMIT 10;
--- SELECT * FROM storage.buckets WHERE id = 'case-documents';
-
--- ============================================================
--- DONE — Production hardening migration complete
--- ============================================================
-
 -- ─── 8. Add notification_prefs column to users ───────────────────
 ALTER TABLE public.users
   ADD COLUMN IF NOT EXISTS notification_prefs jsonb DEFAULT '{
@@ -237,3 +253,12 @@ ALTER TABLE public.users
 
 COMMENT ON COLUMN public.users.notification_prefs IS
   'User notification preferences — email and in-app toggles';
+
+-- ─── 9. Verification ─────────────────────────────────────────────
+-- SELECT * FROM public.email_queue ORDER BY created_at DESC LIMIT 10;
+-- SELECT * FROM storage.buckets WHERE id = 'case-documents';
+-- SELECT * FROM public.app_config;
+
+-- ============================================================
+-- DONE — Production hardening migration complete
+-- ============================================================

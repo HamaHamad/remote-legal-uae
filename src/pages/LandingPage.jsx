@@ -4,7 +4,31 @@ import { clsx } from 'clsx'
 import { ThemeToggle } from '@/components/ThemeToggle'
 import './LandingPage.css'
 
-// ─── WhatsApp number — change to real number ──────────────────────
+// ─── Lazy font loader for non-Latin scripts ───────────────────────
+// These fonts are large (especially Noto Nastaliq Urdu ~500KB).
+// We load them only when the user selects a non-English language,
+// and only once per session.
+const FONT_URLS = {
+  ar: 'https://fonts.googleapis.com/css2?family=Markazi+Text:wght@400;500;600;700&family=Noto+Kufi+Arabic:wght@400;500;600;700&display=swap',
+  ur: 'https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;600;700&display=swap',
+  hi: 'https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap',
+  tl: null, // Tagalog uses Latin script — Public Sans covers it
+}
+const loadedFonts = new Set()
+
+function loadLpFonts(lang) {
+  const url = FONT_URLS[lang]
+  if (!url || loadedFonts.has(lang)) return
+  loadedFonts.add(lang)
+  const link = document.createElement('link')
+  link.rel = 'stylesheet'
+  link.href = url
+  document.head.appendChild(link)
+}
+
+// ─── WhatsApp number ──────────────────────────────────────────────
+// ⚠️ ACTION REQUIRED: Replace with the real business WhatsApp number.
+// Current value is a placeholder and will NOT connect to anyone.
 const WA_NUMBER = '971501234567'
 const WA_URL = `https://wa.me/${WA_NUMBER}?text=Hello%2C+I+need+help+with+a+UAE+case`
 
@@ -1395,9 +1419,11 @@ export function LandingPage() {
 
   // Update html dir for RTL (global — other routes expect this) while the
   // font swap itself stays scoped to .lp via the [lang] attribute below.
+  // Also lazy-loads non-Latin fonts on demand.
   useEffect(() => {
     document.documentElement.dir = meta.dir
     document.documentElement.lang = lang
+    loadLpFonts(lang)
     return () => {
       document.documentElement.dir = 'ltr'
       document.documentElement.lang = 'en'
@@ -2210,16 +2236,21 @@ export function LandingPage() {
               </span>
             </div>
             <div className="flex gap-5">
-              {c.footer.links.map((l, i) => (
-                <a
-                  key={i}
-                  href="#"
-                  className="text-sm transition-colors"
-                  style={{ color: 'var(--fg-faint)' }}
-                >
-                  {l}
-                </a>
-              ))}
+              {c.footer.links.map((l, i) => {
+                const hrefs = ['/privacy-policy', '/terms-of-service', '/cookie-policy', 'mailto:partners@expatuae.kafeely.com']
+                const isExternal = hrefs[i]?.startsWith('mailto')
+                return (
+                  <a
+                    key={i}
+                    href={hrefs[i] || '#'}
+                    {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                    className="text-sm transition-colors"
+                    style={{ color: 'var(--fg-faint)' }}
+                  >
+                    {l}
+                  </a>
+                )
+              })}
             </div>
           </div>
           <div className="flex items-start gap-3 p-4 rounded-xl lp-panel-amber">

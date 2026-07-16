@@ -27,13 +27,14 @@ export function useAI() {
       })
 
       if (fnError) {
-        // Edge function returned an error — mark case as failed in local state
+        // Edge function returned an error.
+        // NOTE: We do NOT set ai_status='failed' here because the
+        // cases_protect_ai_columns trigger blocks non-admins from
+        // modifying ai_status. The edge function itself handles
+        // failure recovery (marks status as 'failed' via service role).
         setAiError(fnError.message || 'AI analysis failed')
         setAnalyzing(false)
         setAiProgress('')
-
-        // Update DB status to failed
-        await supabase.from('cases').update({ ai_status: 'failed' }).eq('id', caseId)
 
         return { success: false, error: fnError.message }
       }
