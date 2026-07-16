@@ -1,0 +1,292 @@
+/* ═══════════════════════════════════════════════════════════════
+   LandingPage.css — scoped design system for the marketing page.
+
+   Everything here lives under `.lp` so it can never leak into the
+   dashboard/admin/partner app, which keeps its own tokens in
+   src/index.css. Dark is the default; :root.light flips the
+   variables (the existing ThemeToggle keeps working unchanged).
+
+   Signature idea: a "case folder" tab — a small raised label at the
+   top-left corner of a card, like a physical case-file folder. It's
+   used on every card across the page (situation picker, the locked
+   AI report, the document mock-up, pricing tiers) to keep one motif
+   tying back to the product's actual unit of work: a case.
+   ═══════════════════════════════════════════════════════════════ */
+
+.lp {
+  --ink: #101a2c;
+  --surface: #16213a;
+  --surface-2: #1b2740;
+  --fg: #ece7d8;
+  --fg-dim: #aeb4c2;
+  --fg-faint: #7c8494;
+  --oasis: #4a9c86;
+  --oasis-soft: rgba(74, 156, 134, 0.16);
+  --oasis-ink: #06120d;
+  --amber: #e0a24a;
+  --amber-soft: rgba(224, 162, 74, 0.16);
+  --amber-ink: #241505;
+  --clay: #c97a52;
+  --clay-soft: rgba(201, 122, 82, 0.16);
+  --border: rgba(236, 231, 216, 0.12);
+  --border-strong: rgba(236, 231, 216, 0.22);
+  --shadow: 0 24px 64px rgba(4, 8, 16, 0.45);
+  --ring: 0 0 0 3px rgba(74, 156, 134, 0.35);
+
+  background: var(--ink);
+  color: var(--fg);
+  font-family: 'Public Sans', system-ui, sans-serif;
+}
+
+:root.light .lp {
+  --ink: #f3efe3;
+  --surface: #ffffff;
+  --surface-2: #faf6ea;
+  --fg: #1a2233;
+  --fg-dim: #4c5468;
+  --fg-faint: #7c8494;
+  --oasis: #24705c;
+  --oasis-soft: rgba(36, 112, 92, 0.1);
+  --oasis-ink: #eaf4f0;
+  --amber: #a8701f;
+  --amber-soft: rgba(168, 112, 31, 0.12);
+  --amber-ink: #fbf1de;
+  --clay: #9a4d2c;
+  --clay-soft: rgba(154, 77, 44, 0.1);
+  --border: rgba(26, 34, 51, 0.12);
+  --border-strong: rgba(26, 34, 51, 0.22);
+  --shadow: 0 20px 50px rgba(30, 25, 10, 0.12);
+  --ring: 0 0 0 3px rgba(36, 112, 92, 0.25);
+}
+
+.lp * {
+  border-color: var(--border);
+}
+
+/* ─── Type roles ──────────────────────────────────────────────── */
+.lp-display {
+  font-family: 'Fraunces', Georgia, serif;
+  font-optical-sizing: auto;
+  letter-spacing: -0.01em;
+}
+.lp-mono {
+  font-family: 'IBM Plex Mono', monospace;
+  letter-spacing: 0.08em;
+}
+
+/* Per-language display/body swaps. `lang` is set on the .lp wrapper
+   itself (not documentElement) so the toggle only affects this page. */
+.lp[lang='ar'] {
+  font-family: 'Noto Kufi Arabic', sans-serif;
+}
+.lp[lang='ar'] .lp-display {
+  font-family: 'Markazi Text', serif;
+  letter-spacing: 0;
+}
+.lp[lang='ur'] {
+  font-family: 'Noto Nastaliq Urdu', serif;
+  line-height: 2.1;
+}
+.lp[lang='ur'] .lp-display {
+  font-family: 'Noto Nastaliq Urdu', serif;
+  letter-spacing: 0;
+  line-height: 1.9;
+}
+.lp[lang='hi'] {
+  font-family: 'Noto Sans Devanagari', sans-serif;
+}
+.lp[lang='hi'] .lp-display {
+  font-family: 'Noto Serif Devanagari', serif;
+  letter-spacing: 0;
+}
+
+/* ─── Eyebrow / label ─────────────────────────────────────────── */
+.lp-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--oasis);
+}
+.lp-eyebrow::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 1px;
+  background: var(--oasis);
+  transform: rotate(45deg);
+}
+
+/* ─── Ledger backdrop (hero) ──────────────────────────────────── */
+.lp-ledger {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 35px,
+    var(--border) 35px,
+    var(--border) calc(35px + 1px)
+  );
+  -webkit-mask-image: linear-gradient(to bottom, black, transparent 92%);
+  mask-image: linear-gradient(to bottom, black, transparent 92%);
+}
+
+/* ─── Folder-tab card (the page's signature element) ─────────── */
+.lp-folder {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 3px 18px 18px 18px;
+  box-shadow: var(--shadow);
+}
+.lp-folder--flat {
+  box-shadow: none;
+}
+.lp-folder__tab {
+  position: absolute;
+  top: -13px;
+  inset-inline-start: 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-bottom: none;
+  padding: 4px 12px 7px;
+  border-radius: 8px 8px 0 0;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-faint);
+  white-space: nowrap;
+}
+.lp-folder--accent {
+  border-color: var(--oasis);
+}
+.lp-folder--accent .lp-folder__tab {
+  border-color: var(--oasis);
+  color: var(--oasis);
+  background: var(--oasis-soft);
+}
+
+/* ─── Buttons ─────────────────────────────────────────────────── */
+.lp-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-weight: 600;
+  border-radius: 10px;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+  white-space: nowrap;
+}
+.lp-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
+}
+.lp-btn--primary {
+  background: var(--amber);
+  color: var(--amber-ink);
+}
+.lp-btn--primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(224, 162, 74, 0.28);
+}
+.lp-btn--ghost {
+  border: 1px solid var(--border-strong);
+  color: var(--fg-dim);
+  background: transparent;
+}
+.lp-btn--ghost:hover {
+  border-color: var(--oasis);
+  color: var(--fg);
+}
+.lp-btn--dark {
+  background: var(--surface-2);
+  border: 1px solid var(--border-strong);
+  color: var(--fg);
+}
+.lp-btn--dark:hover {
+  border-color: var(--oasis);
+}
+.lp-btn--wa {
+  background: #21bd63;
+  color: #06170d;
+}
+.lp-btn--wa:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(33, 189, 99, 0.3);
+}
+
+/* ─── Situation picker ────────────────────────────────────────── */
+.lp-situation {
+  border: 1.5px solid var(--border);
+  border-radius: 3px 16px 16px 16px;
+  background: var(--surface);
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+.lp-situation:hover {
+  transform: translateY(-3px);
+  border-color: var(--oasis);
+}
+.lp-situation--selected {
+  border-color: var(--oasis);
+  background: var(--oasis-soft);
+}
+
+/* ─── Stitch divider ──────────────────────────────────────────── */
+.lp-stitch {
+  border: none;
+  border-top: 1.5px dashed var(--border-strong);
+  margin: 0;
+}
+
+/* ─── Step chip (how it works) ────────────────────────────────── */
+.lp-step-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 600;
+  font-size: 15px;
+  border: 1.5px solid var(--oasis);
+  color: var(--oasis);
+  background: var(--surface);
+}
+
+/* ─── Misc surfaces ───────────────────────────────────────────── */
+.lp-surface {
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+.lp-surface-2 {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+}
+.lp-panel-accent {
+  background: var(--oasis-soft);
+  border: 1px solid var(--oasis);
+}
+.lp-panel-amber {
+  background: var(--amber-soft);
+  border: 1px solid rgba(224, 162, 74, 0.4);
+}
+
+/* ─── Sticky bar entrance ─────────────────────────────────────── */
+.lp-sticky {
+  transition: transform 0.4s ease;
+}
+
+/* ─── Reduced motion ──────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .lp * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

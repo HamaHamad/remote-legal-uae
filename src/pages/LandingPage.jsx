@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { clsx } from 'clsx'
 import { ThemeToggle } from '@/components/ThemeToggle'
+import './LandingPage.css'
 
 // ─── WhatsApp number — change to real number ──────────────────────
 const WA_NUMBER = '971501234567'
@@ -1348,6 +1349,23 @@ function LockIcon() {
   )
 }
 
+function CaretIcon({ open }) {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      className="shrink-0 transition-transform duration-200"
+      style={{ transform: open ? 'rotate(180deg)' : 'rotate(0deg)' }}
+    >
+      <path d="M6 9l6 6 6-6" />
+    </svg>
+  )
+}
+
 // ─── Main Landing Page ────────────────────────────────────────────
 export function LandingPage() {
   const navigate = useNavigate()
@@ -1375,7 +1393,8 @@ export function LandingPage() {
   const meta = LANG_META[lang] || LANG_META.en
   const isRTL = ['ar', 'ur'].includes(lang)
 
-  // Update html dir for RTL
+  // Update html dir for RTL (global — other routes expect this) while the
+  // font swap itself stays scoped to .lp via the [lang] attribute below.
   useEffect(() => {
     document.documentElement.dir = meta.dir
     document.documentElement.lang = lang
@@ -1419,169 +1438,51 @@ export function LandingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)] font-sans overflow-x-hidden">
-      {/* ── Harvey.ai inspired style (embedded) ── */}
-      <style>{`
-        :root {
-          --hy-base: #0d0b09;
-          --hy-elevated: #15130f;
-          --hy-card: #1a1714;
-          --hy-subtle: #26231d;
-          --hy-hover: #38352e;
-          --hy-primary: #f5f3ef;
-          --hy-secondary: #c9c6bb;
-          --hy-muted: #7d786b;
-          --hy-subtle-text: #979285;
-          --hy-border: #38352e;
-          --hy-border-strong: #4a463d;
-          --hy-accent: #c4903e;
-          --hy-accent-hover: #d4a05a;
-          --hy-accent-soft: rgba(196,144,62,0.10);
-          --hy-shadow: 0 8px 32px rgba(0,0,0,0.5);
-          --hy-shadow-lg: 0 20px 60px rgba(0,0,0,0.6);
-          --rounded-lg: 10px;
-          --rounded-lg-lg: 16px;
-          --rounded-lg-full: 9999px;
-          --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-          --font-display: 'Instrument Serif', 'Inter', serif;
-          --transition-all: 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-
-        .bg-[var(--bg-primary)] { background: var(--hy-base); }
-        .bg-[var(--bg-elevated)] { background: var(--hy-elevated); }
-        .bg-[var(--bg-card)] { background: var(--hy-card); }
-        .bg-[var(--bg-elevated)] { background: var(--hy-subtle); }
-        .bg-[var(--accent)] { background: var(--hy-accent); }
-        .bg-[var(--accent)]-soft { background: var(--hy-accent-soft); }
-        .text-[var(--text-primary)] { color: var(--hy-primary); }
-        .text-[var(--text-secondary)] { color: var(--hy-secondary); }
-        .text-[var(--text-muted)] { color: var(--hy-muted); }
-        .text-hy-subtle { color: var(--hy-subtle-text); }
-        .text-[var(--accent)] { color: var(--hy-accent); }
-        .border-[var(--border)] { border-color: var(--hy-border); }
-        .border-[var(--border)]-strong { border-color: var(--hy-border-strong); }
-        .border-[var(--accent)] { border-color: var(--hy-accent); }
-        .shadow-hy { box-shadow: var(--hy-shadow); }
-        .shadow-lg { box-shadow: var(--hy-shadow-lg); }
-        .font-body { font-family: var(--font-body); }
-        .font-display { font-family: var(--font-display); }
-
-        /* subtle grain */
-        .grain {
-          position: fixed;
-          inset: 0;
-          pointer-events: none;
-          z-index: 9999;
-          opacity: 0.025;
-          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
-          background-repeat: repeat;
-          background-size: 256px 256px;
-        }
-
-        .glow-orb {
-          position: absolute;
-          border-radius: 50%;
-          filter: blur(120px);
-          pointer-events: none;
-          opacity: 0.12;
-        }
-        .glow-orb--a {
-          width: 600px;
-          height: 600px;
-          top: -20%;
-          right: -10%;
-          background: radial-gradient(circle, var(--hy-accent) 0%, transparent 70%);
-        }
-        .glow-orb--b {
-          width: 400px;
-          height: 400px;
-          bottom: -20%;
-          left: -10%;
-          background: radial-gradient(circle, rgba(196,144,62,0.15) 0%, transparent 70%);
-        }
-
-        .eyebrow {
-          display: inline-flex;
-          align-items: center;
-          gap: 10px;
-          font-size: 11px;
-          font-weight: 600;
-          letter-spacing: 0.10em;
-          text-transform: uppercase;
-          color: var(--hy-accent);
-        }
-        .eyebrow::before {
-          content: '';
-          display: inline-block;
-          width: 24px;
-          height: 1.5px;
-          background: var(--hy-accent);
-          border-radius: 2px;
-        }
-
-        /* Floating WhatsApp pulse */
-        @keyframes float {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-6px); }
-        }
-        .whatsapp-float {
-          animation: float 3s ease-in-out infinite;
-        }
-
-        /* Smooth transitions */
-        .transition-hy {
-          transition: var(--transition-all);
-        }
-        .hover-lift:hover {
-          transform: translateY(-2px);
-        }
-        .hover-glow:hover {
-          box-shadow: 0 0 30px rgba(196,144,62,0.12);
-        }
-      `}</style>
-
-      {/* ── Grain overlay ── */}
-      <div className="grain" aria-hidden="true" />
-
+    <div lang={lang} dir={meta.dir} className="lp min-h-screen overflow-x-hidden lp-body">
       {/* ─── NAVBAR ─────────────────────────────────────────────── */}
-      <nav className="fixed top-0 inset-x-0 z-50 bg-[var(--bg-primary)]/90 backdrop-blur-xl border-b border-[var(--border)]">
+      <nav className="fixed top-0 inset-x-0 z-50 lp-surface backdrop-blur-xl">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
-          {/* Logo */}
           <div className="flex items-center gap-2.5 shrink-0">
-            <div className="w-8 h-8 rounded-lg bg-[var(--accent)] flex items-center justify-center text-hy-base font-bold text-sm shadow-lg">
-              R
+            <div
+              className="w-8 h-8 flex items-center justify-center font-semibold text-sm rounded-[3px_10px_10px_10px]"
+              style={{ background: 'var(--amber)', color: 'var(--amber-ink)' }}
+            >
+              E
             </div>
-            <span className="font-semibold text-[var(--text-primary)] text-lg tracking-tight font-display">
+            <span className="lp-display font-semibold text-lg" style={{ color: 'var(--fg)' }}>
               {c.nav.brand}
             </span>
           </div>
 
-          {/* Right nav */}
           <div className="flex items-center gap-2 sm:gap-3">
-            {/* Theme toggle */}
-            <ThemeToggle />
-            {/* Language switcher */}
+            <ThemeToggle className="!border-[var(--border)] !bg-[var(--surface-2)]" />
+
             <div className="relative" ref={langRef}>
               <button
                 onClick={() => setLangOpen((v) => !v)}
-                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:border-[var(--border)]-strong transition-all text-sm"
+                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border text-sm transition-colors"
+                style={{ borderColor: 'var(--border)', color: 'var(--fg-dim)' }}
               >
                 <span>{meta.flag}</span>
                 <span className="hidden sm:inline">{meta.label}</span>
-                <span className="text-xs">▾</span>
+                <CaretIcon open={langOpen} />
               </button>
               {langOpen && (
-                <div className="absolute top-full mt-2 end-0 w-44 bg-[var(--bg-elevated)] border border-[var(--border)] rounded-xl p-1.5 shadow-hy z-50">
+                <div
+                  className="absolute top-full mt-2 end-0 w-44 rounded-xl p-1.5 z-50 lp-surface"
+                  style={{ boxShadow: 'var(--shadow)' }}
+                >
                   {Object.entries(LANG_META).map(([code, m]) => (
                     <button
                       key={code}
                       onClick={() => setLang(code)}
                       className={clsx(
-                        'w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-all text-start',
-                        lang === code
-                          ? 'bg-[var(--accent)]-soft text-[var(--text-primary)]'
-                          : 'text-[var(--text-muted)] hover:bg-[var(--text-primary)]/5 hover:text-[var(--text-primary)]',
+                        'w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-colors text-start',
                       )}
+                      style={{
+                        background: lang === code ? 'var(--oasis-soft)' : 'transparent',
+                        color: lang === code ? 'var(--fg)' : 'var(--fg-dim)',
+                      }}
                     >
                       <span>{m.flag}</span>
                       <span>
@@ -1603,14 +1504,15 @@ export function LandingPage() {
 
             <button
               onClick={() => navigate('/login')}
-              className="hidden sm:block px-3 py-1.5 text-sm text-[var(--text-muted)] hover:text-[var(--text-primary)] border border-[var(--border)] hover:border-[var(--border)]-strong rounded-lg transition-all"
+              className="hidden sm:block px-3 py-1.5 text-sm rounded-lg border transition-colors"
+              style={{ borderColor: 'var(--border)', color: 'var(--fg-dim)' }}
             >
               {c.nav.login}
             </button>
 
             <button
               onClick={() => handleCTA()}
-              className="px-3 sm:px-4 py-1.5 text-sm font-semibold bg-[var(--accent)] text-hy-base rounded-lg hover:bg-[var(--accent)]-hover hover:shadow-lg transition-all"
+              className="lp-btn lp-btn--primary px-4 py-1.5 text-sm"
             >
               {c.nav.start}
             </button>
@@ -1619,67 +1521,59 @@ export function LandingPage() {
       </nav>
 
       {/* ─── HERO ───────────────────────────────────────────────── */}
-      <section className="relative pt-24 pb-16 sm:pt-32 sm:pb-24 px-4 overflow-hidden">
-        {/* Glow orbs */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="glow-orb glow-orb--a" />
-          <div className="glow-orb glow-orb--b" />
-          <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-hy-accent/30 to-transparent" />
-          <div
-            className="absolute inset-0 opacity-[0.025]"
-            style={{
-              backgroundImage:
-                'linear-gradient(rgba(245,240,232,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(245,240,232,0.5) 1px, transparent 1px)',
-              backgroundSize: '50px 50px',
-            }}
-          />
-        </div>
+      <section className="relative pt-28 pb-16 sm:pt-36 sm:pb-24 px-4 overflow-hidden">
+        <div className="lp-ledger absolute inset-0 pointer-events-none" aria-hidden="true" />
 
         <div className="max-w-4xl mx-auto text-center relative z-10">
-          {/* Trust badge */}
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[var(--accent)]/30 bg-[var(--accent)]-soft text-[var(--accent)] text-xs font-semibold uppercase tracking-widest mb-6">
-            <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] animate-pulse" />
-            {c.hero.badge}
-          </div>
+          <div className="lp-eyebrow justify-center mb-6">{c.hero.badge}</div>
 
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-display font-semibold text-[var(--text-primary)] leading-tight mb-6 tracking-tight">
+          <h1 className="lp-display text-3xl sm:text-5xl lg:text-6xl font-medium leading-[1.1] mb-6">
             {c.hero.headline}
           </h1>
 
-          <p className="text-base sm:text-xl text-[var(--text-secondary)] max-w-2xl mx-auto leading-relaxed">
+          <p
+            className="text-base sm:text-xl max-w-2xl mx-auto leading-relaxed"
+            style={{ color: 'var(--fg-dim)' }}
+          >
             {c.hero.sub}
           </p>
 
-          {/* CTAs */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-8">
             <button
               onClick={() => handleCTA()}
-              className="w-full sm:w-auto px-8 py-4 rounded-xl font-bold text-lg bg-[var(--accent)] text-hy-base shadow-lg shadow-[var(--shadow-color)] hover:bg-[var(--accent)]-hover hover:-translate-y-0.5 transition-all"
+              className="lp-btn lp-btn--primary w-full sm:w-auto px-8 py-4 text-lg"
             >
               {c.hero.cta1}
             </button>
             <button
               onClick={() => handleCTA('analyze')}
-              className="w-full sm:w-auto px-8 py-4 rounded-xl font-semibold text-base border border-[var(--border)] text-[var(--text-secondary)] hover:border-[var(--accent)] hover:text-[var(--text-primary)] transition-all"
+              className="lp-btn lp-btn--ghost w-full sm:w-auto px-8 py-4 text-base"
             >
               {c.hero.cta2}
             </button>
           </div>
 
-          {/* Micro-trust */}
           <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 mt-8">
             {c.hero.trust.map((t, i) => (
-              <div key={i} className="flex items-center gap-2 text-sm text-[var(--text-muted)]">
-                <span className="text-[var(--accent)] font-bold">✓</span>
+              <div
+                key={i}
+                className="flex items-center gap-2 text-sm"
+                style={{ color: 'var(--fg-faint)' }}
+              >
+                <span style={{ color: 'var(--oasis)' }} className="font-bold">
+                  ✓
+                </span>
                 <span>{t}</span>
               </div>
             ))}
           </div>
 
-          {/* Hero disclaimer */}
-          <div className="mt-8 inline-flex items-start gap-2 max-w-xl mx-auto p-3 rounded-xl bg-white/[0.02] border border-[var(--border)]">
+          <div className="mt-8 inline-flex items-start gap-2 max-w-xl mx-auto p-3 rounded-xl lp-surface-2">
             <span className="text-sm shrink-0 mt-0.5">⚖️</span>
-            <p className="text-[11px] text-[var(--text-muted)] text-center leading-relaxed">
+            <p
+              className="text-[11px] text-center leading-relaxed"
+              style={{ color: 'var(--fg-faint)' }}
+            >
               {c.hero.disclaimer}
             </p>
           </div>
@@ -1687,28 +1581,34 @@ export function LandingPage() {
       </section>
 
       {/* ─── SITUATION SELECTOR ──────────────────────────────────── */}
-      <section className="py-12 px-4 bg-[var(--bg-elevated)]">
+      <section className="py-14 px-4 lp-surface-2">
         <div className="max-w-3xl mx-auto">
-          <p className="text-center text-lg font-semibold text-[var(--text-primary)] mb-6">
+          <p className="text-center text-lg font-semibold mb-6" style={{ color: 'var(--fg)' }}>
             {c.selector.title}
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            {c.selector.items.map((item) => (
+            {c.selector.items.map((item, i) => (
               <button
                 key={item.id}
                 onClick={() => handleSituationSelect(item.id)}
                 className={clsx(
-                  'group flex flex-col items-center gap-2 p-4 rounded-2xl border-2 text-center transition-all duration-200 hover:-translate-y-1',
-                  selected === item.id
-                    ? 'border-[var(--accent)] bg-[var(--accent)]-soft shadow-lg shadow-hy-accent/20'
-                    : 'border-[var(--border)] bg-[var(--bg-primary)]/50 hover:border-[var(--accent)]/50 hover:bg-[var(--accent)]-soft/20',
+                  'lp-situation relative flex flex-col items-center gap-2 p-4 pt-6 text-center',
+                  selected === item.id && 'lp-situation--selected',
                 )}
               >
+                <span
+                  className="lp-mono absolute -top-[13px] start-4 px-2.5 py-1 rounded-t-lg text-[9px] font-semibold lp-surface"
+                  style={{ color: 'var(--fg-faint)' }}
+                >
+                  {String(i + 1).padStart(2, '0')}
+                </span>
                 <span className="text-3xl">{item.icon}</span>
-                <span className="font-semibold text-sm text-[var(--text-primary)]">
+                <span className="font-semibold text-sm" style={{ color: 'var(--fg)' }}>
                   {item.label}
                 </span>
-                <span className="text-xs text-[var(--text-muted)]">{item.desc}</span>
+                <span className="text-xs" style={{ color: 'var(--fg-faint)' }}>
+                  {item.desc}
+                </span>
               </button>
             ))}
           </div>
@@ -1716,11 +1616,17 @@ export function LandingPage() {
       </section>
 
       {/* ─── SOCIAL PROOF STRIP ──────────────────────────────────── */}
-      <section className="py-6 px-4 border-y border-[var(--border)] bg-[var(--bg-primary)]">
+      <section className="py-6 px-4 border-y">
         <div className="max-w-4xl mx-auto flex flex-wrap items-center justify-center gap-6 sm:gap-10">
           {c.proof.items.map((item, i) => (
-            <div key={i} className="flex items-center gap-2 text-sm text-[var(--text-muted)]">
-              <span className="text-[var(--accent)] font-bold text-lg">{item.icon}</span>
+            <div
+              key={i}
+              className="flex items-center gap-2 text-sm"
+              style={{ color: 'var(--fg-faint)' }}
+            >
+              <span style={{ color: 'var(--oasis)' }} className="font-bold text-lg">
+                {item.icon}
+              </span>
               <span>{item.text}</span>
             </div>
           ))}
@@ -1728,43 +1634,53 @@ export function LandingPage() {
       </section>
 
       {/* ─── AI PREVIEW (LOCKED) ──────────────────────────────────── */}
-      <section className="py-16 sm:py-24 px-4 bg-[var(--bg-elevated)]">
+      <section className="py-16 sm:py-24 px-4">
         <div className="max-w-2xl mx-auto">
-          <p className="text-[10px] font-bold tracking-widest uppercase text-[var(--text-muted)] text-center mb-2">
-            AI Analysis
-          </p>
-          <h2 className="text-2xl sm:text-3xl font-display font-semibold text-[var(--text-primary)] text-center mb-2">
+          <p className="lp-eyebrow justify-center mb-3">AI Analysis</p>
+          <h2
+            className="lp-display text-2xl sm:text-3xl font-medium text-center mb-2"
+            style={{ color: 'var(--fg)' }}
+          >
             {c.aiPreview.title}
           </h2>
-          <p className="text-center text-[var(--text-muted)] mb-8">{c.aiPreview.sub}</p>
+          <p className="text-center mb-8" style={{ color: 'var(--fg-faint)' }}>
+            {c.aiPreview.sub}
+          </p>
 
-          {/* Bullets (visible) */}
-          <div className="flex flex-col gap-2 mb-6">
+          <div className="flex flex-col gap-2 mb-10">
             {c.aiPreview.bullets.map((b, i) => (
-              <div
-                key={i}
-                className="flex items-center gap-3 px-4 py-3 rounded-xl bg-[var(--bg-primary)]/80 border border-[var(--border)]"
-              >
-                <span className="w-5 h-5 rounded-full bg-[var(--accent)]-soft border border-[var(--accent)]/30 text-[var(--accent)] flex items-center justify-center text-xs font-bold shrink-0">
+              <div key={i} className="flex items-center gap-3 px-4 py-3 rounded-xl lp-surface-2">
+                <span
+                  className="lp-mono w-6 h-6 rounded-full flex items-center justify-center text-xs font-semibold shrink-0"
+                  style={{ background: 'var(--oasis-soft)', color: 'var(--oasis)' }}
+                >
                   {i + 1}
                 </span>
-                <span className="text-sm text-[var(--text-secondary)]">{b}</span>
+                <span className="text-sm" style={{ color: 'var(--fg-dim)' }}>
+                  {b}
+                </span>
               </div>
             ))}
           </div>
 
-          {/* Locked blurred content */}
-          <div className="relative rounded-2xl overflow-hidden border border-[var(--accent)]/20">
-            {/* Blurred steps */}
+          <div className="lp-folder relative overflow-hidden">
+            <span className="lp-folder__tab">File / Locked</span>
             <div
-              className={clsx('p-6 space-y-3', locked && 'blur-sm select-none pointer-events-none')}
+              className={clsx(
+                'p-6 pt-8 space-y-3',
+                locked && 'blur-sm select-none pointer-events-none',
+              )}
             >
               {c.aiPreview.blurItems.map((item, i) => (
                 <div
                   key={i}
-                  className="flex items-start gap-3 text-sm text-[var(--text-muted)] py-2 border-b border-[var(--border)] last:border-0"
+                  className="flex items-start gap-3 text-sm py-2 border-b last:border-0"
+                  style={{ color: 'var(--fg-faint)' }}
                 >
-                  <span className="w-6 h-6 rounded-full bg-[var(--accent)]-soft border border-[var(--accent)]/20 text-[var(--accent)] flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
+                  <span
+                    className="lp-mono w-6 h-6 rounded-full flex items-center justify-center text-xs font-semibold shrink-0 mt-0.5"
+                    style={{ background: 'var(--oasis-soft)', color: 'var(--oasis)' }}
+                  >
                     {i + 1}
                   </span>
                   <span>{item}</span>
@@ -1772,21 +1688,30 @@ export function LandingPage() {
               ))}
             </div>
 
-            {/* Overlay */}
             {locked && (
-              <div className="absolute inset-0 flex flex-col items-center justify-center bg-[var(--bg-primary)]/75 backdrop-blur-md p-6 text-center">
-                <div className="w-12 h-12 rounded-full bg-[var(--accent)]-soft border border-[var(--accent)]/30 flex items-center justify-center mb-4">
+              <div
+                className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center backdrop-blur-md"
+                style={{ background: 'color-mix(in srgb, var(--ink) 78%, transparent)' }}
+              >
+                <div
+                  className="w-12 h-12 rounded-full flex items-center justify-center mb-4"
+                  style={{
+                    background: 'var(--oasis-soft)',
+                    border: '1px solid var(--oasis)',
+                    color: 'var(--oasis)',
+                  }}
+                >
                   <LockIcon />
                 </div>
-                <p className="font-bold text-[var(--text-primary)] text-lg mb-1">
+                <p className="font-semibold text-lg mb-1" style={{ color: 'var(--fg)' }}>
                   {c.aiPreview.lockTitle}
                 </p>
-                <p className="text-sm text-[var(--text-muted)] mb-5 max-w-xs">
+                <p className="text-sm mb-5 max-w-xs" style={{ color: 'var(--fg-faint)' }}>
                   {c.aiPreview.lockSub}
                 </p>
                 <button
                   onClick={() => handleCTA()}
-                  className="px-6 py-3 rounded-xl font-bold text-sm bg-[var(--accent)] text-hy-base hover:bg-[var(--accent)]-hover hover:-translate-y-0.5 transition-all"
+                  className="lp-btn lp-btn--primary px-6 py-3 text-sm"
                 >
                   {c.aiPreview.lockCta}
                 </button>
@@ -1797,82 +1722,102 @@ export function LandingPage() {
       </section>
 
       {/* ─── DOCUMENT AI ─────────────────────────────────────────── */}
-      <section className="py-16 sm:py-24 px-4 bg-[var(--bg-primary)]">
-        <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <section className="py-16 sm:py-24 px-4 lp-surface-2">
+        <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
           <div>
-            <div className="inline-block px-3 py-1 rounded-full bg-[var(--accent)]-soft border border-[var(--accent)]/30 text-[var(--accent)] text-xs font-bold uppercase tracking-widest mb-4">
-              {c.docAI.badge}
-            </div>
-            <h2 className="text-2xl sm:text-3xl font-display font-semibold text-[var(--text-primary)] mb-4 leading-snug">
+            <p className="lp-eyebrow mb-4">{c.docAI.badge}</p>
+            <h2
+              className="lp-display text-2xl sm:text-3xl font-medium mb-4 leading-snug"
+              style={{ color: 'var(--fg)' }}
+            >
               {c.docAI.title}
             </h2>
-            <p className="text-[var(--text-muted)] mb-6 leading-relaxed">{c.docAI.sub}</p>
+            <p className="mb-6 leading-relaxed" style={{ color: 'var(--fg-faint)' }}>
+              {c.docAI.sub}
+            </p>
             <ul className="space-y-2 mb-8">
               {c.docAI.items.map((item, i) => (
                 <li
                   key={i}
-                  className="flex items-center gap-2.5 text-sm text-[var(--text-secondary)]"
+                  className="flex items-center gap-2.5 text-sm"
+                  style={{ color: 'var(--fg-dim)' }}
                 >
-                  <span className="text-[var(--accent)]">→</span>
+                  <span style={{ color: 'var(--oasis)' }}>→</span>
                   <span>{item}</span>
                 </li>
               ))}
             </ul>
             <button
               onClick={() => handleCTA()}
-              className="w-full sm:w-auto px-6 py-3.5 rounded-xl font-bold text-sm bg-[var(--bg-elevated)] border border-[var(--border)]-strong text-[var(--text-primary)] hover:hover:bg-[var(--bg-elevated)] hover:border-[var(--accent)]/50 transition-all"
+              className="lp-btn lp-btn--dark w-full sm:w-auto px-6 py-3.5 text-sm"
             >
               📄 {c.docAI.cta}
             </button>
           </div>
 
-          {/* Doc card mockup */}
-          <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-2xl p-6 relative overflow-hidden shadow-hy">
-            <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-hy-accent/20 to-transparent" />
-            <div className="flex items-center gap-3 mb-5 pb-4 border-b border-[var(--border)]">
-              <div className="w-9 h-9 rounded-lg bg-[var(--accent)]-soft border border-[var(--accent)]/20 flex items-center justify-center text-xl">
+          {/* Doc card mock-up — same folder motif as the rest of the page */}
+          <div className="lp-folder relative p-6 pt-8">
+            <span className="lp-folder__tab lp-folder__tab">Doc / 01</span>
+            <div className="flex items-center gap-3 mb-5 pb-4 border-b">
+              <div
+                className="w-9 h-9 rounded-lg flex items-center justify-center text-xl"
+                style={{ background: 'var(--oasis-soft)', border: '1px solid var(--oasis)' }}
+              >
                 📄
               </div>
               <div>
-                <p className="text-sm font-medium text-[var(--text-primary)]">
+                <p className="text-sm font-medium" style={{ color: 'var(--fg)' }}>
                   bank_statement_oct.pdf
                 </p>
-                <p className="text-[11px] text-[var(--accent)] flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] animate-pulse" />
+                <p
+                  className="text-[11px] flex items-center gap-1.5"
+                  style={{ color: 'var(--oasis)' }}
+                >
+                  <span
+                    className="w-1.5 h-1.5 rounded-full animate-pulse"
+                    style={{ background: 'var(--oasis)' }}
+                  />
                   AI Analysis Complete
                 </p>
               </div>
             </div>
             {[
               { label: 'Document Type', value: 'Bank Statement' },
-              { label: 'Total Exposure', value: 'AED 48,500', gold: true },
+              { label: 'Total Exposure', value: 'AED 48,500', strong: true },
               { label: 'Outstanding Loan', value: 'AED 32,200' },
-              { label: 'Risk Level', value: '⚠️ HIGH', red: true },
+              { label: 'Risk Level', value: 'HIGH', risk: true },
               { label: 'Next Step', value: 'File formal dispute within 14 days', small: true },
             ].map((row, i) => (
               <div
                 key={i}
                 className={clsx(
                   'flex justify-between items-start gap-3 py-2.5',
-                  i < 4 && 'border-b border-[var(--border)]',
+                  i < 4 && 'border-b',
                 )}
               >
-                <span className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-muted)]">
+                <span
+                  className="lp-mono text-[10px] font-semibold"
+                  style={{ color: 'var(--fg-faint)' }}
+                >
                   {row.label}
                 </span>
                 <span
-                  className={clsx(
-                    'text-end',
-                    row.gold
-                      ? 'text-[var(--text-primary)] font-semibold text-sm'
-                      : row.red
-                        ? 'text-[var(--status-error)] text-xs font-bold bg-[var(--status-error)]/10 border border-[var(--status-error)]/20 px-2 py-0.5 rounded-full'
-                        : row.small
-                          ? 'text-[11px] text-[var(--text-primary)] max-w-[150px]'
-                          : 'text-sm text-[var(--text-secondary)]',
-                  )}
+                  className={clsx('text-end', row.small ? 'text-[11px] max-w-[150px]' : 'text-sm')}
+                  style={{
+                    color: row.strong ? 'var(--fg)' : row.risk ? undefined : 'var(--fg-dim)',
+                    fontWeight: row.strong ? 600 : 400,
+                  }}
                 >
-                  {row.value}
+                  {row.risk ? (
+                    <span
+                      className="lp-mono text-[10px] font-semibold px-2 py-0.5 rounded-full"
+                      style={{ color: 'var(--clay)', background: 'var(--clay-soft)' }}
+                    >
+                      {row.value}
+                    </span>
+                  ) : (
+                    row.value
+                  )}
                 </span>
               </div>
             ))}
@@ -1881,54 +1826,67 @@ export function LandingPage() {
       </section>
 
       {/* ─── HOW IT WORKS ────────────────────────────────────────── */}
-      <section className="py-16 sm:py-24 px-4 bg-[var(--bg-elevated)]">
+      <section className="py-16 sm:py-24 px-4">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl sm:text-3xl font-display font-semibold text-[var(--text-primary)] text-center mb-2">
+          <h2
+            className="lp-display text-2xl sm:text-3xl font-medium text-center mb-2"
+            style={{ color: 'var(--fg)' }}
+          >
             {c.how.title}
           </h2>
-          <p className="text-center text-[var(--text-muted)] mb-12 max-w-xl mx-auto">
+          <p className="text-center mb-12 max-w-xl mx-auto" style={{ color: 'var(--fg-faint)' }}>
             {c.how.subtitle}
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {c.how.steps.map((step, i) => (
               <div key={i} className="relative">
                 {i < c.how.steps.length - 1 && (
-                  <div className="hidden lg:block absolute top-7 start-[calc(50%+28px)] end-[-calc(50%-28px)] h-px bg-gradient-to-r from-hy-accent/30 to-transparent" />
+                  <div className="hidden lg:block absolute top-7 start-[calc(50%+28px)] end-[-calc(50%-28px)] h-px lp-stitch" />
                 )}
                 <div className="flex flex-col items-center text-center">
-                  <div className="w-14 h-14 rounded-full border-2 border-[var(--accent)]/50 bg-[var(--bg-primary)] flex items-center justify-center mb-4 font-display font-semibold text-xl text-[var(--text-primary)] shadow-[0_0_20px_rgba(196,144,62,0.08)]">
+                  <div className="lp-step-num w-14 h-14 rounded-full flex items-center justify-center mb-4">
                     {step.num}
                   </div>
-                  <p className="font-semibold text-[var(--text-primary)] mb-2">{step.title}</p>
-                  <p className="text-sm text-[var(--text-muted)] leading-relaxed">{step.desc}</p>
+                  <p className="font-semibold mb-2" style={{ color: 'var(--fg)' }}>
+                    {step.title}
+                  </p>
+                  <p className="text-sm leading-relaxed" style={{ color: 'var(--fg-faint)' }}>
+                    {step.desc}
+                  </p>
                 </div>
               </div>
             ))}
           </div>
-          <div className="mt-10 p-5 rounded-2xl bg-[var(--accent)]-soft border border-[var(--accent)]/20 text-center">
-            <p className="text-sm text-[var(--text-secondary)]">
-              <strong className="text-[var(--text-primary)]">{c.how.callout}</strong>
+          <div className="mt-10 p-5 rounded-2xl text-center lp-panel-accent">
+            <p className="text-sm" style={{ color: 'var(--fg-dim)' }}>
+              <strong style={{ color: 'var(--fg)' }}>{c.how.callout}</strong>
             </p>
           </div>
         </div>
       </section>
 
-      {/* ─── EXECUTION / TRUST ───────────────────────────────────── */}
-      <section className="py-16 sm:py-24 px-4 bg-[var(--bg-primary)]">
+      {/* ─── EXECUTION / ROLES ───────────────────────────────────── */}
+      <section className="py-16 sm:py-24 px-4 lp-surface-2">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-2xl sm:text-3xl font-display font-semibold text-[var(--text-primary)] mb-2">
+          <h2
+            className="lp-display text-2xl sm:text-3xl font-medium mb-2"
+            style={{ color: 'var(--fg)' }}
+          >
             {c.execution.title}
           </h2>
-          <p className="text-[var(--text-muted)] mb-12">{c.execution.sub}</p>
+          <p className="mb-12" style={{ color: 'var(--fg-faint)' }}>
+            {c.execution.sub}
+          </p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
             {c.execution.roles.map((role, i) => (
-              <div
-                key={i}
-                className="bg-[var(--bg-card)] border border-[var(--border)] rounded-2xl p-6 hover:border-[var(--accent)]/30 transition-all hover:-translate-y-1 shadow-hy"
-              >
+              <div key={i} className="lp-surface rounded-2xl p-6 text-start">
                 <div className="text-3xl mb-4">{role.icon}</div>
-                <p className="font-bold text-[var(--text-primary)] mb-2">{role.title}</p>
-                <p className="text-sm text-[var(--text-muted)]">{role.desc}</p>
+                <p className="font-semibold mb-2" style={{ color: 'var(--fg)' }}>
+                  {role.title}
+                </p>
+                <p className="text-sm" style={{ color: 'var(--fg-faint)' }}>
+                  {role.desc}
+                </p>
               </div>
             ))}
           </div>
@@ -1936,61 +1894,63 @@ export function LandingPage() {
       </section>
 
       {/* ─── PRICING ─────────────────────────────────────────────── */}
-      <section className="py-16 sm:py-24 px-4 bg-[var(--bg-elevated)]">
+      <section className="py-16 sm:py-24 px-4">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <div className="inline-block px-3 py-1 rounded-full bg-[var(--accent)]-soft border border-[var(--accent)]/30 text-[var(--accent)] text-xs font-bold uppercase tracking-widest mb-4">
-              {c.pricing.badge}
-            </div>
-            <h2 className="text-3xl sm:text-4xl font-display font-semibold text-[var(--text-primary)] mb-2">
+          <div className="text-center mb-14">
+            <p className="lp-eyebrow justify-center mb-4">{c.pricing.badge}</p>
+            <h2
+              className="lp-display text-3xl sm:text-4xl font-medium mb-2"
+              style={{ color: 'var(--fg)' }}
+            >
               {c.pricing.title}
             </h2>
-            <p className="text-[var(--text-muted)] max-w-xl mx-auto">{c.pricing.subtitle}</p>
+            <p className="max-w-xl mx-auto" style={{ color: 'var(--fg-faint)' }}>
+              {c.pricing.subtitle}
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 pt-3">
             {c.pricing.tiers.map((tier) => (
               <div
                 key={tier.id}
                 className={clsx(
-                  'relative rounded-2xl p-5 border transition-all flex flex-col',
-                  tier.highlighted
-                    ? 'bg-gradient-to-b from-hy-accent/10 to-transparent border-[var(--accent)]/40 shadow-hy shadow-hy-accent/10'
-                    : 'bg-[var(--bg-card)]/50 border-[var(--border)] hover:border-[var(--accent)]/30',
+                  'lp-folder relative p-5 pt-8 flex flex-col',
+                  tier.highlighted && 'lp-folder--accent',
                 )}
               >
+                <span className="lp-folder__tab">Plan / {tier.name}</span>
                 {tier.highlighted && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-[var(--accent)] text-hy-base text-[10px] font-black uppercase tracking-wider">
+                  <div
+                    className="lp-mono absolute -top-3 end-4 px-2.5 py-1 rounded-full text-[9px] font-semibold"
+                    style={{ background: 'var(--amber)', color: 'var(--amber-ink)' }}
+                  >
                     {c.pricing.popularLabel}
                   </div>
                 )}
-                <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-1">
+                <h3 className="text-sm font-semibold mb-1" style={{ color: 'var(--fg)' }}>
                   {tier.name}
                 </h3>
-                <p className="text-xs text-[var(--text-muted)] mb-4 min-h-[2.5rem]">{tier.desc}</p>
+                <p className="text-xs mb-4 min-h-[2.5rem]" style={{ color: 'var(--fg-faint)' }}>
+                  {tier.desc}
+                </p>
                 <div className="mb-4">
-                  {tier.price ? (
-                    <>
-                      <p className="text-3xl font-display font-semibold text-[var(--text-primary)]">
-                        {tier.price}
-                      </p>
-                      <p className="text-[11px] text-[var(--text-muted)] mt-0.5">
-                        {tier.priceLabel}
-                      </p>
-                    </>
-                  ) : (
-                    <>
-                      <p className="text-3xl font-bold text-[var(--text-secondary)]">Free</p>
-                      <p className="text-[11px] text-[var(--text-muted)] mt-0.5">
-                        {tier.priceLabel}
-                      </p>
-                    </>
-                  )}
+                  <p className="lp-display text-3xl font-medium" style={{ color: 'var(--fg)' }}>
+                    {tier.price || 'Free'}
+                  </p>
+                  <p className="text-[11px] mt-0.5" style={{ color: 'var(--fg-faint)' }}>
+                    {tier.priceLabel}
+                  </p>
                 </div>
                 <ul className="space-y-2 mb-5 flex-1">
                   {tier.features.map((f, i) => (
-                    <li key={i} className="flex items-start gap-2 text-xs text-[var(--text-muted)]">
-                      <span className="text-[var(--accent)] shrink-0 mt-0.5">✓</span>
+                    <li
+                      key={i}
+                      className="flex items-start gap-2 text-xs"
+                      style={{ color: 'var(--fg-faint)' }}
+                    >
+                      <span style={{ color: 'var(--oasis)' }} className="shrink-0 mt-0.5">
+                        ✓
+                      </span>
                       <span className="leading-relaxed">{f}</span>
                     </li>
                   ))}
@@ -1998,10 +1958,8 @@ export function LandingPage() {
                 <button
                   onClick={() => handleCTA()}
                   className={clsx(
-                    'w-full py-2.5 rounded-lg font-bold text-sm transition-all',
-                    tier.highlighted
-                      ? 'bg-[var(--accent)] text-hy-base hover:bg-[var(--accent)]-hover hover:-translate-y-0.5 shadow-lg shadow-hy-accent/20'
-                      : 'border border-[var(--border)] text-[var(--text-secondary)] hover:border-[var(--accent)] hover:text-[var(--text-primary)]',
+                    'w-full py-2.5 text-sm',
+                    tier.highlighted ? 'lp-btn lp-btn--primary' : 'lp-btn lp-btn--ghost',
                   )}
                 >
                   {tier.cta}
@@ -2010,26 +1968,30 @@ export function LandingPage() {
             ))}
           </div>
 
-          {/* Monetization transparency */}
-          <div className="mt-8 max-w-3xl mx-auto p-5 rounded-2xl bg-[var(--bg-primary)]/50 border border-[var(--border)]">
-            <h4 className="text-sm font-semibold text-[var(--text-primary)] mb-2 flex items-center gap-2">
-              <span className="text-[var(--accent)]">🔒</span>
+          <div className="mt-10 max-w-3xl mx-auto p-5 rounded-2xl lp-surface-2">
+            <h4
+              className="text-sm font-semibold mb-2 flex items-center gap-2"
+              style={{ color: 'var(--fg)' }}
+            >
+              <span style={{ color: 'var(--oasis)' }}>🔒</span>
               {c.pricing.monetizationTitle}
             </h4>
-            <p className="text-xs text-[var(--text-muted)] leading-relaxed mb-3">
+            <p className="text-xs leading-relaxed mb-3" style={{ color: 'var(--fg-faint)' }}>
               {c.pricing.monetizationText}
             </p>
-            <div className="flex items-start gap-2 p-3 rounded-lg bg-[var(--accent)]-soft border border-[var(--accent)]/10">
+            <div className="flex items-start gap-2 p-3 rounded-lg lp-panel-amber">
               <span className="text-sm shrink-0 mt-0.5">⚠️</span>
-              <p className="text-[11px] text-[var(--text-muted)] leading-relaxed">
+              <p className="text-[11px] leading-relaxed" style={{ color: 'var(--fg-faint)' }}>
                 {c.pricing.monetizationNote}
               </p>
             </div>
           </div>
 
-          {/* Pricing disclaimer */}
           <div className="mt-6 text-center">
-            <p className="text-[11px] text-[var(--text-muted)] max-w-xl mx-auto leading-relaxed">
+            <p
+              className="text-[11px] max-w-xl mx-auto leading-relaxed"
+              style={{ color: 'var(--fg-faint)' }}
+            >
               {c.pricing.disclaimer}
             </p>
           </div>
@@ -2037,68 +1999,101 @@ export function LandingPage() {
       </section>
 
       {/* ─── WHATSAPP ────────────────────────────────────────────── */}
-      <section className="py-16 sm:py-24 px-4 bg-gradient-to-br from-hy-base via-hy-subtle to-hy-base">
+      <section className="py-16 sm:py-24 px-4 lp-surface-2">
         <div className="max-w-lg mx-auto text-center">
-          <div className="w-16 h-16 rounded-2xl bg-[#25D366]/10 border border-[#25D366]/30 flex items-center justify-center mx-auto mb-5 text-[#25D366]">
+          <div
+            className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-5"
+            style={{
+              background: 'rgba(33,189,99,0.12)',
+              border: '1px solid rgba(33,189,99,0.35)',
+              color: '#21bd63',
+            }}
+          >
             <WAIcon size={28} />
           </div>
-          <h2 className="text-2xl sm:text-3xl font-display font-semibold text-[var(--text-primary)] mb-2">
+          <h2
+            className="lp-display text-2xl sm:text-3xl font-medium mb-2"
+            style={{ color: 'var(--fg)' }}
+          >
             {c.whatsapp.title}
           </h2>
-          <p className="text-[var(--text-muted)] mb-6">{c.whatsapp.sub}</p>
+          <p className="mb-6" style={{ color: 'var(--fg-faint)' }}>
+            {c.whatsapp.sub}
+          </p>
           <a
             href={WA_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 px-8 py-4 rounded-xl font-bold text-base bg-[#25D366] text-hy-base shadow-lg shadow-[var(--shadow-color)] hover:shadow-green-500/35 hover:-translate-y-0.5 transition-all"
+            className="lp-btn lp-btn--wa px-8 py-4 text-base"
           >
             <WAIcon size={22} />
             {c.whatsapp.cta}
           </a>
-          <p className="text-xs text-[var(--text-muted)] mt-4">{c.whatsapp.note}</p>
+          <p className="text-xs mt-4" style={{ color: 'var(--fg-faint)' }}>
+            {c.whatsapp.note}
+          </p>
         </div>
       </section>
 
       {/* ─── FOR LAWYERS ─────────────────────────────────────────── */}
-      <section className="py-16 sm:py-24 px-4 bg-[var(--bg-primary)]">
+      <section className="py-16 sm:py-24 px-4">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--accent)]-soft border border-[var(--accent)]/20 text-[var(--accent)] text-xs font-bold uppercase tracking-widest mb-4">
-              🏛️ {c.lawyers.badge}
-            </div>
-            <h2 className="text-2xl sm:text-3xl font-display font-semibold text-[var(--text-primary)] mb-2">
+            <p className="lp-eyebrow justify-center mb-4">🏛️ {c.lawyers.badge}</p>
+            <h2
+              className="lp-display text-2xl sm:text-3xl font-medium mb-2"
+              style={{ color: 'var(--fg)' }}
+            >
               {c.lawyers.title}
             </h2>
-            <p className="text-[var(--text-muted)] max-w-xl mx-auto">{c.lawyers.sub}</p>
+            <p className="max-w-xl mx-auto" style={{ color: 'var(--fg-faint)' }}>
+              {c.lawyers.sub}
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
-            {/* What we send */}
-            <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-2xl p-5 shadow-hy">
-              <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-4 flex items-center gap-2">
-                <span className="text-[var(--accent)]">✓</span>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-6">
+            <div className="lp-surface rounded-2xl p-5">
+              <h3
+                className="text-sm font-semibold mb-4 flex items-center gap-2"
+                style={{ color: 'var(--fg)' }}
+              >
+                <span style={{ color: 'var(--oasis)' }}>✓</span>
                 {c.lawyers.sendTitle}
               </h3>
               <ul className="space-y-3">
                 {c.lawyers.sendItems.map((item, i) => (
-                  <li key={i} className="flex items-start gap-2.5 text-sm text-[var(--text-muted)]">
-                    <span className="text-[var(--accent)] shrink-0 mt-0.5">✓</span>
+                  <li
+                    key={i}
+                    className="flex items-start gap-2.5 text-sm"
+                    style={{ color: 'var(--fg-faint)' }}
+                  >
+                    <span style={{ color: 'var(--oasis)' }} className="shrink-0 mt-0.5">
+                      ✓
+                    </span>
                     <span className="leading-relaxed">{item}</span>
                   </li>
                 ))}
               </ul>
             </div>
 
-            {/* What we don't do */}
-            <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-2xl p-5 shadow-hy">
-              <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-4 flex items-center gap-2">
-                <span className="text-[var(--status-error)]">⚠</span>
+            <div className="lp-surface rounded-2xl p-5">
+              <h3
+                className="text-sm font-semibold mb-4 flex items-center gap-2"
+                style={{ color: 'var(--fg)' }}
+              >
+                <span style={{ color: 'var(--clay)' }}>⚠</span>
                 {c.lawyers.dontTitle}
               </h3>
               <ul className="space-y-3">
                 {c.lawyers.dontItems.map((item, i) => (
-                  <li key={i} className="flex items-start gap-2.5 text-sm text-[var(--text-muted)]">
-                    <span className="text-[var(--status-error)]/70 shrink-0 mt-0.5 text-xs">✕</span>
+                  <li
+                    key={i}
+                    className="flex items-start gap-2.5 text-sm"
+                    style={{ color: 'var(--fg-faint)' }}
+                  >
+                    <span style={{ color: 'var(--clay)' }} className="shrink-0 mt-0.5 text-xs">
+                      ✕
+                    </span>
                     <span className="leading-relaxed">{item}</span>
                   </li>
                 ))}
@@ -2106,29 +2101,28 @@ export function LandingPage() {
             </div>
           </div>
 
-          {/* Compliance note */}
-          <div className="p-5 rounded-2xl bg-[var(--accent)]-soft border border-[var(--accent)]/20 mb-6">
+          <div className="p-5 rounded-2xl mb-6 lp-panel-accent">
             <div className="flex items-start gap-3">
               <span className="text-lg shrink-0">⚖️</span>
               <div>
-                <p className="text-sm font-semibold text-[var(--text-primary)] mb-1">
+                <p className="text-sm font-semibold mb-1" style={{ color: 'var(--fg)' }}>
                   {c.lawyers.complianceLabel}
                 </p>
-                <p className="text-xs text-[var(--text-muted)] leading-relaxed">
+                <p className="text-xs leading-relaxed" style={{ color: 'var(--fg-faint)' }}>
                   {c.lawyers.complianceText}
                 </p>
               </div>
             </div>
           </div>
 
-          {/* Onboarding */}
           <div className="text-center">
-            <p className="text-sm text-[var(--text-muted)] mb-4 max-w-lg mx-auto">
+            <p className="text-sm mb-4 max-w-lg mx-auto" style={{ color: 'var(--fg-faint)' }}>
               {c.lawyers.onboardingText}
             </p>
             <a
               href="mailto:partners@expatuae.kafeely.com"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm border border-[var(--accent)]/40 text-[var(--accent)] hover:bg-[var(--accent)]-soft transition-all"
+              className="lp-btn lp-btn--ghost inline-flex px-6 py-3 text-sm"
+              style={{ borderColor: 'var(--oasis)', color: 'var(--oasis)' }}
             >
               {c.lawyers.applyCta} →
             </a>
@@ -2137,29 +2131,36 @@ export function LandingPage() {
       </section>
 
       {/* ─── FAQ ────────────────────────────────────────────────── */}
-      <section className="py-16 sm:py-24 px-4 bg-[var(--bg-elevated)]">
+      <section className="py-16 sm:py-24 px-4 lp-surface-2">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-12">
-            <p className="text-[10px] font-bold tracking-widest uppercase text-[var(--text-muted)] mb-2">
-              {c.faq.badge}
-            </p>
-            <h2 className="text-2xl sm:text-3xl font-display font-semibold text-[var(--text-primary)]">
+            <p className="lp-eyebrow justify-center mb-3">{c.faq.badge}</p>
+            <h2
+              className="lp-display text-2xl sm:text-3xl font-medium"
+              style={{ color: 'var(--fg)' }}
+            >
               {c.faq.title}
             </h2>
           </div>
           <div className="space-y-3">
             {c.faq.items.map((faq, i) => (
-              <details
-                key={i}
-                className="group bg-[var(--bg-primary)]/50 border border-[var(--border)] rounded-xl overflow-hidden"
-              >
-                <summary className="flex items-center justify-between gap-3 p-4 cursor-pointer text-sm font-medium text-[var(--text-primary)] hover:bg-white/[0.02] transition-colors list-none">
+              <details key={i} className="group lp-surface rounded-xl overflow-hidden">
+                <summary
+                  className="flex items-center justify-between gap-3 p-4 cursor-pointer text-sm font-medium list-none"
+                  style={{ color: 'var(--fg)' }}
+                >
                   {faq.q}
-                  <span className="text-[var(--text-muted)] shrink-0 group-open:rotate-180 transition-transform">
-                    ▾
+                  <span
+                    style={{ color: 'var(--fg-faint)' }}
+                    className="shrink-0 group-open:rotate-180 transition-transform"
+                  >
+                    <CaretIcon open={false} />
                   </span>
                 </summary>
-                <div className="px-4 pb-4 text-sm text-[var(--text-muted)] leading-relaxed">
+                <div
+                  className="px-4 pb-4 text-sm leading-relaxed"
+                  style={{ color: 'var(--fg-faint)' }}
+                >
                   {faq.a}
                 </div>
               </details>
@@ -2169,19 +2170,24 @@ export function LandingPage() {
       </section>
 
       {/* ─── TRUST ───────────────────────────────────────────────── */}
-      <section className="py-12 px-4 bg-[var(--bg-elevated)] border-t border-[var(--border)]">
+      <section className="py-12 px-4 border-t">
         <div className="max-w-3xl mx-auto">
-          <p className="text-center text-sm font-semibold text-[var(--text-muted)] uppercase tracking-widest mb-6">
+          <p
+            className="lp-mono text-center text-xs font-semibold uppercase mb-6"
+            style={{ color: 'var(--fg-faint)' }}
+          >
             {c.trust.title}
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {c.trust.items.map((item, i) => (
               <div
                 key={i}
-                className="flex flex-col items-center gap-2 p-4 rounded-xl bg-[var(--bg-primary)]/60 border border-[var(--border)] text-center"
+                className="lp-surface-2 flex flex-col items-center gap-2 p-4 rounded-xl text-center"
               >
                 <span className="text-2xl">{item.icon}</span>
-                <span className="text-xs text-[var(--text-muted)] leading-tight">{item.text}</span>
+                <span className="text-xs leading-tight" style={{ color: 'var(--fg-faint)' }}>
+                  {item.text}
+                </span>
               </div>
             ))}
           </div>
@@ -2189,14 +2195,17 @@ export function LandingPage() {
       </section>
 
       {/* ─── FOOTER ──────────────────────────────────────────────── */}
-      <footer className="py-10 px-4 bg-[var(--bg-primary)] border-t border-[var(--border)]">
+      <footer className="py-10 px-4 border-t">
         <div className="max-w-4xl mx-auto">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 mb-6">
             <div className="flex items-center gap-2.5">
-              <div className="w-7 h-7 rounded-lg bg-[var(--accent)] flex items-center justify-center text-hy-base font-bold text-xs">
-                R
+              <div
+                className="w-7 h-7 flex items-center justify-center font-semibold text-xs rounded-[3px_9px_9px_9px]"
+                style={{ background: 'var(--amber)', color: 'var(--amber-ink)' }}
+              >
+                E
               </div>
-              <span className="font-semibold text-[var(--text-primary)] font-display">
+              <span className="lp-display font-semibold" style={{ color: 'var(--fg)' }}>
                 {c.nav.brand}
               </span>
             </div>
@@ -2205,22 +2214,22 @@ export function LandingPage() {
                 <a
                   key={i}
                   href="#"
-                  className="text-sm text-[var(--text-muted)] hover:text-[var(--text-secondary)] transition-colors"
+                  className="text-sm transition-colors"
+                  style={{ color: 'var(--fg-faint)' }}
                 >
                   {l}
                 </a>
               ))}
             </div>
           </div>
-          {/* Disclaimer */}
-          <div className="flex items-start gap-3 p-4 rounded-xl bg-[var(--accent)]-soft border border-[var(--accent)]/15">
+          <div className="flex items-start gap-3 p-4 rounded-xl lp-panel-amber">
             <span className="text-lg shrink-0">⚖️</span>
-            <p className="text-xs text-[var(--text-muted)] leading-relaxed">
+            <p className="text-xs leading-relaxed" style={{ color: 'var(--fg-faint)' }}>
               {c.footer.disclaimer}
             </p>
           </div>
-          <p className="text-center text-xs text-[var(--text-muted)] mt-6">
-            © 2026 ExpatUAE. All rights reserved.
+          <p className="text-center text-xs mt-6" style={{ color: 'var(--fg-faint)' }}>
+            © 2026 {c.nav.brand}. All rights reserved.
           </p>
         </div>
       </footer>
@@ -2228,17 +2237,17 @@ export function LandingPage() {
       {/* ─── STICKY BOTTOM BAR ───────────────────────────────────── */}
       <div
         className={clsx(
-          'fixed bottom-0 inset-x-0 z-40 bg-[var(--bg-primary)]/96 backdrop-blur-xl border-t border-[var(--border)] px-4 py-3 flex items-center justify-between gap-3 transition-transform duration-500',
+          'lp-sticky fixed bottom-0 inset-x-0 z-40 backdrop-blur-xl border-t px-4 py-3 flex items-center justify-between gap-3 lp-surface',
           scrolled ? 'translate-y-0' : 'translate-y-full',
         )}
       >
-        <p className="text-sm text-[var(--text-muted)] hidden sm:block">
+        <p className="text-sm hidden sm:block" style={{ color: 'var(--fg-faint)' }}>
           {c.stickyText || 'Not sure where to start? Try the free assessment.'}
         </p>
         <div className="flex items-center gap-2 ms-auto">
           <button
             onClick={() => handleCTA()}
-            className="px-5 py-2.5 rounded-lg font-bold text-sm bg-[var(--accent)] text-hy-base shadow-lg shadow-[var(--shadow-color)] hover:bg-[var(--accent)]-hover hover:-translate-y-0.5 transition-all"
+            className="lp-btn lp-btn--primary px-5 py-2.5 text-sm"
           >
             {c.sticky}
           </button>
