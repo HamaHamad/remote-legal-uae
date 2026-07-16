@@ -8,6 +8,17 @@ export default {
         body: ['"DM Sans"', 'system-ui', 'sans-serif'],
         arabic: ['"Noto Naskh Arabic"', 'serif'],
         mono: ['"JetBrains Mono"', 'monospace'],
+        // Landing-page-only type system — scoped to LandingPage.jsx via .lp,
+        // kept separate from the app-wide tokens above so dashboard/admin/
+        // partner screens are unaffected.
+        lpDisplay: ['Fraunces', 'Georgia', 'serif'],
+        lpBody: ['"Public Sans"', 'system-ui', 'sans-serif'],
+        lpMono: ['"IBM Plex Mono"', 'monospace'],
+        lpArDisplay: ['"Markazi Text"', 'serif'],
+        lpArBody: ['"Noto Kufi Arabic"', 'sans-serif'],
+        lpUrdu: ['"Noto Nastaliq Urdu"', 'serif'],
+        lpHiDisplay: ['"Noto Serif Devanagari"', 'serif'],
+        lpHiBody: ['"Noto Sans Devanagari"', 'sans-serif'],
       },
       colors: {
         gold: {
