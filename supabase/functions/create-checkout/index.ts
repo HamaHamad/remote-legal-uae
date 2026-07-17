@@ -11,7 +11,7 @@
 //   STRIPE_SECRET_KEY
 //   SUPABASE_URL / SUPABASE_ANON_KEY / SUPABASE_SERVICE_ROLE_KEY
 //   ALLOWED_ORIGINS (comma-separated, e.g.
-//     "https://remote-legal-uae.vercel.app,https://staging.remote-legal-uae.vercel.app")
+//     "https://expat.legalwakeely.com,https://staging.expat.legalwakeely.com")
 
 import { serve } from 'https://deno.land/std@0.177.0/http/server.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'

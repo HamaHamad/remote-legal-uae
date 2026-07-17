@@ -174,7 +174,7 @@ supabase db push
 ### Step 2 — Set the new `ALLOWED_ORIGINS` secret
 
 ```bash
-supabase secrets set ALLOWED_ORIGINS="https://remote-legal-uae.vercel.app,https://staging.remote-legal-uae.vercel.app"
+supabase secrets set ALLOWED_ORIGINS="https://expat.legalwakeely.com,https://staging.remote-legal-uae.vercel.app"
 ```
 
 If you have custom domains, include them too. Localhost origins are

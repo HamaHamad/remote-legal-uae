@@ -117,7 +117,7 @@ CREATE TABLE IF NOT EXISTS public.app_config (
 );
 
 INSERT INTO public.app_config (key, value)
-VALUES ('site_url', 'https://remote-legal-uae.vercel.app')
+VALUES ('site_url', 'https://expat.legalwakeely.com')
 ON CONFLICT (key) DO NOTHING;
 
 CREATE OR REPLACE FUNCTION public.site_url()

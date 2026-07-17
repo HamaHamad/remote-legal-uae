@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://remote-legal-uae.vercel.app/</loc>
+    <loc>https://expat.legalwakeely.com/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://remote-legal-uae.vercel.app/login</loc>
+    <loc>https://expat.legalwakeely.com/login</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://remote-legal-uae.vercel.app/signup</loc>
+    <loc>https://expat.legalwakeely.com/signup</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://remote-legal-uae.vercel.app/forgot-password</loc>
+    <loc>https://expat.legalwakeely.com/forgot-password</loc>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://remote-legal-uae.vercel.app/privacy-policy</loc>
+    <loc>https://expat.legalwakeely.com/privacy-policy</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://remote-legal-uae.vercel.app/terms-of-service</loc>
+    <loc>https://expat.legalwakeely.com/terms-of-service</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://remote-legal-uae.vercel.app/cookie-policy</loc>
+    <loc>https://expat.legalwakeely.com/cookie-policy</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>

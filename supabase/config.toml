@@ -57,7 +57,7 @@ enabled = true
 site_url = "http://localhost:5173"
 additional_redirect_urls = [
   "http://localhost:5173/**",
-  "https://remote-legal-uae.vercel.app/**",
+  "https://expat.legalwakeely.com/**",
 ]
 jwt_expiry = 3600
 refresh_token_rotation_enabled = true

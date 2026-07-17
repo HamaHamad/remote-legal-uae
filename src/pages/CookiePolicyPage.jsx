@@ -151,7 +151,7 @@ export function CookiePolicyPage() {
           <code>rlco-*</code> entries.
         </li>
         <li>
-          Clear cookies for <code>remote-legal-uae.vercel.app</code> in browser settings.
+          Clear cookies for <code>expat.legalwakeely.com</code> in browser settings.
         </li>
       </ol>
 
