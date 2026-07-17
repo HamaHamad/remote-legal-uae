@@ -84,7 +84,10 @@ CREATE INDEX IF NOT EXISTS idx_cases_ai_status
   ON public.cases(ai_status);
 
 -- ─── 7. Update cases_with_users view to include AI fields ────────
-CREATE OR REPLACE VIEW public.cases_with_users AS
+-- PostgreSQL 17+ requires DROP + CREATE when the column list changes
+-- (c.* now includes ai_status, ai_summary, etc. added above).
+DROP VIEW IF EXISTS public.cases_with_users;
+CREATE VIEW public.cases_with_users AS
   SELECT
     c.*,
     u.email          AS client_email,
@@ -104,6 +107,9 @@ CREATE OR REPLACE VIEW public.cases_with_users AS
   FROM  public.cases   c
   LEFT JOIN public.users u ON u.id = c.user_id
   LEFT JOIN public.users p ON p.id = c.assigned_to;
+
+COMMENT ON VIEW public.cases_with_users IS
+  'WARNING: This view bypasses RLS. Admins may query it directly. Clients/partners should use get_cases_with_users() or query the cases table directly.';
 
 -- ─── 8. Verification ──────────────────────────────────────────────
 -- SELECT column_name, data_type

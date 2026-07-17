@@ -31,7 +31,7 @@
 #     FROM_EMAIL=... \
 #     ALLOWED_ORIGINS=https://yourdomain.com,https://staging.yourdomain.com
 
-project_id = "remote-legal-uae"
+project_id = "qjudcunijxsottjcsnvs"
 
 [api]
 enabled = true

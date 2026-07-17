@@ -78,7 +78,7 @@ ALTER TABLE public.tasks
 -- ─── 5. Case activity log trigger ────────────────────────────────
 -- Auto-log when a case status changes
 CREATE OR REPLACE FUNCTION public.log_case_status_change()
-RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER AS $$
+RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
 BEGIN
   IF OLD.status IS DISTINCT FROM NEW.status THEN
     INSERT INTO public.case_activities (case_id, actor_id, action, metadata)
@@ -104,7 +104,7 @@ CREATE TRIGGER on_case_status_change
 
 -- ─── 6. Auto-notify partner when task is assigned ─────────────────
 CREATE OR REPLACE FUNCTION public.notify_on_task_assigned()
-RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER AS $$
+RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
 DECLARE
   case_type_val text;
 BEGIN
@@ -134,7 +134,7 @@ CREATE TRIGGER on_task_assigned
 
 -- ─── 7. Auto-notify client when AI analysis is ready ─────────────
 CREATE OR REPLACE FUNCTION public.notify_on_ai_ready()
-RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER AS $$
+RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
 BEGIN
   IF NEW.ai_status = 'done' AND OLD.ai_status != 'done' THEN
     INSERT INTO public.notifications (user_id, type, title, body, link, metadata)
@@ -158,7 +158,7 @@ CREATE TRIGGER on_ai_ready
 
 -- ─── 8. Auto-notify client when case is assigned to a partner ─────
 CREATE OR REPLACE FUNCTION public.notify_on_case_assigned()
-RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER AS $$
+RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
 BEGIN
   IF NEW.assigned_to IS NOT NULL AND
      (OLD.assigned_to IS NULL OR OLD.assigned_to != NEW.assigned_to) THEN
